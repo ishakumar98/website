@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <!-- Black background -->
+  <rect width="400" height="300" fill="#000000"/>
+  
+  <!-- Dark purple bunny body -->
+  <ellipse cx="200" cy="150" rx="80" ry="60" fill="#4A148C"/>
+  
+  <!-- Bunny head -->
+  <ellipse cx="200" cy="120" rx="50" ry="40" fill="#4A148C"/>
+  
+  <!-- Bunny ears -->
+  <ellipse cx="180" cy="80" rx="15" ry="35" fill="#4A148C" transform="rotate(-15 180 80)"/>
+  <ellipse cx="220" cy="80" rx="15" ry="35" fill="#4A148C" transform="rotate(15 220 80)"/>
+  
+  <!-- Bunny eyes (light lavender) -->
+  <circle cx="190" cy="115" r="3" fill="#E6E6FA"/>
+  <circle cx="210" cy="115" r="3" fill="#E6E6FA"/>
+  
+  <!-- Bunny nose (bright pink) -->
+  <circle cx="200" cy="125" r="2" fill="#FF69B4"/>
+  
+  <!-- Bunny tail -->
+  <ellipse cx="280" cy="150" rx="15" ry="12" fill="#4A148C"/>
+  
+  <!-- Bunny legs (for jumping pose) -->
+  <ellipse cx="170" cy="200" rx="12" ry="25" fill="#4A148C" transform="rotate(-20 170 200)"/>
+  <ellipse cx="230" cy="200" rx="12" ry="25" fill="#4A148C" transform="rotate(20 230 200)"/>
+</svg> 

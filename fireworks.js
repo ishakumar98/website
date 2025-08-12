@@ -296,6 +296,12 @@ function setup() {
     return;
   }
   
+  // Set container dimensions if they're not set
+  if (container.offsetWidth === 0 || container.offsetHeight === 0) {
+    container.style.width = '100%';
+    container.style.height = '100vh';
+  }
+  
   canvas = createCanvas(container.offsetWidth, container.offsetHeight);
   canvas.parent('fireworks-container');
   
@@ -308,11 +314,9 @@ function setup() {
   gravity = createVector(0, 0.13);
   stroke(255);
   strokeWeight(4);
-  background(255, 245, 248); // FFF5F8 background (default theme color)
+  background(252, 232, 255); // FCE8FF background
   startTime = millis();
   firstStarTime = null;
-  
-  
   
   // Add scroll detection to stop fireworks when project section comes into view
   window.addEventListener('scroll', checkScrollPosition);
@@ -321,7 +325,7 @@ function setup() {
 function draw() {
   colorMode(RGB);
   clear();
-  background(255, 245, 248); // FFF5F8 background (default theme color)
+  background(252, 232, 255); // FCE8FF background
   
   // Debug: show current state
   if (frameCount % 60 === 0) { // Log every second
