@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set initial position - top edge at bottom of viewport (fully collapsed)
   workSection.style.position = 'absolute';
   workSection.style.top = viewportHeight + 'px';
-  workSection.style.left = '0';
+  workSection.style.left = 'auto';
   workSection.style.width = '100%';
   workSection.style.zIndex = '10';
   

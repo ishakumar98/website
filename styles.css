@@ -121,7 +121,8 @@ body {
   box-shadow: 0 0 25px 35px var(--work-shadow);
   width: 100%;
   min-height: 300px;
-  padding: 2rem 0;
+  padding: 16px 0 16px 24px !important;
+  overflow-x: auto;
 }
 
 /* Header Text Styling */
@@ -190,7 +191,7 @@ body {
 .container {
     max-width: none;
     margin: 0 auto;
-    padding: 12px 64px 0 64px;
+    padding: 12px 0 0 0; /* Removed left and right padding since we handle it with item margins */
 }
 
 @keyframes blink {
@@ -1017,10 +1018,19 @@ body {
   align-items: flex-start;
   gap: 16px;
   list-style: none;
-  padding: 0;
+  padding: 24px 0 24px 0;
   margin: 0;
-  width: 100%;
+  width: fit-content;
   overflow-x: auto;
+  /* Hide scrollbar for macOS */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  padding-left: 24px !important;
+}
+
+/* Hide scrollbar for WebKit browsers (Safari, Chrome) */
+.work-list::-webkit-scrollbar {
+  display: none;
 }
 
 .work-item {
@@ -1028,18 +1038,28 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  flex: 1;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 0 0 auto;
   min-width: 245px;
   max-width: 300px;
 }
+
+
+
+
+
+
+
+
+
+
 
 .work-item .wrapper-image {
   width: 100%;
   height: 210px;
   flex-shrink: 0;
   position: relative;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 11px;
   box-sizing: border-box;
 }
@@ -1049,7 +1069,7 @@ body {
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .work-item .title {
@@ -1066,6 +1086,8 @@ body {
   font-weight: 400;
   text-align: center;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0 6px;
+  border-radius: 4px;
 }
 
 /* Hover effects */
@@ -1074,11 +1096,30 @@ body {
   border-radius: 8px;
 }
 
+/* Text file hover - background hugs the image content */
+.work-item .wrapper-image img[src="text-file-icon.png"] {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Text file wrapper - center content and limit background width */
+.work-item .wrapper-image:has(img[src="text-file-icon.png"]) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
+}
+
 .work-item:hover .title span {
   background-color: rgba(29, 28, 29, 0.06);
   padding: 0 6px;
   border-radius: 4px;
 }
+
+
 
 /* Inactive work item styling */
 .work-link-inactive {
@@ -1098,7 +1139,7 @@ body {
 } 
 
 .work-container {
-  padding: 2rem 0;
+  padding: 0;
 } 
 
  
