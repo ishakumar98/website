@@ -130,6 +130,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="fireworks.js"></script>
     <script src="script.js"></script>
+    <script src="scroll-behavior.js"></script>
     
     <script>
         // Theme cycling functionality
@@ -185,63 +186,6 @@
         const nameElement = document.querySelector('.name-text');
     </script>
     
-    <script>
-        // Work section scroll behavior - Pure JavaScript approach
-        document.addEventListener('DOMContentLoaded', function() {
-            const workSection = document.querySelector('.work-section');
-            const viewportHeight = window.innerHeight;
-            
-            console.log('Work section found:', workSection);
-            console.log('Viewport height:', viewportHeight);
-            
-            // Reset scroll position to top on page load/reload
-            window.scrollTo(0, 0);
-            
-            // Set initial position - top edge at bottom of viewport
-            workSection.style.setProperty('position', 'fixed', 'important');
-            workSection.style.setProperty('top', viewportHeight + 'px', 'important');
-            workSection.style.setProperty('left', '0', 'important');
-            workSection.style.setProperty('width', '100%', 'important');
-            workSection.style.setProperty('z-index', '10', 'important');
-            
-            // Set body height to exactly what's needed for scrolling
-            const workSectionHeight = workSection.offsetHeight;
-            document.body.style.minHeight = (viewportHeight + workSectionHeight) + 'px';
-            
-            console.log('Body height set to:', viewportHeight + workSectionHeight);
-            
-            let lastScrollY = 0;
-            
-            window.addEventListener('scroll', function() {
-                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-                const workSectionHeight = workSection.offsetHeight;
-                
-                console.log('Scroll Y:', scrollY, 'Work section height:', workSectionHeight);
-                
-                // Calculate the new position
-                // Start at viewportHeight (bottom of viewport)
-                // As we scroll, move up immediately by scrollY
-                const finalTop = viewportHeight - scrollY;
-                
-                // Limit the maximum scroll so bottom edge of work section meets bottom of viewport
-                const maxScroll = workSectionHeight;
-                const limitedScrollY = Math.min(scrollY, maxScroll);
-                const finalTopLimited = Math.max(0, viewportHeight - limitedScrollY);
-                
-                workSection.style.setProperty('top', finalTop + 'px', 'important');
-                
-                console.log('New top position:', finalTopLimited);
-                
-                lastScrollY = scrollY;
-            });
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                const newViewportHeight = window.innerHeight;
-                workSection.style.setProperty('top', newViewportHeight + 'px', 'important');
-                console.log('Resized, new top:', newViewportHeight);
-            });
-        });
-    </script>
+
 </body>
 </html> 

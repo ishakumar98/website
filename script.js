@@ -113,61 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Real-time scroll animation for work section
-    const workSection = document.querySelector('.work-section');
-    const headerSection = document.querySelector('.header-section');
-    
-    if (workSection && headerSection) {
-        // Add smooth transition to work section
-        workSection.style.transition = 'transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        headerSection.style.transition = 'opacity 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        
-        let ticking = false;
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const scrollY = window.scrollY;
-                    const headerHeight = headerSection.offsetHeight;
-                    const windowHeight = window.innerHeight;
-                    const documentHeight = document.documentElement.scrollHeight;
-                    
-                    // Calculate how much the work section should move up
-                    const maxScroll = headerHeight;
-                    const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
-                    
-                    // Use easing function for smoother animation
-                    const easedProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
-                    
-                    // Move work section up based on scroll progress
-                    const translateY = Math.max(0, 100 - (easedProgress * 100));
-                    workSection.style.transform = `translateY(${translateY}vh)`;
-                    
-                    // Keep header visible but with reduced opacity as work section covers it
-                    if (progress > 0.3) {
-                        const opacityProgress = Math.min((progress - 0.3) / 0.7, 1);
-                        const easedOpacity = Math.max(0.2, 1 - (opacityProgress * 0.8));
-                        headerSection.style.opacity = easedOpacity;
-                    } else {
-                        headerSection.style.opacity = 1;
-                    }
-                    
-                    // Prevent jitter at the bottom by checking if we're near the end
-                    const scrollBottom = scrollY + windowHeight;
-                    const isNearBottom = scrollBottom >= documentHeight - 10;
-                    
-                    if (isNearBottom) {
-                        // Lock the work section in final position
-                        workSection.style.transform = 'translateY(0vh)';
-                        headerSection.style.opacity = 0.2;
-                    }
-                    
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-    }
+
 
     // Scroll overlay effect
     window.addEventListener('scroll', () => {
