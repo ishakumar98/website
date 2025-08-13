@@ -111,7 +111,7 @@ body {
 /* Work Section - Positioned and controlled by JavaScript */
 .work-section {
   position: absolute;
-  background-color: rgba(254, 243, 249, 0.9);
+  background-color: rgba(254, 243, 249, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 10;

@@ -314,7 +314,7 @@ function setup() {
   gravity = createVector(0, 0.13);
   stroke(255);
   strokeWeight(4);
-  background(252, 232, 255); // FCE8FF background
+  // background(252, 232, 255); // FCE8FF background - removed to allow CSS gradient
   startTime = millis();
   firstStarTime = null;
   
@@ -325,7 +325,7 @@ function setup() {
 function draw() {
   colorMode(RGB);
   clear();
-  background(252, 232, 255); // FCE8FF background
+  // background(252, 232, 255); // FCE8FF background - removed to allow CSS gradient
   
   // Debug: show current state
   if (frameCount % 60 === 0) { // Log every second
