@@ -15,7 +15,7 @@
                     <div class="column-set">
                         <div class="column-unit name-column">
                             <div class="text-left">
-                                <h1 class="name-text"><span>I</span><span>s</span><span>h</span><span>a</span></h1>
+                                <h1 class="name-text"><span>I</span><span>S</span><span>H</span><span>A</span> <span>K</span><span>U</span><span>M</span><span>A</span><span>R</span></h1>
                             </div>
                         </div>
                         <div class="column-unit bio-column">
@@ -49,77 +49,75 @@
             </div>
         </section>
         
-        <!-- Work Section - Scrolls Over Header -->
+        <!-- Work Section - Shows top border at bottom of viewport -->
         <section class="work-section">
-            <!-- Gradient at top of work section -->
-            <div class="work-gradient-sticky"></div>
-            
-            <!-- Folders Content -->
-            <div class="work-content">
-                <div class="container">
-                    <div class="row">
-                        <ul class="finder finder-home view-icon">
-                            <li class="folder item-finder">
-                                <a class="folder wrapper-type" href="#">
-                                    <div class="wrapper-image">
-                                        <img src="folder.svg" alt="folder">
-                                    </div>
-                                    <div class="title">
-                                        <span>Huddles</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="folder item-finder">
-                                <a class="folder wrapper-type" href="calendar-project.html">
-                                    <div class="wrapper-image">
-                                        <img src="folder.svg" alt="folder">
-                                    </div>
-                                    <div class="title">
-                                        <span>Calendar</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="folder item-finder">
-                                <a class="folder wrapper-type" href="#">
-                                    <div class="wrapper-image">
-                                        <img src="folder.svg" alt="folder">
-                                    </div>
-                                    <div class="title">
-                                        <span>Lists</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="folder item-finder">
-                                <a class="folder wrapper-type" href="#">
-                                    <div class="wrapper-image">
-                                        <img src="folder.svg" alt="folder">
-                                    </div>
-                                    <div class="title">
-                                        <span>Client Redesign</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="item-finder">
-                                <span class="folder-inactive wrapper-type">
-                                    <div class="wrapper-image">
-                                        <img src="folder.svg" alt="folder disabled">
-                                    </div>
-                                    <div class="title">
-                                        <span>Onboarding System</span>
-                                    </div>
-                                </span>
-                            </li>
-                            <li class="folder item-finder">
-                                <a class="folder wrapper-type" href="#">
-                                    <div class="wrapper-image">
-                                        <img src="text-file-icon.png" alt="resume">
-                                    </div>
-                                    <div class="title">
-                                        <span>Resume</span>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+            <div class="container">
+                <div class="row">
+                    <div class="column col-12">
+                        <div class="work-container">
+                            <ul class="work-list">
+                                <li class="work-item">
+                                    <a class="work-link" href="#">
+                                        <div class="wrapper-image">
+                                            <img src="folder.svg" alt="folder">
+                                        </div>
+                                        <div class="title">
+                                            <span>Huddles</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="work-item">
+                                    <a class="work-link" href="calendar-project.html">
+                                        <div class="wrapper-image">
+                                            <img src="folder.svg" alt="folder">
+                                        </div>
+                                        <div class="title">
+                                            <span>Calendar</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="work-item">
+                                    <a class="work-link" href="#">
+                                        <div class="wrapper-image">
+                                            <img src="folder.svg" alt="folder">
+                                        </div>
+                                        <div class="title">
+                                            <span>Lists</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="work-item">
+                                    <a class="work-link" href="#">
+                                        <div class="wrapper-image">
+                                            <img src="folder.svg" alt="folder">
+                                        </div>
+                                        <div class="title">
+                                            <span>Client Redesign</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="work-item">
+                                    <a class="work-link" href="#">
+                                        <div class="wrapper-image">
+                                            <img src="folder.svg" alt="folder">
+                                        </div>
+                                        <div class="title">
+                                            <span>Onboarding System</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="work-item">
+                                    <a class="work-link" href="#">
+                                        <div class="wrapper-image">
+                                            <img src="text-file-icon.png" alt="contact">
+                                        </div>
+                                        <div class="title">
+                                            <span>Contact</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,6 +183,65 @@
     <script>
         // Name hover effects removed
         const nameElement = document.querySelector('.name-text');
+    </script>
+    
+    <script>
+        // Work section scroll behavior - Pure JavaScript approach
+        document.addEventListener('DOMContentLoaded', function() {
+            const workSection = document.querySelector('.work-section');
+            const viewportHeight = window.innerHeight;
+            
+            console.log('Work section found:', workSection);
+            console.log('Viewport height:', viewportHeight);
+            
+            // Reset scroll position to top on page load/reload
+            window.scrollTo(0, 0);
+            
+            // Set initial position - top edge at bottom of viewport
+            workSection.style.setProperty('position', 'fixed', 'important');
+            workSection.style.setProperty('top', viewportHeight + 'px', 'important');
+            workSection.style.setProperty('left', '0', 'important');
+            workSection.style.setProperty('width', '100%', 'important');
+            workSection.style.setProperty('z-index', '10', 'important');
+            
+            // Set body height to exactly what's needed for scrolling
+            const workSectionHeight = workSection.offsetHeight;
+            document.body.style.minHeight = (viewportHeight + workSectionHeight) + 'px';
+            
+            console.log('Body height set to:', viewportHeight + workSectionHeight);
+            
+            let lastScrollY = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                const workSectionHeight = workSection.offsetHeight;
+                
+                console.log('Scroll Y:', scrollY, 'Work section height:', workSectionHeight);
+                
+                // Calculate the new position
+                // Start at viewportHeight (bottom of viewport)
+                // As we scroll, move up immediately by scrollY
+                const finalTop = viewportHeight - scrollY;
+                
+                // Limit the maximum scroll so bottom edge of work section meets bottom of viewport
+                const maxScroll = workSectionHeight;
+                const limitedScrollY = Math.min(scrollY, maxScroll);
+                const finalTopLimited = Math.max(0, viewportHeight - limitedScrollY);
+                
+                workSection.style.setProperty('top', finalTop + 'px', 'important');
+                
+                console.log('New top position:', finalTopLimited);
+                
+                lastScrollY = scrollY;
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const newViewportHeight = window.innerHeight;
+                workSection.style.setProperty('top', newViewportHeight + 'px', 'important');
+                console.log('Resized, new top:', newViewportHeight);
+            });
+        });
     </script>
 </body>
 </html> 
