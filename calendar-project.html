@@ -298,9 +298,10 @@
                     // Set current image index
                     currentImageIndex = index;
                     
-                    // Get image source and filename
+                    // Get image source and exact filename from title span
                     const imageSrc = img.src;
-                    const filename = img.alt || img.src.split('/').pop() || 'image.png';
+                    const titleSpan = img.closest('.image').querySelector('.title span');
+                    const filename = titleSpan ? titleSpan.textContent : 'image.png';
                     
                     // Set popup content
                     popupImage.src = imageSrc;
@@ -340,8 +341,17 @@
             
             // Function to close popup
             function closePopup() {
-                imagePopup.classList.remove('active');
-                document.body.style.overflow = 'auto';
+                // Add exit animation
+                imagePopup.style.opacity = '0';
+                imagePopup.style.transform = 'translate(-50%, -50%) scale(0.95)';
+                
+                // Wait for animation to complete, then hide popup
+                setTimeout(() => {
+                    imagePopup.classList.remove('active');
+                    imagePopup.style.opacity = '';
+                    imagePopup.style.transform = '';
+                    document.body.style.overflow = 'auto';
+                }, 300);
             }
             
             // Navigation functionality
@@ -366,7 +376,8 @@
             function updatePopupImage() {
                 const img = projectImages[currentImageIndex];
                 const imageSrc = img.src;
-                const filename = img.alt || img.src.split('/').pop() || 'image.png';
+                const titleSpan = img.closest('.image').querySelector('.title span');
+                const filename = titleSpan ? titleSpan.textContent : 'image.png';
                 
                 popupImage.src = imageSrc;
                 popupImage.alt = img.alt || '';
@@ -414,6 +425,10 @@
                 dragStartX = e.clientX;
                 dragStartY = e.clientY;
                 
+                // Clear any ongoing animations and set initial position
+                imagePopup.style.animation = 'none';
+                imagePopup.style.transition = 'none';
+                
                 const rect = imagePopup.getBoundingClientRect();
                 popupStartX = rect.left;
                 popupStartY = rect.top;
@@ -447,10 +462,11 @@
                 newX = Math.max(0, Math.min(newX, viewportWidth - popupWidth));
                 newY = Math.max(0, Math.min(newY, viewportHeight - popupHeight));
                 
-                // Apply new position
+                // Apply new position with clean transform
                 imagePopup.style.left = newX + 'px';
                 imagePopup.style.top = newY + 'px';
                 imagePopup.style.transform = 'none'; // Remove centering transform
+                imagePopup.style.animation = 'none'; // Ensure no animation interference
             }
             
             function stopDrag() {
