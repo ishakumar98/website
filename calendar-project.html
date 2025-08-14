@@ -334,6 +334,71 @@
                 imagePopup.classList.remove('active');
                 document.body.style.overflow = 'auto';
             }
+            
+            // Draggable functionality
+            let isDragging = false;
+            let dragStartX = 0;
+            let dragStartY = 0;
+            let popupStartX = 0;
+            let popupStartY = 0;
+            
+            // Start dragging when clicking on the navigation bar
+            const popupNav = document.querySelector('.popup-nav');
+            popupNav.addEventListener('mousedown', startDrag);
+            
+            function startDrag(e) {
+                if (e.target.closest('.popup-actions')) {
+                    return; // Don't start drag if clicking on buttons
+                }
+                
+                isDragging = true;
+                dragStartX = e.clientX;
+                dragStartY = e.clientY;
+                
+                const rect = imagePopup.getBoundingClientRect();
+                popupStartX = rect.left;
+                popupStartY = rect.top;
+                
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', stopDrag);
+                
+                // Prevent text selection during drag
+                e.preventDefault();
+            }
+            
+            function drag(e) {
+                if (!isDragging) return;
+                
+                const deltaX = e.clientX - dragStartX;
+                const deltaY = e.clientY - dragStartY;
+                
+                let newX = popupStartX + deltaX;
+                let newY = popupStartY + deltaY;
+                
+                // Get viewport dimensions
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // Get popup dimensions
+                const popupRect = imagePopup.getBoundingClientRect();
+                const popupWidth = popupRect.width;
+                const popupHeight = popupRect.height;
+                
+                // Constrain to viewport bounds
+                newX = Math.max(0, Math.min(newX, viewportWidth - popupWidth));
+                newY = Math.max(0, Math.min(newY, viewportHeight - popupHeight));
+                
+                // Apply new position
+                imagePopup.style.left = newX + 'px';
+                imagePopup.style.top = newY + 'px';
+                imagePopup.style.transform = 'none'; // Remove centering transform
+            }
+            
+            function stopDrag() {
+                isDragging = false;
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', stopDrag);
+            }
         </script>
     </body>
 </html>

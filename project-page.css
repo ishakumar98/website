@@ -568,6 +568,11 @@
     text-align: center;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    cursor: grab;
+}
+
+.image-center-popup .popup-nav:active {
+    cursor: grabbing;
 }
 
 .image-center-popup .popup-nav .wrapper-actions {
