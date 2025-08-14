@@ -113,7 +113,7 @@ body {
   position: absolute;
   background-color: rgba(254, 243, 249, 0.8);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-style: none;
   z-index: 10;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -123,6 +123,12 @@ body {
   min-height: 300px;
   padding: 16px 0 16px 24px !important;
   overflow-x: auto;
+  /* Hide scrollbar for macOS */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  /* Disable browser back/forward gestures */
+  overscroll-behavior-x: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Header Text Styling */
@@ -739,7 +745,7 @@ strong {
   margin: 0;
   margin-top: 0;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.6;
   color: #000000;
   opacity: 0.8;
@@ -1033,6 +1039,11 @@ body {
   display: none;
 }
 
+/* Hide scrollbar for work section in WebKit browsers (Safari, Chrome) */
+.work-section::-webkit-scrollbar {
+  display: none;
+}
+
 .work-item {
   display: flex;
   flex-direction: column;
@@ -1142,4 +1153,53 @@ body {
   padding: 0;
 } 
 
- 
+/* Navigation breadcrumb styling */
+.name-link {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.15s cubic-bezier(0.4, 0.2, 1);
+  opacity: 0.75;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.name-link:hover {
+  text-decoration: none;
+  color: inherit;
+  background-color: rgba(29, 28, 29, 0.06) !important;
+  padding: 0 4px;
+}
+
+/* Active page styling - full opacity */
+.name-link.active {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* Home page name display - no hover effects */
+.name-display {
+  color: inherit;
+  opacity: 1;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+/* Forward slash styling */
+.slash {
+  color: inherit;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+/* Project pill styling */
+.project-pill {
+  display: inline-block;
+  padding: 2px 6px;
+  background-color: #FCDFE3;
+  color: #000000;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+

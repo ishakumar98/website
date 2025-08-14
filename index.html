@@ -15,7 +15,11 @@
                     <div class="column-set">
                         <div class="column-unit name-column">
                             <div class="text-left">
-                                <h1 class="name-text"><span>I</span><span>S</span><span>H</span><span>A</span> <span>K</span><span>U</span><span>M</span><span>A</span><span>R</span></h1>
+                                <h1 class="name-text" id="main-header">
+                                    <span class="name-display">
+                                        <span>I</span><span>S</span><span>H</span><span>A</span> <span>K</span><span>U</span><span>M</span><span>A</span><span>R</span>
+                                    </span>
+                                </h1>
                             </div>
                         </div>
                         <div class="column-unit bio-column">
@@ -194,6 +198,30 @@
     <script>
         // Name hover effects removed
         const nameElement = document.querySelector('.name-text');
+        
+        // Navigation stack functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const workLinks = document.querySelectorAll('.work-link');
+            
+            workLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const projectTitle = this.querySelector('.title span').textContent;
+                    
+                    // Store the project title in sessionStorage for the project page
+                    sessionStorage.setItem('projectTitle', projectTitle);
+                    
+                    // If it's a link to a project page, let it navigate
+                    if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+                        return; // Allow normal navigation
+                    }
+                    
+                    // For placeholder links, prevent default and show message
+                    e.preventDefault();
+                    console.log('Project clicked:', projectTitle);
+                    alert(`Project "${projectTitle}" - Coming soon!`);
+                });
+            });
+        });
     </script>
     
 

@@ -1,7 +1,7 @@
 /* Project Page Layout - General structure for all folder items */
 .project-page-container {
     min-height: 100vh;
-    background: #FCE8FF;
+    background: linear-gradient(to bottom, #FCDFE3 0%, #FEF3F9 25%);
     position: relative;
 }
 
@@ -11,8 +11,8 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: #FCE8FF;
-    backdrop-filter: blur(10px);
+    background: transparent;
+    backdrop-filter: none;
 }
 
 .page-header * {
@@ -20,30 +20,13 @@
   background-color: transparent !important;
 }
 
-.page-layout {
-  width: 100%;
-}
-
 .page-content {
-  text-align: center;
-  width: 100vw;
-  padding: 1rem;
-  padding-top: 0.67rem;
-}
-
-.column-set {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 6rem;
-  align-items: center;
+  padding: 0.67rem 1rem;
   width: 100%;
+  text-align: left;
 }
 
-.column-unit {
-  display: flex;
-  align-items: flex-start;
-  align-self: flex-start;
-}
+/* Remove unused column styles */
 
 .text-left {
   text-align: left;
@@ -302,6 +285,161 @@
     font-weight: 400;
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0 6px;
+}
+
+
+
+/* PROJECT CONTENT AREA - Clear, defined styling */
+.project-content-area {
+  margin: 0.67rem 1rem 0.67rem 1rem;
+  padding: 0;
+  width: calc(100% - 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+}
+
+/* Project text block styling */
+.project-text-block {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.project-description {
+  font-family: 'Modern Era', sans-serif;
+  font-size: 16px; /* Will be overridden by JavaScript */
+  line-height: 1.2;
+  color: #000000;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.project-description:first-child {
+  margin-bottom: 2rem;
+}
+
+/* Project images styling */
+.project-images {
+  margin-top: 2rem;
+}
+
+.project-images img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Project Images Work Container - Exact copy of home page work container */
+.project-images-section {
+  position: absolute;
+  background-color: rgba(254, 243, 249, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-style: none;
+  z-index: 10;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 25px 35px var(--work-shadow);
+  width: 100%;
+  min-height: 300px;
+  padding: 16px 0 16px 24px !important;
+  overflow-x: auto;
+  /* Hide scrollbar for macOS */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  /* Disable browser back/forward gestures */
+  overscroll-behavior-x: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-images-section::-webkit-scrollbar {
+  display: none;
+}
+
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+  list-style: none;
+  padding: 24px 0 24px 0;
+  margin: 0;
+  width: 100%;
+  padding-left: 24px !important;
+}
+
+.image-list::-webkit-scrollbar {
+  display: none;
+}
+
+.image {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 0 0 auto;
+  min-width: 245px;
+  max-width: 300px;
+}
+
+.wrapper-image {
+  width: 100%;
+  height: 210px;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 11px;
+  box-sizing: border-box;
+}
+
+.wrapper-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image .title {
+  margin-top: 12px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image .title span {
+  font-size: 18px;
+  color: #000000;
+  font-weight: 400;
+  text-align: center;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0 6px;
+  border-radius: 4px;
+}
+
+/* Hover effects */
+.image:hover .wrapper-image {
+  background-color: rgba(29, 28, 29, 0.06);
+  border-radius: 8px;
+}
+
+.image:hover .title span {
+  background-color: rgba(29, 28, 29, 0.06);
+  padding: 0 6px;
+  border-radius: 4px;
 }
 
 

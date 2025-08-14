@@ -1,4 +1,16 @@
+// HOME PAGE ONLY: Scroll behavior for work section
+// This script should only run on the home page
 document.addEventListener('DOMContentLoaded', function() {
+  // Check if we're on the home page
+  const isHomePage = window.location.pathname === '/' || 
+                    window.location.pathname.includes('index.html') ||
+                    window.location.pathname.endsWith('/');
+  
+  if (!isHomePage) {
+    console.log('Scroll behavior: Not on home page, script disabled');
+    return;
+  }
+  
   const workSection = document.querySelector('.work-section');
   const fireworksContainer = document.querySelector('#fireworks-container');
   const viewportHeight = window.innerHeight;
@@ -146,4 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('resize', handleResize);
   
   console.log('Scroll behavior initialized successfully');
+  
+  // Debug: Log that we're actually running
+  console.log('Scroll behavior: Script is ACTUALLY RUNNING on:', window.location.href);
 });

@@ -1,3 +1,19 @@
+
+
+// HOME PAGE ONLY: Fireworks animation
+// This script should only run on the home page
+
+// Check if we're on the home page
+const isHomePage = window.location.pathname === '/' || 
+                  window.location.pathname.includes('index.html') ||
+                  window.location.pathname.endsWith('/');
+
+if (!isHomePage) {
+  console.log('Fireworks: Not on home page, script disabled');
+  // Exit the entire script
+  throw new Error('Fireworks script disabled for non-home pages');
+}
+
 // Adapted from Cotton Design stars effect
 // Original by Daniel Shiffman
 
@@ -319,7 +335,7 @@ function setup() {
   firstStarTime = null;
   
   // Add scroll detection to stop fireworks when project section comes into view
-  window.addEventListener('scroll', checkScrollPosition);
+window.addEventListener('scroll', checkScrollPosition);
 }
 
 function draw() {

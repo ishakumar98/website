@@ -1,5 +1,15 @@
-// Add smooth scrolling for anchor links
+// HOME PAGE ONLY: General home page functionality
+// This script should only run on the home page
 document.addEventListener('DOMContentLoaded', function() {
+  // Check if we're on the home page
+  const isHomePage = window.location.pathname === '/' || 
+                    window.location.pathname.includes('index.html') ||
+                    window.location.pathname.endsWith('/');
+  
+  if (!isHomePage) {
+    console.log('Script.js: Not on home page, script disabled');
+    return;
+  }
     // Add hover effects to folder items
     const folderItems = document.querySelectorAll('.folder-item');
     
