@@ -341,9 +341,9 @@
             
             // Function to close popup
             function closePopup() {
-                // Add exit animation
+                // Add bouncy exit animation that mirrors the entrance
                 imagePopup.style.opacity = '0';
-                imagePopup.style.transform = 'translate(-50%, -50%) scale(0.95)';
+                imagePopup.style.transform = 'translate(-50%, -50%) scale(0.98)';
                 
                 // Wait for animation to complete, then hide popup
                 setTimeout(() => {
@@ -351,7 +351,7 @@
                     imagePopup.style.opacity = '';
                     imagePopup.style.transform = '';
                     document.body.style.overflow = 'auto';
-                }, 300);
+                }, 400);
             }
             
             // Navigation functionality
