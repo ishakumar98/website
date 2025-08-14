@@ -33,10 +33,15 @@
         <section class="project-content-area">
             <div class="project-text-block">
                 <p class="project-description">
-                    I currently design for Slack's Productivity Team. Our goal is to expand the value of Slack beyond messaging. From January of 2025 through June of 2025, I worked to imagine what a Calendar experience in Slack might look like.
+                    I currently design for Slack's Productivity Team. Our goal is to expand the value of Slack beyond messaging. From 2024 to 2025, our team worked to imagine and engineer a native Calendar experience in Slack.
                 </p>
                 <p class="project-description">
-                    Calendar aims to integrate all your tools & data into a single, unified layer that allows you to manage all the things competing for your time. I contributed several elements of the core design like meeting details, week views, widgets, and Ied design strategy to create an overall vision for the project.
+                    Calendar aims to integrate all your tools & data into a single, unified layer that allows you to manage all the things competing for your time. I contributed several elements of the visual design, and Ied design strategy to create an overall vision for the project. We wanted the experience to feel powerful, and playful — true to Slack's personality and promise.
+                </p>
+            </div>
+            <div class="project-credits">
+                <p class="credits-text">
+                    Many thanks to Samuel Kang, Amanda Glanz, Timothy Wittig, Ford St. John, Elyse Vest, Parag Shah, Stewart Taylor, and Stuart Lovinggood for their talent and time.
                 </p>
             </div>
         </section>
@@ -117,7 +122,7 @@
                 const textElements = document.querySelectorAll('.project-description');
                 const viewportHeight = window.innerHeight;
                 const headerHeight = document.querySelector('.page-header').offsetHeight;
-                const margins = 26.88; // 0.67rem top + 0.67rem bottom = 26.88px (0.67 * 16 * 2)
+                const margins = 80; // 40px top + 40px bottom = 80px
                 const availableHeight = viewportHeight - headerHeight - margins;
                 
                 // Start with a large font size and reduce until it fits
@@ -168,9 +173,9 @@
                     
                     // Calculate new top position
                     // Start: top edge at bottom of viewport (viewportHeight)
-                    // End: bottom edge at bottom of viewport (viewportHeight - projectImagesHeight)
+                    // End: top edge at top of viewport (0) - so it fills the whole viewport
                     const startTop = viewportHeight;
-                    const endTop = viewportHeight - projectImagesHeight;
+                    const endTop = 0;
                     const newTop = startTop - (easedProgress * (startTop - endTop));
                     
                     // Apply position with smoothing

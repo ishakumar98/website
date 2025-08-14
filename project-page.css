@@ -291,12 +291,10 @@
 
 /* PROJECT CONTENT AREA - Clear, defined styling */
 .project-content-area {
-  margin: 0.67rem 1rem 0.67rem 1rem;
+  margin: 2.5rem 2rem 2rem 2rem;
   padding: 0;
-  width: calc(100% - 2rem);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  width: calc(100% - 4rem);
+  display: block;
   position: fixed;
   top: 0;
   left: 0;
@@ -327,6 +325,21 @@
   margin-bottom: 2rem;
 }
 
+/* Project credits styling */
+.project-credits {
+  margin-top: 2rem;
+}
+
+.credits-text {
+  font-family: 'Modern Era', sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #000000;
+  margin: 0;
+  text-align: left;
+  opacity: 0.8;
+}
+
 /* Project images styling */
 .project-images {
   margin-top: 2rem;
@@ -343,15 +356,15 @@
 .project-images-section {
   position: absolute;
   background-color: rgba(254, 243, 249, 0.8);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
   -webkit-backdrop-style: none;
-  z-index: 10;
+  z-index: 1001;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 0 25px 35px var(--work-shadow);
   width: 100%;
-  min-height: 300px;
+  height: 100vh;
   padding: 16px 0 16px 24px !important;
   overflow-x: auto;
   /* Hide scrollbar for macOS */
