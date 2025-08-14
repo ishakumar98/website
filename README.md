@@ -1,6 +1,6 @@
 # GO:OD Website Replica
 
-This is an exact replica of the [GO:OD website](https://go-od.co/) featuring a clean, minimalist design with portfolio-style folder navigation.
+This is a clean, minimalist design with portfolio-style folder navigation.
 
 ## Features
 
@@ -62,4 +62,4 @@ You can easily customize:
 
 ## Credits
 
-Original design by [GO:OD](https://go-od.co/) 
+Original design inspiration from various portfolio websites 
