@@ -12,7 +12,8 @@
 <body>
     <!-- Image Center Popup -->
     <div class="image-center-popup" id="image-popup">
-        <div class="popup-nav">
+        <!-- DRAG ZONE: Navigation bar (draggable) -->
+        <div class="popup-nav" id="popup-nav">
             <ul class="wrapper-actions">
                 <li class="popup-actions popup-close" id="popup-close"></li>
                 <li class="popup-actions popup-minimise" id="popup-minimise"></li>
@@ -20,11 +21,21 @@
             </ul>
             <span id="popup-filename"></span>
         </div>
-        <picture>
-            <img id="popup-image" src="" alt="">
-        </picture>
         
-        <!-- Navigation Areas -->
+        <!-- RESIZE ZONE: Image container (resizable from corners) -->
+        <div class="popup-image-container" id="popup-image-container">
+            <picture>
+                <img id="popup-image" src="" alt="">
+            </picture>
+            
+            <!-- RESIZE HANDLES: Four corner resize areas -->
+            <div class="resize-handle resize-handle-nw" id="resize-nw"></div>
+            <div class="resize-handle resize-handle-ne" id="resize-ne"></div>
+            <div class="resize-handle resize-handle-sw" id="resize-sw"></div>
+            <div class="resize-handle resize-handle-se" id="resize-se"></div>
+        </div>
+        
+        <!-- NAVIGATION ZONES: Left/right image navigation (isolated) -->
         <div class="popup-nav-left" id="popup-nav-left"></div>
         <div class="popup-nav-right" id="popup-nav-right"></div>
     </div>
@@ -292,6 +303,9 @@
             // Get all project images
             const projectImages = document.querySelectorAll('.wrapper-image img');
             
+            // Popup state management - completely isolated
+            let currentImageIndex = 0;
+            
             // Open popup when image is clicked
             projectImages.forEach((img, index) => {
                 img.addEventListener('click', () => {
@@ -308,11 +322,10 @@
                     popupImage.alt = img.alt || '';
                     popupFilename.textContent = filename;
                     
-                    // Show popup
+                    // Show popup (CSS already centers it perfectly)
                     imagePopup.classList.add('active');
                     
-                    // Prevent body scroll
-                    document.body.style.overflow = 'hidden';
+                    // Popup is now self-contained - no body changes needed
                 });
             });
             
@@ -341,16 +354,19 @@
             
             // Function to close popup
             function closePopup() {
-                // Add bouncy exit animation that mirrors the entrance
-                imagePopup.style.opacity = '0';
-                imagePopup.style.transform = 'translate(-50%, -50%) scale(0.98)';
+                // Add bouncy exit animation using CSS classes only
+                imagePopup.classList.add('closing');
                 
                 // Wait for animation to complete, then hide popup
                 setTimeout(() => {
-                    imagePopup.classList.remove('active');
-                    imagePopup.style.opacity = '';
+                    imagePopup.classList.remove('active', 'closing');
+                    
+                    // Reset popup position to centered for next open
+                    imagePopup.style.left = '';
+                    imagePopup.style.top = '';
                     imagePopup.style.transform = '';
-                    document.body.style.overflow = 'auto';
+                    
+                    // Popup cleanup - no body changes needed
                 }, 400);
             }
             
@@ -412,9 +428,23 @@
             let popupStartX = 0;
             let popupStartY = 0;
             
+            // Resizable functionality
+            let isResizing = false;
+            let resizeStartX = 0;
+            let resizeStartY = 0;
+            let resizeStartWidth = 0;
+            let resizeStartHeight = 0;
+            let currentCorner = null;
+            
             // Start dragging when clicking on the navigation bar
             const popupNav = document.querySelector('.popup-nav');
             popupNav.addEventListener('mousedown', startDrag);
+            
+            // Start resizing when clicking on corner handles
+            const resizeHandles = document.querySelectorAll('.resize-handle');
+            resizeHandles.forEach(handle => {
+                handle.addEventListener('mousedown', startResize);
+            });
             
             function startDrag(e) {
                 if (e.target.closest('.popup-actions')) {
@@ -425,9 +455,8 @@
                 dragStartX = e.clientX;
                 dragStartY = e.clientY;
                 
-                // Clear any ongoing animations and set initial position
-                imagePopup.style.animation = 'none';
-                imagePopup.style.transition = 'none';
+                // Use CSS class to disable animations during drag
+                imagePopup.classList.add('dragging');
                 
                 const rect = imagePopup.getBoundingClientRect();
                 popupStartX = rect.left;
@@ -443,36 +472,116 @@
             function drag(e) {
                 if (!isDragging) return;
                 
-                const deltaX = e.clientX - dragStartX;
-                const deltaY = e.clientY - dragStartY;
-                
-                let newX = popupStartX + deltaX;
-                let newY = popupStartY + deltaY;
-                
-                // Get viewport dimensions
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                
-                // Get popup dimensions
-                const popupRect = imagePopup.getBoundingClientRect();
-                const popupWidth = popupRect.width;
-                const popupHeight = popupRect.height;
-                
-                // Constrain to viewport bounds
-                newX = Math.max(0, Math.min(newX, viewportWidth - popupWidth));
-                newY = Math.max(0, Math.min(newY, viewportHeight - popupHeight));
-                
-                // Apply new position with clean transform
-                imagePopup.style.left = newX + 'px';
-                imagePopup.style.top = newY + 'px';
-                imagePopup.style.transform = 'none'; // Remove centering transform
-                imagePopup.style.animation = 'none'; // Ensure no animation interference
+                // Use requestAnimationFrame for smooth 60fps dragging
+                requestAnimationFrame(() => {
+                    const deltaX = e.clientX - dragStartX;
+                    const deltaY = e.clientY - dragStartY;
+                    
+                    let newX = popupStartX + deltaX;
+                    let newY = popupStartY + deltaY;
+                    
+                    // Get viewport dimensions
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    
+                    // Get popup dimensions
+                    const popupRect = imagePopup.getBoundingClientRect();
+                    const popupWidth = popupRect.width;
+                    const popupHeight = popupRect.height;
+                    
+                    // Constrain to viewport bounds
+                    newX = Math.max(0, Math.min(newX, viewportWidth - popupWidth));
+                    newY = Math.max(0, Math.min(newY, viewportHeight - popupHeight));
+                    
+                    // Apply new position using left/top for absolute positioning
+                    imagePopup.style.left = newX + 'px';
+                    imagePopup.style.top = newY + 'px';
+                    imagePopup.style.transform = 'none'; // Remove centering transform
+                });
             }
             
             function stopDrag() {
                 isDragging = false;
                 document.removeEventListener('mousemove', drag);
                 document.removeEventListener('mouseup', stopDrag);
+                
+                // Remove dragging class to restore animations
+                imagePopup.classList.remove('dragging');
+            }
+            
+            // Resize functionality
+            function startResize(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                isResizing = true;
+                currentCorner = e.target.id;
+                resizeStartX = e.clientX;
+                resizeStartY = e.clientY;
+                
+                const rect = imagePopup.getBoundingClientRect();
+                resizeStartWidth = rect.width;
+                resizeStartHeight = rect.height;
+                
+                // Use CSS class to disable animations during resize
+                imagePopup.classList.add('resizing');
+                
+                document.addEventListener('mousemove', resize);
+                document.addEventListener('mouseup', stopResize);
+            }
+            
+            function resize(e) {
+                if (!isResizing) return;
+                
+                // Use requestAnimationFrame for smooth 60fps resizing
+                requestAnimationFrame(() => {
+                    const deltaX = e.clientX - resizeStartX;
+                    const deltaY = e.clientY - resizeStartY;
+                    
+                    let newWidth = resizeStartWidth;
+                    let newHeight = resizeStartHeight;
+                    
+                    // Calculate new dimensions based on corner
+                    switch (currentCorner) {
+                        case 'resize-se':
+                            newWidth = resizeStartWidth + deltaX;
+                            newHeight = resizeStartHeight + deltaY;
+                            break;
+                        case 'resize-sw':
+                            newWidth = resizeStartWidth - deltaX;
+                            newHeight = resizeStartHeight + deltaY;
+                            break;
+                        case 'resize-ne':
+                            newWidth = resizeStartWidth + deltaX;
+                            newHeight = resizeStartHeight - deltaY;
+                            break;
+                        case 'resize-nw':
+                            newWidth = resizeStartWidth - deltaX;
+                            newHeight = resizeStartHeight - deltaY;
+                            break;
+                    }
+                    
+                    // Apply constraints
+                    const minSize = 200;
+                    const maxSize = Math.min(window.innerWidth * 0.95, window.innerHeight * 0.95);
+                    
+                    newWidth = Math.max(minSize, Math.min(newWidth, maxSize));
+                    newHeight = Math.max(minSize, Math.min(newHeight, maxSize));
+                    
+                    // Apply new size with GPU acceleration
+                    imagePopup.style.width = newWidth + 'px';
+                    imagePopup.style.height = newHeight + 'px';
+                });
+            }
+            
+            function stopResize() {
+                isResizing = false;
+                currentCorner = null;
+                document.removeEventListener('mousemove', resize);
+                document.removeEventListener('mouseup', stopResize);
+                
+                // Remove resizing class to restore animations
+                imagePopup.classList.remove('resizing');
             }
         </script>
     </body>
