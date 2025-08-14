@@ -23,6 +23,10 @@
         <picture>
             <img id="popup-image" src="" alt="">
         </picture>
+        
+        <!-- Navigation Areas -->
+        <div class="popup-nav-left" id="popup-nav-left"></div>
+        <div class="popup-nav-right" id="popup-nav-right"></div>
     </div>
 
     
@@ -282,6 +286,8 @@
             const popupClose = document.getElementById('popup-close');
             const popupMinimise = document.getElementById('popup-minimise');
             const popupExpand = document.getElementById('popup-expand');
+            const popupNavLeft = document.getElementById('popup-nav-left');
+            const popupNavRight = document.getElementById('popup-nav-right');
             
             // Get all project images
             const projectImages = document.querySelectorAll('.wrapper-image img');
@@ -289,6 +295,9 @@
             // Open popup when image is clicked
             projectImages.forEach((img, index) => {
                 img.addEventListener('click', () => {
+                    // Set current image index
+                    currentImageIndex = index;
+                    
                     // Get image source and filename
                     const imageSrc = img.src;
                     const filename = img.alt || img.src.split('/').pop() || 'image.png';
@@ -334,6 +343,56 @@
                 imagePopup.classList.remove('active');
                 document.body.style.overflow = 'auto';
             }
+            
+            // Navigation functionality
+            function navigateToPreviousImage() {
+                if (currentImageIndex > 0) {
+                    currentImageIndex--;
+                } else {
+                    currentImageIndex = projectImages.length - 1; // Wrap to last image
+                }
+                updatePopupImage();
+            }
+            
+            function navigateToNextImage() {
+                if (currentImageIndex < projectImages.length - 1) {
+                    currentImageIndex++;
+                } else {
+                    currentImageIndex = 0; // Wrap to first image
+                }
+                updatePopupImage();
+            }
+            
+            function updatePopupImage() {
+                const img = projectImages[currentImageIndex];
+                const imageSrc = img.src;
+                const filename = img.alt || img.src.split('/').pop() || 'image.png';
+                
+                popupImage.src = imageSrc;
+                popupImage.alt = img.alt || '';
+                popupFilename.textContent = filename;
+            }
+            
+            // Add navigation event listeners
+            popupNavLeft.addEventListener('click', navigateToPreviousImage);
+            popupNavRight.addEventListener('click', navigateToNextImage);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (imagePopup.classList.contains('active')) {
+                    switch (e.key) {
+                        case 'Escape':
+                            closePopup();
+                            break;
+                        case 'ArrowLeft':
+                            navigateToPreviousImage();
+                            break;
+                        case 'ArrowRight':
+                            navigateToNextImage();
+                            break;
+                    }
+                }
+            });
             
             // Draggable functionality
             let isDragging = false;
