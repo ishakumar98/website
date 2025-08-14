@@ -21,9 +21,23 @@
 }
 
 .page-content {
-  padding: 0.67rem 1rem;
+  padding: 0.67rem 0.67rem;
   width: 100%;
   text-align: left;
+  position: relative;
+}
+
+.project-year {
+  position: absolute;
+  right: 0.67rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Modern Era', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #000000;
+  opacity: 0.8;
+  text-transform: uppercase;
 }
 
 /* Remove unused column styles */
@@ -364,9 +378,9 @@
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 0 25px 35px var(--work-shadow);
   width: 100%;
-  height: 100vh;
-  padding: 16px 0 16px 24px !important;
+  padding: 16px 12px 16px 12px !important;
   overflow-x: auto;
+  overflow-y: hidden;
   /* Hide scrollbar for macOS */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -384,12 +398,10 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 16px;
+  gap: 0;
   list-style: none;
-  padding: 24px 0 24px 0;
   margin: 0;
   width: 100%;
-  padding-left: 24px !important;
 }
 
 .image-list::-webkit-scrollbar {
@@ -413,7 +425,7 @@
   flex-shrink: 0;
   position: relative;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 11px;
+  padding: 8px 6px;
   box-sizing: border-box;
 }
 
