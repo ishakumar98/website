@@ -541,18 +541,99 @@
     cursor: pointer;
 }
 
+/* macOS Style Image Center Popup - Exact go-od.co styling */
+.image-center-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    overflow: auto;
+    width: auto;
+    min-width: 400px;
+    padding: 0;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    -webkit-filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
+    filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
+    background-color: #f4f4f4;
+}
 
+.image-center-popup .popup-nav {
+    background-color: #f4f4f4;
+    padding: 15px 30px;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
 
+.image-center-popup .popup-nav .wrapper-actions {
+    position: absolute;
+    left: 15px;
+    top: 22px;
+    overflow: auto;
+    width: auto;
+    padding: 0;
+    display: inline-block;
+}
 
+.image-center-popup .popup-nav .popup-actions {
+    float: left;
+    border: 1px solid #000;
+    height: 16px;
+    width: 16px;
+    font-size: 0;
+    padding: 0;
+    margin: 0 5px 0 0;
+    border-radius: 100%;
+    cursor: pointer;
+}
 
+.image-center-popup .popup-nav .popup-actions.popup-expand {
+    background-color: #d1d1d1;
+    border-color: #d1d1d1;
+}
 
+.image-center-popup .popup-nav .popup-actions.popup-minimise {
+    background-color: #d1d1d1;
+    border-color: #d1d1d1;
+}
 
+.image-center-popup .popup-nav .popup-actions.popup-close {
+    position: relative;
+}
 
+.image-center-popup .popup-nav .popup-actions.popup-close:after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    height: 9px;
+    width: 9px;
+    background-image: url(../img/icon-close.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
 
+.image-center-popup img {
+    margin: 0 10px 10px;
+    border-radius: 20px;
+    max-width: calc(100vw - 60px);
+    max-height: calc(100vh - 130px);
+    height: auto;
+}
 
+@media (min-width: 992px) {
+    .image-center-popup img {
+        height: calc(100vh - 130px);
+    }
+}
 
-
-
-
-
-
+/* Show popup when active */
+.image-center-popup.active {
+    display: block;
+}

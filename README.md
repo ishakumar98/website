@@ -1,10 +1,9 @@
-# GO:OD Website Replica
+# Isha's website
 
 This is a clean, minimalist design with portfolio-style folder navigation.
 
 ## Features
 
-- **Exact Visual Match**: Replicates the original GO:OD website design
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
 - **Interactive Elements**: Hover effects and smooth animations
 - **Modern Typography**: Uses Inter font family for clean, professional look
@@ -17,7 +16,6 @@ website-project/
 ├── index.html          # Main HTML file
 ├── styles.css          # CSS styling
 ├── script.js           # JavaScript interactions
-├── header.svg          # Original GO:OD logo SVG
 ├── folder.svg          # Original folder icon SVG
 └── README.md           # This file
 ```
@@ -36,14 +34,6 @@ website-project/
    # Using PHP
    php -S localhost:8000
    ```
-
-## Design Elements
-
-- **Logo**: "GO:OD" with colon represented as two dots
-- **Description**: About Good Times design practice
-- **Action Links**: "View" and "Get Info" buttons
-- **Folder Grid**: 5 folders (4 active yellow, 1 inactive gray)
-- **Footer**: URL display at bottom
 
 ## Customization
 
