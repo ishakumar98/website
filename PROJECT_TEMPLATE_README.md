@@ -1,173 +1,117 @@
-# Project Page Template
+# Project Template System - README
 
-This template provides a standardized structure for all project pages, ensuring consistency across your portfolio website.
+## Overview
+This template system makes it easy to create new project pages without duplicating code. All project-specific content is stored in `project-data.json`, and the page structure is generated dynamically.
 
-## 🚀 Quick Start
+## How It Works
 
-1. **Copy the template**: `cp project-template.html your-project-name.html`
-2. **Customize the content**: Follow the customization guide below
-3. **Add your images**: Place images in the `project-images/` folder
-4. **Test the page**: Open in your browser to verify everything works
+### 1. Project Data Structure (`project-data.json`)
+Each project is defined with:
+- **title**: Project name (e.g., "Calendar")
+- **year**: Project timeline (e.g., "2024 - 2025")
+- **description**: Array of paragraphs describing the project
+- **credits**: Acknowledgments text
+- **images**: Array of image objects with src, alt, and title
 
-## ✏️ Customization Guide
+### 2. Shared Scripts (`project-script.js`)
+- **ISHA slant effect**: Individual letter slanting based on mouse position
+- **Dynamic font sizing**: Automatically adjusts text to fit viewport
+- **Project data loading**: Populates page content from JSON
+- **Word wrapping**: Prevents words from breaking across lines
 
-### 1. Page Title
-```html
-<title>YOUR_PROJECT_NAME - Project</title>
+### 3. Template Structure (`project-template.html`)
+- Clean HTML structure with placeholder text
+- All functionality handled by shared scripts
+- Easy to customize for new projects
+
+## Creating a New Project
+
+### Step 1: Add Project Data
+Add a new project to `project-data.json`:
+
+```json
+{
+  "projects": {
+    "your-project": {
+      "title": "Your Project Name",
+      "year": "2024 - 2025",
+      "description": [
+        "First paragraph describing your project...",
+        "Second paragraph with more details..."
+      ],
+      "credits": "Thanks to team members...",
+      "images": [
+        {
+          "src": "project-images/your-image.png",
+          "alt": "Description of image",
+          "title": "your-image.png"
+        }
+      ]
+    }
+  }
+}
 ```
 
-### 2. Project Header
-```html
-<a href="#" class="name-link active">
-    <span>Y</span><span>O</span><span>U</span><span>R</span><span>_</span><span>P</span><span>R</span><span>O</span><span>J</span><span>E</span><span>C</span><span>T</span>
-</a>
-<span class="project-year">2024 - 2025</span>
+### Step 2: Create Project Page
+Copy `project-template-clean.html` and rename it to `your-project-project.html`
+
+### Step 3: Update Links
+Update the link in `index.html` to point to your new project page.
+
+## Benefits of This System
+
+✅ **No Code Duplication**: All functionality is shared  
+✅ **Easy to Maintain**: Update one file affects all projects  
+✅ **Consistent Design**: All projects use the same styling  
+✅ **Quick Setup**: New projects in minutes, not hours  
+✅ **Scalable**: Add unlimited projects without complexity  
+
+## File Structure
+```
+website-project/
+├── project-data.json          # All project content
+├── project-script.js          # Shared functionality
+├── project-template.html      # Base template
+├── project-page.css           # Project page styles
+├── calendar-project-new.html  # Example implementation
+└── PROJECT_TEMPLATE_README.md # This file
 ```
 
-### 3. Project Description
-```html
-<div class="project-text-block">
-    <p class="project-description">
-        Your first paragraph describing the project, your role, and goals.
-    </p>
-    <p class="project-description">
-        Your second paragraph with more details, outcomes, and learnings.
-    </p>
-    <!-- Add more paragraphs as needed -->
-</div>
-```
+## Customization
 
-### 4. Project Credits
-```html
-<div class="project-credits">
-    <p class="credits-text">
-        Many thanks to [Name 1], [Name 2], [Name 3] for their talent and time.
-    </p>
-</div>
-```
+### Adding New Features
+- Modify `project-script.js` to add new functionality
+- All projects automatically get the new features
 
-### 5. Project Images
-```html
-<li class="image">
-    <div class="wrapper-image">
-        <img src="project-images/YOUR_IMAGE_FILENAME.png" alt="Descriptive alt text">
-    </div>
-    <div class="title">
-        <span>YOUR_IMAGE_FILENAME.png</span>
-    </div>
-</li>
-```
+### Styling Changes
+- Update `project-page.css` for design changes
+- Changes apply to all project pages
 
-## 🖼️ Image Requirements
+### Content Updates
+- Edit `project-data.json` to update project content
+- No HTML changes needed
 
-- **Format**: PNG, JPG, or GIF
-- **Location**: Place in `project-images/` folder
-- **Naming**: Use descriptive filenames (e.g., `user-interface-design.png`)
-- **Alt Text**: Provide meaningful descriptions for accessibility
+## Troubleshooting
 
-## 🎯 What's Included
+### Page Not Loading
+- Check that `project-script.js` is included
+- Verify project ID in `project-data.json` matches filename
 
-### ✅ **Image Popup System**
-- macOS-style popup with traffic light buttons
-- Draggable navigation bar
-- Resizable from all four corners
-- Left/right arrow navigation between images
-- Keyboard navigation (arrow keys)
-- Dimension preservation when switching images
+### ISHA Effect Not Working
+- Ensure `TT Norms Pro` font is loaded
+- Check browser console for JavaScript errors
 
-### ✅ **Responsive Layout**
-- Clean, minimalist design
-- Consistent typography and spacing
-- Mobile-friendly structure
-- Smooth animations and transitions
+### Images Not Showing
+- Verify image paths in `project-data.json`
+- Check that images exist in `project-images/` folder
 
-### ✅ **Navigation**
-- Breadcrumb-style header with your name
-- Link back to homepage
-- Project year display
-- Consistent with main site design
+## Example: Calendar Project
+The calendar project demonstrates the full system:
+- **ID**: `calendar`
+- **Filename**: `calendar-project-new.html`
+- **Data**: Defined in `project-data.json` under `projects.calendar`
 
-## 🔧 Technical Details
-
-### **Files Used**
-- `project-template.html` - Your starting point
-- `styles.css` - Main site styles
-- `project-page.css` - Project-specific styles
-- `flower.gif` - Decorative element (bottom left)
-
-### **CSS Classes**
-- `.project-page-container` - Main wrapper
-- `.project-content-area` - Text content section
-- `.project-images-section` - Image gallery
-- `.image-list` - Image grid container
-- `.image` - Individual image item
-- `.wrapper-image` - Image container
-- `.title` - Image filename display
-
-## 📝 Example Customization
-
-Here's how the Calendar project was customized:
-
-```html
-<!-- Title -->
-<title>Calendar - Project</title>
-
-<!-- Header -->
-<span>C</span><span>A</span><span>L</span><span>E</span><span>N</span><span>D</span><span>A</span><span>R</span>
-<span class="project-year">2024 - 2025</span>
-
-<!-- Description -->
-<p class="project-description">
-    I currently design for Slack's Productivity Team. Our goal is to expand the value of Slack beyond messaging...
-</p>
-
-<!-- Images -->
-<img src="project-images/Detail View.png" alt="Detail View">
-```
-
-## 🚨 Important Notes
-
-1. **Don't modify the JavaScript** - The image popup system is fully functional
-2. **Keep the HTML structure** - Only change the content, not the structure
-3. **Test image paths** - Ensure all image files exist in the correct folder
-4. **Validate HTML** - Check that your customizations don't break the structure
-
-## 🎉 Result
-
-You'll have a professional project page that:
-- Matches your portfolio's design language
-- Provides an excellent user experience
-- Showcases your work effectively
-- Maintains consistency across all projects
-
-## 📞 Need Help?
-
-If you run into issues:
-1. Check the browser console for errors
-2. Verify all image paths are correct
-3. Ensure HTML structure remains intact
-4. Compare with the working Calendar project page
-
-## Video Components
-
-The template now supports MP4 video files alongside images. Videos will:
-
-- **Autoplay and Loop**: Videos automatically play and loop in the container (muted)
-- **Responsive Design**: Maintain 16:9 aspect ratio and fit the container properly
-- **Click to Enlarge**: Clicking opens the video in a fullscreen popup
-- **Vimeo Integration**: Optimized for Vimeo embeds with proper autoplay parameters
-- **Seamless Integration**: Videos appear alongside images in the same container
-
-### Adding a Video Component
-
-1. Uncomment the sample video component in the template
-2. Replace `YOUR_VIDEO_URL_HERE` with your Vimeo embed URL
-3. Update the title and filename as needed
-4. The video will automatically integrate with the existing popup system
-
-### Video URL Format
-
-For Vimeo videos, use the embed URL format:
-```
-https://player.vimeo.com/video/VIDEO_ID?h=HASH&autoplay=1&loop=1&autopause=0&muted=1&background=1
-```
+## Next Steps
+1. Test the new template system with `calendar-project-new.html`
+2. Create your next project using the template
+3. Customize the system as needed for your workflow

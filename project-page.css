@@ -117,19 +117,7 @@
     gap: 8px;
 }
 
-/* Flower GIF - Bottom Left Corner */
-.flower-gif {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 1000;
-    width: 150px;
-    display: none;
-}
 
-.flower-gif:hover {
-    opacity: 1;
-}
 
 .back-button:hover {
     background-color: var(--primary-color);

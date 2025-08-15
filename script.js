@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, 200);
 
-    // Random letter animation system (ALMA-style)
+            // Random letter animation system (ISHA-style)
     function initRandomLetterAnimations() {
         const letters = document.querySelectorAll('.name-display .letter');
         
