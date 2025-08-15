@@ -801,16 +801,19 @@ strong {
 
 .page-content {
   text-align: center;
-  width: 100vw;
+  width: 100%;
   padding: 0.67rem 0.67rem;
+  box-sizing: border-box;
 }
 
 .column-set {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   gap: 6rem;
   align-items: center;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .column-unit {
