@@ -477,9 +477,12 @@
     --popup-button-margin: 5px;
     --popup-button-group-left: 15px;
     --popup-button-group-top: 22px;
+    --popup-drag-area-left: 60px;
+    --popup-drag-area-right: 60px;
     --popup-close-color: #ff5f57;
     --popup-button-disabled-color: #d1d1d1;
     --popup-shadow: 0 0 0.5rem rgba(0,0,0,0.2);
+    --popup-image-padding: 20px; /* macOS Preview-style padding around images */
 }
 
 /* macOS Style Image Center Popup - Completely Self-Contained */
@@ -494,6 +497,7 @@
     overflow: hidden;
     width: auto;
     min-width: var(--popup-min-width, 400px);
+    min-height: 300px; /* Ensure minimum height for content visibility */
     padding: 0;
     border-radius: var(--popup-border-radius, 12px);
     -webkit-filter: drop-shadow(var(--popup-shadow, 0 0 0.5rem rgba(0,0,0,0.2)));
@@ -513,7 +517,8 @@
     text-align: center;
     border-top-left-radius: var(--popup-border-radius, 12px);
     border-top-right-radius: var(--popup-border-radius, 12px);
-    cursor: grab;
+    cursor: default; /* Remove grab cursor from entire nav */
+    position: relative; /* For positioning the draggable area */
 }
 
 .image-center-popup .popup-nav:active {
@@ -528,6 +533,18 @@
     width: auto;
     padding: 0;
     display: inline-block;
+}
+
+/* Draggable area - excludes corners like native macOS */
+.image-center-popup .popup-nav .draggable-area {
+    position: absolute;
+    left: var(--popup-drag-area-left, 60px); /* Right of the buttons */
+    right: var(--popup-drag-area-right, 60px); /* Left of the right edge */
+    top: 0;
+    height: 100%;
+    cursor: grab;
+    pointer-events: auto;
+    z-index: 1; /* Lower than resize handles */
 }
 
 .image-center-popup .popup-nav .popup-actions {
@@ -691,15 +708,42 @@
 /* RESIZE ZONE: Image container */
 .popup-image-container {
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Allow image to extend beyond container if needed */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* macOS Preview-style padding around the image */
+    padding: var(--popup-image-padding, 20px);
+    box-sizing: border-box;
 }
 
-/* RESIZE HANDLES: Four corner resize areas */
+/* Ensure image scales properly within container */
+.popup-image-container picture {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-image-container img {
+    /* macOS Preview behavior: image maintains aspect ratio and fits within padded area */
+    max-width: calc(100% - (var(--popup-image-padding, 20px) * 2));
+    max-height: calc(100% - (var(--popup-image-padding, 20px) * 2));
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Maintain aspect ratio while fitting in padded container */
+    display: block;
+}
+
+/* RESIZE HANDLES: Four corner resize areas - positioned relative to popup container */
 .resize-handle {
     position: absolute;
     width: 20px;
     height: 20px;
-    z-index: 10001;
+    z-index: 10002; /* Higher than everything else */
     pointer-events: auto;
 }
 

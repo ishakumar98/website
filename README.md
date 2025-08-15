@@ -34,7 +34,6 @@ website-project/
    # Using PHP
    php -S localhost:8000
    ```
-
 ## Customization
 
 You can easily customize:

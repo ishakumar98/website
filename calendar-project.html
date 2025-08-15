@@ -20,6 +20,8 @@
                 <li class="popup-actions popup-expand" id="popup-expand"></li>
             </ul>
             <span id="popup-filename"></span>
+            <!-- Draggable area - excludes corners like native macOS -->
+            <div class="draggable-area"></div>
         </div>
         
         <!-- RESIZE ZONE: Image container (resizable from corners) -->
@@ -27,13 +29,13 @@
             <picture>
                 <img id="popup-image" src="" alt="">
             </picture>
-            
-            <!-- RESIZE HANDLES: Four corner resize areas -->
-            <div class="resize-handle resize-handle-nw" id="resize-nw"></div>
-            <div class="resize-handle resize-handle-ne" id="resize-ne"></div>
-            <div class="resize-handle resize-handle-sw" id="resize-sw"></div>
-            <div class="resize-handle resize-handle-se" id="resize-se"></div>
         </div>
+        
+        <!-- RESIZE HANDLES: Four corner resize areas - positioned relative to popup container -->
+        <div class="resize-handle resize-handle-nw" id="resize-nw"></div>
+        <div class="resize-handle resize-handle-ne" id="resize-ne"></div>
+        <div class="resize-handle resize-handle-sw" id="resize-sw"></div>
+        <div class="resize-handle resize-handle-se" id="resize-se"></div>
         
         <!-- NAVIGATION ZONES: Left/right image navigation (isolated) -->
         <div class="popup-nav-left" id="popup-nav-left"></div>
@@ -413,8 +415,16 @@
                             popupImage.alt = img.alt || '';
                             popupFilename.textContent = filename;
                             
-                            // Show popup (CSS already centers it perfectly)
-                            imagePopup.classList.add('active');
+                            // Wait for image to load, then show popup
+                            popupImage.onload = () => {
+                                // Show popup (CSS already centers it perfectly)
+                                imagePopup.classList.add('active');
+                            };
+                            
+                            // If image is already loaded, size immediately
+                            if (popupImage.complete) {
+                                popupImage.onload();
+                            }
                             
                             // Popup is now self-contained - no body changes needed
                         } catch (error) {
@@ -535,6 +545,8 @@
             let resizeStartY = 0;
             let resizeStartWidth = 0;
             let resizeStartHeight = 0;
+            let resizeStartLeft = 0;
+            let resizeStartTop = 0;
             let currentCorner = null;
             
             // Start dragging when mouse is pressed AND moved on navigation bar
@@ -564,8 +576,10 @@
             }
             
             function startDrag(e) {
-                // Don't start drag if clicking on buttons or filename
-                if (e.target.closest('.popup-actions') || e.target.id === 'popup-filename') {
+                // Don't start drag if clicking on buttons, filename, or resize handles
+                if (e.target.closest('.popup-actions') || 
+                    e.target.id === 'popup-filename' ||
+                    e.target.closest('.resize-handle')) {
                     return;
                 }
                 
@@ -631,6 +645,8 @@
                 const rect = imagePopup.getBoundingClientRect();
                 resizeStartWidth = rect.width;
                 resizeStartHeight = rect.height;
+                resizeStartLeft = rect.left;
+                resizeStartTop = rect.top;
                 
                 // Use CSS class to disable animations during resize
                 imagePopup.classList.add('resizing');
@@ -639,51 +655,149 @@
                 document.addEventListener('mouseup', stopResize);
             }
             
+            // Calculate minimum popup size needed to display full image with padding
+            function calculateMinimumPopupSize() {
+                const img = popupImage;
+                if (!img || !img.complete) return { width: POPUP_CONFIG.minSize, height: POPUP_CONFIG.minSize };
+                
+                const padding = 40; // 20px on each side
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // macOS Preview approach: Size popup to fit image within viewport
+                // Calculate how much of the image we can show while staying within viewport
+                const maxAvailableWidth = viewportWidth - padding;
+                const maxAvailableHeight = viewportHeight - padding;
+                
+                // Calculate image scale to fit within available space
+                const scaleX = maxAvailableWidth / img.naturalWidth;
+                const scaleY = maxAvailableHeight / img.naturalHeight;
+                const scale = Math.min(scaleX, scaleY, 1); // Don't scale up, only down
+                
+                // Calculate final dimensions
+                let minWidth = (img.naturalWidth * scale) + padding;
+                let minHeight = (img.naturalHeight * scale) + padding;
+                
+                // Ensure minimum size is respected
+                minWidth = Math.max(minWidth, POPUP_CONFIG.minSize);
+                minHeight = Math.max(minHeight, POPUP_CONFIG.minSize);
+                
+                // Ensure we don't exceed viewport dimensions
+                minWidth = Math.min(minWidth, viewportWidth);
+                minHeight = Math.min(minHeight, viewportHeight);
+                
+                return { width: minWidth, height: minHeight };
+            }
+            
             function resize(e) {
                 if (!isResizing) return;
                 
-                // Use requestAnimationFrame for smooth 60fps resizing
-                requestAnimationFrame(() => {
-                    const deltaX = e.clientX - resizeStartX;
-                    const deltaY = e.clientY - resizeStartY;
-                    
-                    let newWidth = resizeStartWidth;
-                    let newHeight = resizeStartHeight;
-                    
-                    // Calculate new dimensions based on corner
-                    switch (currentCorner) {
-                        case 'resize-se':
-                            newWidth = resizeStartWidth + deltaX;
-                            newHeight = resizeStartHeight + deltaY;
-                            break;
-                        case 'resize-sw':
-                            newWidth = resizeStartWidth - deltaX;
-                            newHeight = resizeStartHeight + deltaY;
-                            break;
-                        case 'resize-ne':
-                            newWidth = resizeStartWidth + deltaX;
-                            newHeight = resizeStartHeight - deltaY;
-                            break;
-                        case 'resize-nw':
-                            newWidth = resizeStartWidth - deltaX;
-                            newHeight = resizeStartHeight - deltaY;
-                            break;
+                // macOS Preview-style resizing: smooth 1:1 mouse tracking
+                const deltaX = e.clientX - resizeStartX;
+                const deltaY = e.clientY - resizeStartY;
+                
+                let newWidth = resizeStartWidth;
+                let newHeight = resizeStartHeight;
+                let newLeft = resizeStartLeft;
+                let newTop = resizeStartTop;
+                
+
+                
+                // macOS Preview behavior: opposite corner is always the anchor
+                switch (currentCorner) {
+                    case 'resize-se': // Bottom-right: upper-left anchor
+                        newWidth = resizeStartWidth + deltaX;
+                        newHeight = resizeStartHeight + deltaY;
+                        // Left and top stay fixed (upper-left anchor)
+                        break;
+                        
+                    case 'resize-sw': // Bottom-left: upper-right anchor
+                        newWidth = resizeStartWidth - deltaX;
+                        newHeight = resizeStartHeight + deltaY;
+                        // Top stays fixed, left moves (upper-right anchor)
+                        newLeft = resizeStartLeft + deltaX;
+                        break;
+                        
+                    case 'resize-ne': // Top-right: lower-left anchor
+                        newWidth = resizeStartWidth + deltaX;
+                        newHeight = resizeStartHeight + deltaY; // Fixed: removed negative sign
+                        // Left stays fixed, top moves (lower-left anchor)
+                        newTop = resizeStartTop + deltaY;
+                        break;
+                        
+                    case 'resize-nw': // Top-left: lower-right anchor
+                        newWidth = resizeStartWidth - deltaX;
+                        newHeight = resizeStartHeight + deltaY; // Fixed: removed negative sign
+                        // Both left and top move (lower-right anchor)
+                        newLeft = resizeStartLeft + deltaX;
+                        newTop = resizeStartTop + deltaY;
+                        break;
+                }
+                
+                // macOS Preview-style constraints: Content-aware and smooth
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                const minSize = POPUP_CONFIG.minSize;
+                
+                // Calculate content-aware minimum size (image + padding)
+                const contentMinWidth = Math.max(minSize, 400); // Base minimum
+                const contentMinHeight = Math.max(minSize, 300); // Base minimum
+                
+                // Handle negative positions first (for top/left corners)
+                if (newTop < 0) {
+                    if (currentCorner === 'resize-ne' || currentCorner === 'resize-nw') {
+                        // Top corners: adjust height to compensate for negative top
+                        newHeight = newHeight + Math.abs(newTop);
+                        newTop = 0;
+                    } else {
+                        // Other corners: just clamp top to 0
+                        newTop = 0;
                     }
-                    
-                    // Apply constraints using configuration
-                    const minSize = POPUP_CONFIG.minSize;
-                    const maxSize = Math.min(
-                        window.innerWidth * POPUP_CONFIG.maxSizePercent, 
-                        window.innerHeight * POPUP_CONFIG.maxSizePercent
-                    );
-                    
-                    newWidth = Math.max(minSize, Math.min(newWidth, maxSize));
-                    newHeight = Math.max(minSize, Math.min(newHeight, maxSize));
-                    
-                    // Apply new size with GPU acceleration
-                    imagePopup.style.width = newWidth + 'px';
-                    imagePopup.style.height = newHeight + 'px';
-                });
+                }
+                
+                if (newLeft < 0) {
+                    if (currentCorner === 'resize-nw' || currentCorner === 'resize-sw') {
+                        // Left corners: adjust width to compensate for negative left
+                        newWidth = newWidth + Math.abs(newLeft);
+                        newLeft = 0;
+                    } else {
+                        // Other corners: just clamp left to 0
+                        newLeft = 0;
+                    }
+                }
+                
+                // Apply content-aware minimum size constraint
+                newWidth = Math.max(contentMinWidth, newWidth);
+                newHeight = Math.max(contentMinHeight, newHeight);
+                
+                // macOS Preview approach: Smooth viewport constraints
+                // Only apply constraints when we're actually hitting boundaries
+                if (newLeft + newWidth > viewportWidth) {
+                    newWidth = viewportWidth - newLeft;
+                    // Ensure we don't go below minimum content size
+                    if (newWidth < contentMinWidth) {
+                        newWidth = contentMinWidth;
+                        newLeft = viewportWidth - contentMinWidth;
+                    }
+                }
+                
+                if (newTop + newHeight > viewportHeight) {
+                    newHeight = viewportHeight - newTop;
+                    // Ensure we don't go below minimum content size
+                    if (newHeight < contentMinHeight) {
+                        newHeight = contentMinHeight;
+                        newTop = viewportHeight - contentMinHeight;
+                    }
+                }
+                
+
+                
+                // Apply new size and position (macOS Preview smooth)
+                imagePopup.style.width = newWidth + 'px';
+                imagePopup.style.height = newHeight + 'px';
+                imagePopup.style.left = newLeft + 'px';
+                imagePopup.style.top = newTop + 'px';
+                imagePopup.style.transform = 'none';
             }
             
             function stopResize() {
