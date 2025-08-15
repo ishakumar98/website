@@ -609,10 +609,23 @@
 
 
 
-/* Smooth size transitions when not actively resizing or dragging */
-.image-center-popup:not(.resizing):not(.dragging) {
-    transition: width 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                height 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+
+/* Prevent transform conflicts when popup has been positioned by dragging */
+.image-center-popup[style*="left"] {
+    transform: none !important;
+}
+
+/* Prevent flickering when transitioning from dragging to normal state */
+.image-center-popup[style*="left"]:not(.closing) {
+    animation: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ensure dragged popup stays visible and positioned during class changes */
+.image-center-popup[style*="left"] {
+    display: block !important;
 }
 
 /* Smooth GPU-accelerated interactions */
@@ -626,7 +639,7 @@
 /* Prevent body scroll when popup is active - CSS-only approach */
 
 
-/* Popup animation keyframes */
+/* Popup animation keyframes - Only apply transform during open/close, not during drag */
 @keyframes popupEnter {
     0% {
         opacity: 0;

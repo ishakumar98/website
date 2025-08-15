@@ -451,53 +451,25 @@
                     return;
                 }
                 
-                // Set initial drag state but don't start dragging yet
-                dragStartX = e.clientX;
-                dragStartY = e.clientY;
-                
-                // Add event listeners for movement detection
-                document.addEventListener('mousemove', checkForDrag);
-                document.addEventListener('mouseup', cancelDrag);
-                
-                // Prevent text selection during potential drag
-                e.preventDefault();
-            }
-            
-            // Check if mouse movement exceeds threshold to start actual dragging
-            function checkForDrag(e) {
-                const deltaX = Math.abs(e.clientX - dragStartX);
-                const deltaY = Math.abs(e.clientY - dragStartY);
-                const threshold = 5; // 5px movement threshold
-                
-                if (deltaX > threshold || deltaY > threshold) {
-                    // Movement threshold exceeded, start actual dragging
-                    document.removeEventListener('mousemove', checkForDrag);
-                    document.removeEventListener('mouseup', cancelDrag);
-                    
-                    startActualDrag();
-                }
-            }
-            
-            // Cancel drag if mouse is released without movement
-            function cancelDrag() {
-                document.removeEventListener('mousemove', checkForDrag);
-                document.removeEventListener('mouseup', cancelDrag);
-            }
-            
-            // Start the actual dragging process
-            function startActualDrag() {
+                // Start dragging immediately (macOS-style)
                 isDragging = true;
                 
-                // Get current popup position from getBoundingClientRect
+                // Get current popup position and mouse position
                 const rect = imagePopup.getBoundingClientRect();
                 popupStartX = rect.left;
                 popupStartY = rect.top;
+                dragStartX = e.clientX;
+                dragStartY = e.clientY;
                 
                 // Use CSS class to disable animations during drag
                 imagePopup.classList.add('dragging');
                 
+                // Add event listeners for dragging
                 document.addEventListener('mousemove', drag);
                 document.addEventListener('mouseup', stopDrag);
+                
+                // Prevent text selection during drag
+                e.preventDefault();
             }
             
             function drag(e) {
