@@ -354,6 +354,14 @@
             // Popup state management - completely isolated
             let currentImageIndex = 0;
             
+            // Store current popup dimensions to preserve them during navigation
+            let preservedPopupDimensions = {
+                width: null,
+                height: null,
+                left: null,
+                top: null
+            };
+            
             // Utility functions for common popup operations
             const popupUtils = {
                 // Set popup position with bounds checking
@@ -437,6 +445,12 @@
                                 imagePopup.style.width = optimalSize.width + 'px';
                                 imagePopup.style.height = optimalSize.height + 'px';
                                 
+                                // Store initial dimensions for preservation during navigation
+                                preservedPopupDimensions.width = imagePopup.style.width;
+                                preservedPopupDimensions.height = imagePopup.style.height;
+                                preservedPopupDimensions.left = imagePopup.style.left;
+                                preservedPopupDimensions.top = imagePopup.style.top;
+                                
                                 // Show popup (CSS already centers it perfectly)
                                 imagePopup.classList.add('active');
                             };
@@ -487,6 +501,14 @@
                     // Reset popup position for next open using utility
                     popupUtils.resetPosition(imagePopup);
                     
+                    // Reset preserved dimensions when popup is closed
+                    preservedPopupDimensions = {
+                        width: null,
+                        height: null,
+                        left: null,
+                        top: null
+                    };
+                    
                     // Popup cleanup - no body changes needed
                 }, POPUP_CONFIG.closeAnimationDuration);
             }
@@ -518,6 +540,17 @@
                 try {
                     if (projectImages.length === 0) return;
                     
+                    // Preserve current popup dimensions and position
+                    if (imagePopup.classList.contains('active')) {
+                        // Only preserve dimensions if they've been set (not default values)
+                        if (imagePopup.style.width && imagePopup.style.width !== '') {
+                            preservedPopupDimensions.width = imagePopup.style.width;
+                            preservedPopupDimensions.height = imagePopup.style.height;
+                            preservedPopupDimensions.left = imagePopup.style.left;
+                            preservedPopupDimensions.top = imagePopup.style.top;
+                        }
+                    }
+                    
                     const img = projectImages[currentImageIndex];
                     const titleSpan = img.closest('.image')?.querySelector('.title span');
                     const filename = titleSpan ? titleSpan.textContent : 'image.png';
@@ -525,6 +558,21 @@
                     popupImage.src = img.src;
                     popupImage.alt = img.alt || '';
                     popupFilename.textContent = filename;
+                    
+                    // Restore preserved dimensions after image loads
+                    popupImage.onload = () => {
+                        if (preservedPopupDimensions.width && preservedPopupDimensions.height) {
+                            imagePopup.style.width = preservedPopupDimensions.width;
+                            imagePopup.style.height = preservedPopupDimensions.height;
+                            imagePopup.style.left = preservedPopupDimensions.left;
+                            imagePopup.style.top = preservedPopupDimensions.top;
+                        }
+                    };
+                    
+                    // If image is already loaded, restore dimensions immediately
+                    if (popupImage.complete) {
+                        popupImage.onload();
+                    }
                 } catch (error) {
                     console.error('Error updating popup image:', error);
                 }
