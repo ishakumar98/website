@@ -239,6 +239,13 @@
                         element.style.fontSize = fontSize + 'px';
                     });
                 }
+                
+                // Also adjust empty line height proportionally to font size
+                const emptyLines = document.querySelectorAll('.empty-line-break');
+                const lineHeight = Math.max(0.3, fontSize * 0.01); // Proportional to font size, minimum 0.3em
+                emptyLines.forEach(line => {
+                    line.style.height = lineHeight + 'em';
+                });
             }
             
                     // Project Images Container Scroll Behavior
@@ -342,11 +349,157 @@
             window.addEventListener('load', () => {
                 adjustFontSize();
                 initProjectImagesScroll();
+                // Test the slant system
+                console.log('ALMA Slant System: About to initialize...');
+                setTimeout(() => {
+                    console.log('ALMA Slant System: Calling initALMASlantSystem...');
+                    initALMASlantSystem();
+                }, 100);
             });
             window.addEventListener('resize', () => {
                 adjustFontSize();
                 initProjectImagesScroll();
             });
+            
+            // Step 1: Add individual letter spans + simple hover effect
+            function initALMASlantSystem() {
+                console.log('ALMA Slant System: Step 1 - Adding letter spans + hover effect...');
+                
+                const descriptions = document.querySelectorAll(".project-description");
+                console.log('ALMA Slant System: Found', descriptions.length, 'project descriptions');
+                
+                descriptions.forEach((desc, index) => {
+                    console.log('ALMA Slant System: Processing description', index, 'with text:', desc.textContent.substring(0, 50) + '...');
+                    
+                    // Create a document fragment to build the new content (like ALMA does)
+                    const fragment = document.createDocumentFragment();
+                    const characters = Array.from(desc.textContent);
+                    
+                    // Group letters by words to prevent word breaking while maintaining individual letter slant
+                    let currentWord = '';
+                    let currentText = '';
+                    
+                    characters.forEach((char, charIndex) => {
+                        if (char === ' ' || char === '\n' || char === '\t') {
+                            // If we have a word built up, wrap it in a word container
+                            if (currentWord.length > 0) {
+                                const wordSpan = document.createElement('span');
+                                wordSpan.classList.add('word');
+                                wordSpan.style.display = 'inline-block';
+                                wordSpan.style.whiteSpace = 'nowrap';
+                                
+                                // Add each letter of the word as a separate span
+                                Array.from(currentWord).forEach(letterChar => {
+                                    const letterSpan = document.createElement('span');
+                                    letterSpan.classList.add('letter');
+                                    letterSpan.textContent = letterChar;
+                                    wordSpan.appendChild(letterSpan);
+                                });
+                                
+                                fragment.appendChild(wordSpan);
+                                currentWord = '';
+                            }
+                            
+                            // Handle line breaks by creating empty line divs
+                            if (char === '\n') {
+                                // Create an empty line div that won't participate in slanting
+                                const emptyLine = document.createElement('div');
+                                emptyLine.classList.add('empty-line-break');
+                                fragment.appendChild(emptyLine);
+                            } else {
+                                // Add other whitespace (spaces, tabs)
+                                currentText += char;
+                            }
+                        } else {
+                            // If we have accumulated whitespace, add it first
+                            if (currentText.length > 0) {
+                                fragment.appendChild(document.createTextNode(currentText));
+                                currentText = '';
+                            }
+                            
+                            // Add character to current word
+                            currentWord += char;
+                        }
+                    });
+                    
+                    // Handle the last word if there is one
+                    if (currentWord.length > 0) {
+                        const wordSpan = document.createElement('span');
+                        wordSpan.classList.add('word');
+                        wordSpan.style.display = 'inline-block';
+                        wordSpan.style.whiteSpace = 'nowrap';
+                        
+                        Array.from(currentWord).forEach(letterChar => {
+                            const letterSpan = document.createElement('span');
+                            letterSpan.classList.add('letter');
+                            letterSpan.textContent = letterChar;
+                            wordSpan.appendChild(letterSpan);
+                        });
+                        
+                        fragment.appendChild(wordSpan);
+                    }
+                    
+                    // Add any remaining whitespace at the end
+                    if (currentText.length > 0) {
+                        fragment.appendChild(document.createTextNode(currentText));
+                    }
+                    
+                    // Replace the content with the new structure
+                    desc.innerHTML = '';
+                    desc.appendChild(fragment);
+                    
+                    console.log('ALMA Slant System: Created', characters.length, 'letter spans for description', index);
+                    
+                    // Remove hover events - we'll use mousemove instead
+                });
+                
+                // Add mousemove listener for individual letter slant (ALMA-style)
+                if (!window.matchMedia("(pointer: coarse)").matches) {
+                    console.log('ALMA Slant System: Adding mousemove listener for individual letter slant');
+                    
+                    document.addEventListener("mousemove", function(e) {
+                        const letters = document.querySelectorAll(".project-description .letter");
+                        
+                        if (letters.length === 0) {
+                            console.log('ALMA Slant System: No letters found for slant effect');
+                            return;
+                        }
+                        
+                        letters.forEach((span, index) => {
+                            const rect = span.getBoundingClientRect();
+                            const centerX = rect.left + rect.width / 2;
+                            const centerY = rect.top + rect.height / 2;
+                            
+                            // Calculate distance from mouse to letter center (like ALMA does)
+                            const distance = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2));
+                            
+                            if (distance < 200) {
+                                // Map distance (0-200) to slant (0-24) - positive values for rightward slant
+                                const slantValue = map(distance, 0, 200, 24, 0);
+                                span.style.transition = '0ms';
+                                span.style.fontVariationSettings = `"slnt" ${slantValue}`;
+                                
+                                // Debug first few letters
+                                if (index < 3) {
+                                    console.log('ALMA Slant System: Letter', index, 'distance:', distance.toFixed(1), 'slant:', slantValue.toFixed(1));
+                                }
+                            } else {
+                                // Smooth transition back to upright when far from mouse
+                                span.style.transition = 'font-variation-settings 400ms ease-out';
+                                span.style.fontVariationSettings = '"slnt" 0';
+                            }
+                        });
+                    });
+                } else {
+                    console.log('ALMA Slant System: Touch device detected, skipping mousemove');
+                }
+                
+                console.log('ALMA Slant System: Step 3 complete - individual letter slant effect implemented');
+            }
+            
+            function map(value, x1, y1, x2, y2) {
+                return (value - x1) * (y2 - x2) / (y1 - x1) + x2;
+            }
         </script>
         
         <!-- Image Popup Functionality -->

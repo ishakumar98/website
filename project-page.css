@@ -315,25 +315,71 @@
 
 /* Project text block styling */
 .project-text-block {
-  margin-bottom: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   width: 100%;
 }
 
 .project-description {
-  font-family: 'Modern Era', sans-serif;
-  font-size: 16px; /* Will be overridden by JavaScript */
+  font-family: 'TT Norms Pro', sans-serif;
+  font-variation-settings: 'slnt' 0;
   line-height: 1.2;
   color: #000000;
   max-width: none;
   width: 100%;
-  margin: 0;
-  text-align: left;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  text-indent: 0 !important;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  /* Ensure no layout shifts during slant */
+  position: relative;
+  /* Ensure proper word wrapping */
+  word-break: normal;
+  white-space: normal;
+}
+
+/* Individual letter styling for project descriptions - override conflicting .letter rules */
+.project-description .letter {
+  display: inline-block !important;
+  /* Removed transition to allow JavaScript to control slant changes */
+  letter-spacing: normal !important;
+  opacity: 1 !important;
+  animation: none !important;
+  /* Prevent layout shifts during slant */
+  position: relative;
+  transform-origin: left center;
+  /* Ensure no unwanted spacing */
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Word container styling - prevents word breaking */
+.project-description .word {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+/* Empty line break styling - creates visual separation between paragraphs */
+.empty-line-break {
+  height: 0.6em; /* Reduced from 1.2em to be more reasonable */
+  margin: 0;
+  padding: 0;
+  /* Ensure this doesn't participate in any slanting effects */
+  pointer-events: none;
+}
+
+/* Ensure first letter has no left margin */
+.project-description .letter:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 
 .project-description:first-child {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* Project credits styling */
@@ -342,13 +388,14 @@
 }
 
 .credits-text {
-  font-family: 'Modern Era', sans-serif;
+  font-family: 'TT Norms Pro', sans-serif;
   font-size: 16px;
   line-height: 1.4;
   color: #000000;
   margin: 0;
   text-align: left;
   opacity: 0.8;
+  transition: font-variation-settings 400ms ease-out;
 }
 
 /* Project images styling */
