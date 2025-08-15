@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // Scroll overlay effect
+    // Scroll overlay effect (keep existing functionality exactly the same)
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         const finderSection = document.querySelector('.finder');
@@ -142,6 +142,62 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Weighted Movement Effect for Work Container ONLY (LSVP-style)
+    // IMPORTANT: This ONLY affects the work container movement, NOT the page scroll speed
+    let currentWorkTransformY = 0;
+    let targetWorkTransformY = 0;
+    const lerpFactor = 0.08;
+    
+    // This makes the work container move slower, but doesn't change page scroll speed at all
+    const containerMovementMultiplier = 0.15; // Work container moves 85% slower than normal
+    
+    window.addEventListener('scroll', () => {
+        const workContainer = document.querySelector('.work-container');
+        if (workContainer) {
+            const scrollY = window.scrollY; // Use normal scroll position
+            
+            // Apply multiplier ONLY to the container movement, not to scroll
+            const adjustedMovement = scrollY * containerMovementMultiplier;
+            const viewportHeight = window.innerHeight;
+            const scrollProgress = Math.min(adjustedMovement / viewportHeight, 1);
+            
+            // Apply easing for smooth movement with momentum building
+            let easedProgress;
+            if (scrollProgress < 0.3) {
+                easedProgress = scrollProgress * scrollProgress * 0.5;
+            } else if (scrollProgress < 0.6) {
+                easedProgress = 0.045 + (scrollProgress - 0.3) * 1.5;
+            } else {
+                // Gentle landing effect for final 40% of scroll (60-100%)
+                const landingProgress = (scrollProgress - 0.6) / 0.4;
+                easedProgress = 0.495 + (landingProgress * landingProgress * 0.505); // Very gentle final approach
+            }
+            
+            const maxTransformY = 100;
+            targetWorkTransformY = easedProgress * maxTransformY;
+            
+            // Start LERP animation
+            updateWorkContainerLERP();
+        }
+    });
+    
+    // LERP update function for work container
+    function updateWorkContainerLERP() {
+        const workContainer = document.querySelector('.work-container');
+        if (!workContainer) return;
+        
+        // Smoothly interpolate between current and target position
+        currentWorkTransformY += (targetWorkTransformY - currentWorkTransformY) * lerpFactor;
+        
+        // Apply the smoothed transform
+        workContainer.style.transform = `translateY(${currentWorkTransformY}px)`;
+        
+        // Continue animation if we're still moving
+        if (Math.abs(targetWorkTransformY - currentWorkTransformY) > 0.1) {
+            requestAnimationFrame(updateWorkContainerLERP);
+        }
+    }
 
 
 }); 
