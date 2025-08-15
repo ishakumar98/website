@@ -417,6 +417,26 @@
                             
                             // Wait for image to load, then show popup
                             popupImage.onload = () => {
+                                // Calculate minimum size needed for this image
+                                const imageMinSize = calculateMinimumPopupSize();
+                                
+                                // Get viewport dimensions
+                                const viewportWidth = window.innerWidth;
+                                const viewportHeight = window.innerHeight;
+                                
+                                // Smart sizing: Calculate optimal dimensions based on image and viewport
+                                const optimalSize = calculateOptimalPopupSize(
+                                    popupImage.naturalWidth,
+                                    popupImage.naturalHeight,
+                                    imageMinSize,
+                                    viewportWidth,
+                                    viewportHeight
+                                );
+                                
+                                // Set the calculated optimal size
+                                imagePopup.style.width = optimalSize.width + 'px';
+                                imagePopup.style.height = optimalSize.height + 'px';
+                                
                                 // Show popup (CSS already centers it perfectly)
                                 imagePopup.classList.add('active');
                             };
@@ -660,33 +680,81 @@
                 const img = popupImage;
                 if (!img || !img.complete) return { width: POPUP_CONFIG.minSize, height: POPUP_CONFIG.minSize };
                 
-                const padding = 40; // 20px on each side
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
+                const basePadding = 40; // 20px on each side (20px * 2) - minimum padding
+                const navigationBarHeight = 60; // Navigation bar height
                 
-                // macOS Preview approach: Size popup to fit image within viewport
-                // Calculate how much of the image we can show while staying within viewport
-                const maxAvailableWidth = viewportWidth - padding;
-                const maxAvailableHeight = viewportHeight - padding;
-                
-                // Calculate image scale to fit within available space
-                const scaleX = maxAvailableWidth / img.naturalWidth;
-                const scaleY = maxAvailableHeight / img.naturalHeight;
-                const scale = Math.min(scaleX, scaleY, 1); // Don't scale up, only down
-                
-                // Calculate final dimensions
-                let minWidth = (img.naturalWidth * scale) + padding;
-                let minHeight = (img.naturalHeight * scale) + padding;
+                // macOS Preview approach: Image + padding must ALWAYS be visible
+                // Calculate the minimum size needed to show the full image with base padding
+                let minWidth = img.naturalWidth + basePadding;
+                let minHeight = img.naturalHeight + basePadding + navigationBarHeight;
                 
                 // Ensure minimum size is respected
                 minWidth = Math.max(minWidth, POPUP_CONFIG.minSize);
                 minHeight = Math.max(minHeight, POPUP_CONFIG.minSize);
                 
-                // Ensure we don't exceed viewport dimensions
-                minWidth = Math.min(minWidth, viewportWidth);
-                minHeight = Math.min(minHeight, viewportHeight);
-                
                 return { width: minWidth, height: minHeight };
+            }
+            
+            // Calculate optimal popup size based on image dimensions and viewport
+            function calculateOptimalPopupSize(imageWidth, imageHeight, imageMinSize, viewportWidth, viewportHeight) {
+                // macOS Preview approach: Simple, comfortable sizing with proper margins
+                const margin = 80; // 40px on each side for comfortable breathing room
+                const maxWidth = viewportWidth - margin;
+                const maxHeight = viewportHeight - margin;
+                
+                // Calculate image aspect ratio
+                const imageAspectRatio = imageWidth / imageHeight;
+                
+                // Simple approach: fit the image within the available space while maintaining aspect ratio
+                let popupWidth, popupHeight;
+                
+                if (imageAspectRatio > 1) {
+                    // Wide image - fit to available width
+                    popupWidth = Math.min(imageWidth, maxWidth);
+                    popupHeight = popupWidth / imageAspectRatio;
+                    
+                    // If height exceeds available height, scale down proportionally
+                    if (popupHeight > maxHeight) {
+                        popupHeight = maxHeight;
+                        popupWidth = popupHeight * imageAspectRatio;
+                    }
+                } else {
+                    // Tall image - fit to available height
+                    popupHeight = Math.min(imageHeight, maxHeight);
+                    popupWidth = popupHeight * imageAspectRatio;
+                    
+                    // If width exceeds available width, scale down proportionally
+                    if (popupWidth > maxWidth) {
+                        popupWidth = maxWidth;
+                        popupHeight = popupWidth / imageAspectRatio;
+                    }
+                }
+                
+                // Ensure we meet minimum size requirements, but don't exceed viewport
+                popupWidth = Math.max(popupWidth, imageMinSize.width);
+                popupHeight = Math.max(popupHeight, imageMinSize.height);
+                
+                // Critical: If minimum size exceeds viewport, scale down proportionally
+                // This ensures the popup never goes beyond viewport bounds
+                if (popupWidth > maxWidth || popupHeight > maxHeight) {
+                    // Calculate scale factor to fit within viewport
+                    const scaleX = maxWidth / popupWidth;
+                    const scaleY = maxHeight / popupHeight;
+                    const scale = Math.min(scaleX, scaleY);
+                    
+                    // Apply scale while maintaining aspect ratio
+                    popupWidth = popupWidth * scale;
+                    popupHeight = popupHeight * scale;
+                }
+                
+                // Final bounds check - ensure we don't exceed viewport (safety check)
+                popupWidth = Math.min(popupWidth, maxWidth);
+                popupHeight = Math.min(popupHeight, maxHeight);
+                
+                return {
+                    width: Math.round(popupWidth),
+                    height: Math.round(popupHeight)
+                };
             }
             
             function resize(e) {
@@ -737,57 +805,38 @@
                 // macOS Preview-style constraints: Content-aware and smooth
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
-                const minSize = POPUP_CONFIG.minSize;
                 
-                // Calculate content-aware minimum size (image + padding)
-                const contentMinWidth = Math.max(minSize, 400); // Base minimum
-                const contentMinHeight = Math.max(minSize, 300); // Base minimum
+                // macOS Preview approach: Simple, effective resize constraints
+                const imageAspectRatio = popupImage.naturalWidth / popupImage.naturalHeight;
                 
-                // Handle negative positions first (for top/left corners)
-                if (newTop < 0) {
-                    if (currentCorner === 'resize-ne' || currentCorner === 'resize-nw') {
-                        // Top corners: adjust height to compensate for negative top
-                        newHeight = newHeight + Math.abs(newTop);
-                        newTop = 0;
-                    } else {
-                        // Other corners: just clamp top to 0
-                        newTop = 0;
-                    }
-                }
+                // Basic minimum size to prevent popup from being too small
+                const minWidth = 300; // Minimum width for comfortable viewing
+                const minHeight = 300; // Minimum height for comfortable viewing
                 
-                if (newLeft < 0) {
-                    if (currentCorner === 'resize-nw' || currentCorner === 'resize-sw') {
-                        // Left corners: adjust width to compensate for negative left
-                        newWidth = newWidth + Math.abs(newLeft);
-                        newLeft = 0;
-                    } else {
-                        // Other corners: just clamp left to 0
-                        newLeft = 0;
-                    }
-                }
+                // Apply basic minimum size constraints
+                newWidth = Math.max(minWidth, newWidth);
+                newHeight = Math.max(minHeight, newHeight);
                 
-                // Apply content-aware minimum size constraint
-                newWidth = Math.max(contentMinWidth, newWidth);
-                newHeight = Math.max(contentMinHeight, newHeight);
+                // Simple resize - no complex aspect ratio maintenance
+                // This allows flexible resizing like macOS Preview
                 
-                // macOS Preview approach: Smooth viewport constraints
-                // Only apply constraints when we're actually hitting boundaries
+                // macOS Preview approach: Keep popup within viewport bounds
+                // Ensure the popup never goes outside the viewport
                 if (newLeft + newWidth > viewportWidth) {
                     newWidth = viewportWidth - newLeft;
-                    // Ensure we don't go below minimum content size
-                    if (newWidth < contentMinWidth) {
-                        newWidth = contentMinWidth;
-                        newLeft = viewportWidth - contentMinWidth;
-                    }
                 }
                 
                 if (newTop + newHeight > viewportHeight) {
                     newHeight = viewportHeight - newTop;
-                    // Ensure we don't go below minimum content size
-                    if (newHeight < contentMinHeight) {
-                        newHeight = contentMinHeight;
-                        newTop = viewportHeight - contentMinHeight;
-                    }
+                }
+                
+                // Handle negative positions (simple clamping like macOS Preview)
+                if (newLeft < 0) {
+                    newLeft = 0;
+                }
+                
+                if (newTop < 0) {
+                    newTop = 0;
                 }
                 
 
@@ -798,6 +847,8 @@
                 imagePopup.style.left = newLeft + 'px';
                 imagePopup.style.top = newTop + 'px';
                 imagePopup.style.transform = 'none';
+                
+
             }
             
             function stopResize() {
