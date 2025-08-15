@@ -466,6 +466,22 @@
     cursor: pointer;
 }
 
+/* Popup Configuration - CSS Custom Properties */
+:root {
+    --popup-z-index: 10000;
+    --popup-min-width: 400px;
+    --popup-border-radius: 12px;
+    --popup-bg-color: #f4f4f4;
+    --popup-nav-padding: 15px 30px;
+    --popup-button-size: 16px;
+    --popup-button-margin: 5px;
+    --popup-button-group-left: 15px;
+    --popup-button-group-top: 22px;
+    --popup-close-color: #ff5f57;
+    --popup-button-disabled-color: #d1d1d1;
+    --popup-shadow: 0 0 0.5rem rgba(0,0,0,0.2);
+}
+
 /* macOS Style Image Center Popup - Completely Self-Contained */
 .image-center-popup {
     display: none;
@@ -473,16 +489,16 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10000;
+    z-index: var(--popup-z-index, 10000);
     /* Self-contained scrolling - never affects body */
     overflow: hidden;
     width: auto;
-    min-width: 400px;
+    min-width: var(--popup-min-width, 400px);
     padding: 0;
-    border-radius: 12px;
-    -webkit-filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
-    filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
-    background-color: #f4f4f4;
+    border-radius: var(--popup-border-radius, 12px);
+    -webkit-filter: drop-shadow(var(--popup-shadow, 0 0 0.5rem rgba(0,0,0,0.2)));
+    filter: drop-shadow(var(--popup-shadow, 0 0 0.5rem rgba(0,0,0,0.2)));
+    background-color: var(--popup-bg-color, #f4f4f4);
     /* Create isolated stacking context */
     transform-style: preserve-3d;
     /* Prevent any layout impact on other elements */
@@ -492,11 +508,11 @@
 
 
 .image-center-popup .popup-nav {
-    background-color: #f4f4f4;
-    padding: 15px 30px;
+    background-color: var(--popup-bg-color, #f4f4f4);
+    padding: var(--popup-nav-padding, 15px 30px);
     text-align: center;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    border-top-left-radius: var(--popup-border-radius, 12px);
+    border-top-right-radius: var(--popup-border-radius, 12px);
     cursor: grab;
 }
 
@@ -506,8 +522,8 @@
 
 .image-center-popup .popup-nav .wrapper-actions {
     position: absolute;
-    left: 15px;
-    top: 22px;
+    left: var(--popup-button-group-left, 15px);
+    top: var(--popup-button-group-top, 22px);
     overflow: auto;
     width: auto;
     padding: 0;
@@ -517,11 +533,11 @@
 .image-center-popup .popup-nav .popup-actions {
     float: left;
     border: 1px solid #000;
-    height: 16px;
-    width: 16px;
+    height: var(--popup-button-size, 16px);
+    width: var(--popup-button-size, 16px);
     font-size: 0;
     padding: 0;
-    margin: 0 5px 0 0;
+    margin: 0 var(--popup-button-margin, 5px) 0 0;
     border-radius: 100%;
     cursor: pointer;
 }
@@ -532,19 +548,19 @@
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-expand {
-    background-color: #d1d1d1;
-    border-color: #d1d1d1;
+    background-color: var(--popup-button-disabled-color, #d1d1d1);
+    border-color: var(--popup-button-disabled-color, #d1d1d1);
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-minimise {
-    background-color: #d1d1d1;
-    border-color: #d1d1d1;
+    background-color: var(--popup-button-disabled-color, #d1d1d1);
+    border-color: var(--popup-button-disabled-color, #d1d1d1);
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-close {
     position: relative;
-    background-color: #ff5f57 !important;
-    border-color: #ff5f57 !important;
+    background-color: var(--popup-close-color, #ff5f57) !important;
+    border-color: var(--popup-close-color, #ff5f57) !important;
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-close:after {

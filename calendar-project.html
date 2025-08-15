@@ -290,7 +290,43 @@
         
         <!-- Image Popup Functionality -->
         <script>
-            // Get popup elements
+            /**
+             * macOS-Style Image Popup System
+             * 
+             * Features:
+             * - Draggable navigation bar (macOS-style)
+             * - Resizable from four corners
+             * - Image navigation (left/right arrows)
+             * - Keyboard navigation (arrow keys)
+             * - Smooth animations and transitions
+             * 
+             * Architecture:
+             * - Configuration-driven (POPUP_CONFIG)
+             * - Utility functions (popupUtils)
+             * - Error handling and validation
+             * - Self-contained and isolated
+             */
+            
+            // Popup Configuration - Centralized settings
+            const POPUP_CONFIG = {
+                // Dimensions
+                minSize: 200,
+                maxSizePercent: 0.95,
+                
+                // Animation timing
+                closeAnimationDuration: 400,
+                
+                // Z-index values
+                popupZIndex: 10000,
+                resizeHandleZIndex: 10001,
+                navigationZIndex: 9999,
+                
+                // Navigation area dimensions
+                navigationAreaWidth: 60,
+                navigationAreaTopOffset: 60
+            };
+            
+            // Get popup elements with error handling
             const imagePopup = document.getElementById('image-popup');
             const popupImage = document.getElementById('popup-image');
             const popupFilename = document.getElementById('popup-filename');
@@ -300,49 +336,114 @@
             const popupNavLeft = document.getElementById('popup-nav-left');
             const popupNavRight = document.getElementById('popup-nav-right');
             
+            // Validate required elements exist
+            if (!imagePopup || !popupImage || !popupFilename || !popupClose) {
+                console.error('Required popup elements not found. Popup functionality disabled.');
+                throw new Error('Missing required popup elements');
+            }
+            
             // Get all project images
             const projectImages = document.querySelectorAll('.wrapper-image img');
+            
+            if (projectImages.length === 0) {
+                console.warn('No project images found. Image popup functionality disabled.');
+            }
             
             // Popup state management - completely isolated
             let currentImageIndex = 0;
             
+            // Utility functions for common popup operations
+            const popupUtils = {
+                // Set popup position with bounds checking
+                setPosition: (element, x, y) => {
+                    const rect = element.getBoundingClientRect();
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    
+                    // Constrain to viewport bounds
+                    const constrainedX = Math.max(0, Math.min(x, viewportWidth - rect.width));
+                    const constrainedY = Math.max(0, Math.min(y, viewportHeight - rect.height));
+                    
+                    element.style.left = constrainedX + 'px';
+                    element.style.top = constrainedY + 'px';
+                    element.style.transform = 'none';
+                },
+                
+                // Add dragging state to popup
+                addDraggingState: (element) => {
+                    element.classList.add('dragging');
+                },
+                
+                // Remove dragging state from popup
+                removeDraggingState: (element) => {
+                    element.classList.remove('dragging');
+                },
+                
+                // Reset popup position for next open
+                resetPosition: (element) => {
+                    element.style.left = '';
+                    element.style.top = '';
+                    element.style.transform = '';
+                },
+                
+                // Check if element is within viewport bounds
+                isWithinViewport: (element) => {
+                    const rect = element.getBoundingClientRect();
+                    return rect.top >= 0 && rect.left >= 0 && 
+                           rect.bottom <= window.innerHeight && 
+                           rect.right <= window.innerWidth;
+                }
+            };
+            
             // Open popup when image is clicked
-            projectImages.forEach((img, index) => {
-                img.addEventListener('click', () => {
-                    // Set current image index
-                    currentImageIndex = index;
-                    
-                    // Get image source and exact filename from title span
-                    const imageSrc = img.src;
-                    const titleSpan = img.closest('.image').querySelector('.title span');
-                    const filename = titleSpan ? titleSpan.textContent : 'image.png';
-                    
-                    // Set popup content
-                    popupImage.src = imageSrc;
-                    popupImage.alt = img.alt || '';
-                    popupFilename.textContent = filename;
-                    
-                    // Show popup (CSS already centers it perfectly)
-                    imagePopup.classList.add('active');
-                    
-                    // Popup is now self-contained - no body changes needed
+            if (projectImages.length > 0) {
+                projectImages.forEach((img, index) => {
+                    img.addEventListener('click', () => {
+                        try {
+                            // Set current image index
+                            currentImageIndex = index;
+                            
+                            // Get image source and exact filename from title span
+                            const imageSrc = img.src;
+                            const titleSpan = img.closest('.image')?.querySelector('.title span');
+                            const filename = titleSpan ? titleSpan.textContent : 'image.png';
+                            
+                            // Set popup content
+                            popupImage.src = imageSrc;
+                            popupImage.alt = img.alt || '';
+                            popupFilename.textContent = filename;
+                            
+                            // Show popup (CSS already centers it perfectly)
+                            imagePopup.classList.add('active');
+                            
+                            // Popup is now self-contained - no body changes needed
+                        } catch (error) {
+                            console.error('Error opening popup:', error);
+                        }
+                    });
                 });
-            });
+            }
             
             // Close popup ONLY when red X button is clicked
-            popupClose.addEventListener('click', closePopup);
+            if (popupClose) {
+                popupClose.addEventListener('click', closePopup);
+            }
             
             // Minimize button - currently disabled (no functionality)
-            popupMinimise.addEventListener('click', () => {
-                // TODO: Implement minimize functionality
-                console.log('Minimize clicked - functionality not implemented yet');
-            });
+            if (popupMinimise) {
+                popupMinimise.addEventListener('click', () => {
+                    // TODO: Implement minimize functionality
+                    console.log('Minimize clicked - functionality not implemented yet');
+                });
+            }
             
             // Expand button - currently disabled (no functionality)
-            popupExpand.addEventListener('click', () => {
-                // TODO: Implement expand functionality
-                console.log('Expand clicked - functionality not implemented yet');
-            });
+            if (popupExpand) {
+                popupExpand.addEventListener('click', () => {
+                    // TODO: Implement expand functionality
+                    console.log('Expand clicked - functionality not implemented yet');
+                });
+            }
             
             // Function to close popup
             function closePopup() {
@@ -353,17 +454,17 @@
                 setTimeout(() => {
                     imagePopup.classList.remove('active', 'closing');
                     
-                    // Reset popup position for next open
-                    imagePopup.style.left = '';
-                    imagePopup.style.top = '';
-                    imagePopup.style.transform = '';
+                    // Reset popup position for next open using utility
+                    popupUtils.resetPosition(imagePopup);
                     
                     // Popup cleanup - no body changes needed
-                }, 400);
+                }, POPUP_CONFIG.closeAnimationDuration);
             }
             
             // Navigation functionality
             function navigateToPreviousImage() {
+                if (projectImages.length === 0) return;
+                
                 if (currentImageIndex > 0) {
                     currentImageIndex--;
                 } else {
@@ -373,6 +474,8 @@
             }
             
             function navigateToNextImage() {
+                if (projectImages.length === 0) return;
+                
                 if (currentImageIndex < projectImages.length - 1) {
                     currentImageIndex++;
                 } else {
@@ -382,19 +485,28 @@
             }
             
             function updatePopupImage() {
-                const img = projectImages[currentImageIndex];
-                const imageSrc = img.src;
-                const titleSpan = img.closest('.image').querySelector('.title span');
-                const filename = titleSpan ? titleSpan.textContent : 'image.png';
-                
-                popupImage.src = imageSrc;
-                popupImage.alt = img.alt || '';
-                popupFilename.textContent = filename;
+                try {
+                    if (projectImages.length === 0) return;
+                    
+                    const img = projectImages[currentImageIndex];
+                    const titleSpan = img.closest('.image')?.querySelector('.title span');
+                    const filename = titleSpan ? titleSpan.textContent : 'image.png';
+                    
+                    popupImage.src = img.src;
+                    popupImage.alt = img.alt || '';
+                    popupFilename.textContent = filename;
+                } catch (error) {
+                    console.error('Error updating popup image:', error);
+                }
             }
             
-            // Add navigation event listeners
-            popupNavLeft.addEventListener('click', navigateToPreviousImage);
-            popupNavRight.addEventListener('click', navigateToNextImage);
+            // Add navigation event listeners with error handling
+            if (popupNavLeft && popupNavRight) {
+                popupNavLeft.addEventListener('click', navigateToPreviousImage);
+                popupNavRight.addEventListener('click', navigateToNextImage);
+            } else {
+                console.warn('Navigation areas not found. Image navigation disabled.');
+            }
             
             // Keyboard navigation (image switching only)
             document.addEventListener('keydown', (e) => {
@@ -427,18 +539,29 @@
             
             // Start dragging when mouse is pressed AND moved on navigation bar
             const popupNav = document.querySelector('.popup-nav');
-            popupNav.addEventListener('mousedown', startDrag);
+            if (popupNav) {
+                popupNav.addEventListener('mousedown', startDrag);
+            } else {
+                console.warn('Navigation bar not found. Dragging disabled.');
+            }
             
             // Prevent dragging when clicking on filename text
-            document.getElementById('popup-filename').addEventListener('mousedown', (e) => {
-                e.stopPropagation(); // Prevent drag from starting
-            });
+            const popupFilenameElement = document.getElementById('popup-filename');
+            if (popupFilenameElement) {
+                popupFilenameElement.addEventListener('mousedown', (e) => {
+                    e.stopPropagation(); // Prevent drag from starting
+                });
+            }
             
             // Start resizing when clicking on corner handles
             const resizeHandles = document.querySelectorAll('.resize-handle');
-            resizeHandles.forEach(handle => {
-                handle.addEventListener('mousedown', startResize);
-            });
+            if (resizeHandles.length > 0) {
+                resizeHandles.forEach(handle => {
+                    handle.addEventListener('mousedown', startResize);
+                });
+            } else {
+                console.warn('No resize handles found. Resize functionality disabled.');
+            }
             
             function startDrag(e) {
                 // Don't start drag if clicking on buttons or filename
@@ -461,8 +584,8 @@
                 dragStartX = e.clientX;
                 dragStartY = e.clientY;
                 
-                // Use CSS class to disable animations during drag
-                imagePopup.classList.add('dragging');
+                // Use utility to add dragging state
+                popupUtils.addDraggingState(imagePopup);
                 
                 // Add event listeners for dragging
                 document.addEventListener('mousemove', drag);
@@ -479,26 +602,11 @@
                 const deltaX = e.clientX - dragStartX;
                 const deltaY = e.clientY - dragStartY;
                 
-                let newX = popupStartX + deltaX;
-                let newY = popupStartY + deltaY;
+                const newX = popupStartX + deltaX;
+                const newY = popupStartY + deltaY;
                 
-                // Get viewport dimensions
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                
-                // Get popup dimensions
-                const popupRect = imagePopup.getBoundingClientRect();
-                const popupWidth = popupRect.width;
-                const popupHeight = popupRect.height;
-                
-                // Constrain to viewport bounds
-                newX = Math.max(0, Math.min(newX, viewportWidth - popupWidth));
-                newY = Math.max(0, Math.min(newY, viewportHeight - popupHeight));
-                
-                // Apply new position directly to avoid CSS conflicts
-                imagePopup.style.left = newX + 'px';
-                imagePopup.style.top = newY + 'px';
-                imagePopup.style.transform = 'none';
+                // Use utility to set position with bounds checking
+                popupUtils.setPosition(imagePopup, newX, newY);
             }
             
             function stopDrag() {
@@ -506,8 +614,8 @@
                 document.removeEventListener('mousemove', drag);
                 document.removeEventListener('mouseup', stopDrag);
                 
-                // Remove dragging class to restore animations
-                imagePopup.classList.remove('dragging');
+                // Use utility to remove dragging state
+                popupUtils.removeDraggingState(imagePopup);
             }
             
             // Resize functionality
@@ -562,9 +670,12 @@
                             break;
                     }
                     
-                    // Apply constraints
-                    const minSize = 200;
-                    const maxSize = Math.min(window.innerWidth * 0.95, window.innerHeight * 0.95);
+                    // Apply constraints using configuration
+                    const minSize = POPUP_CONFIG.minSize;
+                    const maxSize = Math.min(
+                        window.innerWidth * POPUP_CONFIG.maxSizePercent, 
+                        window.innerHeight * POPUP_CONFIG.maxSizePercent
+                    );
                     
                     newWidth = Math.max(minSize, Math.min(newWidth, maxSize));
                     newHeight = Math.max(minSize, Math.min(newHeight, maxSize));
