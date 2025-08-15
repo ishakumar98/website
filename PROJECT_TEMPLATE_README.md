@@ -147,3 +147,27 @@ If you run into issues:
 2. Verify all image paths are correct
 3. Ensure HTML structure remains intact
 4. Compare with the working Calendar project page
+
+## Video Components
+
+The template now supports MP4 video files alongside images. Videos will:
+
+- **Autoplay and Loop**: Videos automatically play and loop in the container (muted)
+- **Responsive Design**: Maintain 16:9 aspect ratio and fit the container properly
+- **Click to Enlarge**: Clicking opens the video in a fullscreen popup
+- **Vimeo Integration**: Optimized for Vimeo embeds with proper autoplay parameters
+- **Seamless Integration**: Videos appear alongside images in the same container
+
+### Adding a Video Component
+
+1. Uncomment the sample video component in the template
+2. Replace `YOUR_VIDEO_URL_HERE` with your Vimeo embed URL
+3. Update the title and filename as needed
+4. The video will automatically integrate with the existing popup system
+
+### Video URL Format
+
+For Vimeo videos, use the embed URL format:
+```
+https://player.vimeo.com/video/VIDEO_ID?h=HASH&autoplay=1&loop=1&autopause=0&muted=1&background=1
+```
