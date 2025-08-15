@@ -329,27 +329,19 @@
                 });
             });
             
-            // Close popup when close button is clicked
+            // Close popup ONLY when red X button is clicked
             popupClose.addEventListener('click', closePopup);
             
-            // Minimize popup (hide it)
-            popupMinimise.addEventListener('click', closePopup);
-            
-            // Expand popup (for now, just close it)
-            popupExpand.addEventListener('click', closePopup);
-            
-            // Close popup when clicking outside the popup content
-            imagePopup.addEventListener('click', (e) => {
-                if (e.target === imagePopup) {
-                    closePopup();
-                }
+            // Minimize button - currently disabled (no functionality)
+            popupMinimise.addEventListener('click', () => {
+                // TODO: Implement minimize functionality
+                console.log('Minimize clicked - functionality not implemented yet');
             });
             
-            // Close popup with Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && imagePopup.classList.contains('active')) {
-                    closePopup();
-                }
+            // Expand button - currently disabled (no functionality)
+            popupExpand.addEventListener('click', () => {
+                // TODO: Implement expand functionality
+                console.log('Expand clicked - functionality not implemented yet');
             });
             
             // Function to close popup
@@ -361,7 +353,7 @@
                 setTimeout(() => {
                     imagePopup.classList.remove('active', 'closing');
                     
-                    // Reset popup position to centered for next open
+                    // Reset popup position for next open
                     imagePopup.style.left = '';
                     imagePopup.style.top = '';
                     imagePopup.style.transform = '';
@@ -404,13 +396,10 @@
             popupNavLeft.addEventListener('click', navigateToPreviousImage);
             popupNavRight.addEventListener('click', navigateToNextImage);
             
-            // Keyboard navigation
+            // Keyboard navigation (image switching only)
             document.addEventListener('keydown', (e) => {
                 if (imagePopup.classList.contains('active')) {
                     switch (e.key) {
-                        case 'Escape':
-                            closePopup();
-                            break;
                         case 'ArrowLeft':
                             navigateToPreviousImage();
                             break;
@@ -436,9 +425,14 @@
             let resizeStartHeight = 0;
             let currentCorner = null;
             
-            // Start dragging when clicking on the navigation bar
+            // Start dragging when mouse is pressed AND moved on navigation bar
             const popupNav = document.querySelector('.popup-nav');
             popupNav.addEventListener('mousedown', startDrag);
+            
+            // Prevent dragging when clicking on filename text
+            document.getElementById('popup-filename').addEventListener('mousedown', (e) => {
+                e.stopPropagation(); // Prevent drag from starting
+            });
             
             // Start resizing when clicking on corner handles
             const resizeHandles = document.querySelectorAll('.resize-handle');
@@ -447,57 +441,92 @@
             });
             
             function startDrag(e) {
-                if (e.target.closest('.popup-actions')) {
-                    return; // Don't start drag if clicking on buttons
+                // Don't start drag if clicking on buttons or filename
+                if (e.target.closest('.popup-actions') || e.target.id === 'popup-filename') {
+                    return;
                 }
                 
-                isDragging = true;
+                // Only allow dragging from the navigation bar background area
+                if (!e.target.closest('.popup-nav') || e.target.closest('.wrapper-actions')) {
+                    return;
+                }
+                
+                // Set initial drag state but don't start dragging yet
                 dragStartX = e.clientX;
                 dragStartY = e.clientY;
                 
-                // Use CSS class to disable animations during drag
-                imagePopup.classList.add('dragging');
+                // Add event listeners for movement detection
+                document.addEventListener('mousemove', checkForDrag);
+                document.addEventListener('mouseup', cancelDrag);
                 
+                // Prevent text selection during potential drag
+                e.preventDefault();
+            }
+            
+            // Check if mouse movement exceeds threshold to start actual dragging
+            function checkForDrag(e) {
+                const deltaX = Math.abs(e.clientX - dragStartX);
+                const deltaY = Math.abs(e.clientY - dragStartY);
+                const threshold = 5; // 5px movement threshold
+                
+                if (deltaX > threshold || deltaY > threshold) {
+                    // Movement threshold exceeded, start actual dragging
+                    document.removeEventListener('mousemove', checkForDrag);
+                    document.removeEventListener('mouseup', cancelDrag);
+                    
+                    startActualDrag();
+                }
+            }
+            
+            // Cancel drag if mouse is released without movement
+            function cancelDrag() {
+                document.removeEventListener('mousemove', checkForDrag);
+                document.removeEventListener('mouseup', cancelDrag);
+            }
+            
+            // Start the actual dragging process
+            function startActualDrag() {
+                isDragging = true;
+                
+                // Get current popup position from getBoundingClientRect
                 const rect = imagePopup.getBoundingClientRect();
                 popupStartX = rect.left;
                 popupStartY = rect.top;
                 
+                // Use CSS class to disable animations during drag
+                imagePopup.classList.add('dragging');
+                
                 document.addEventListener('mousemove', drag);
                 document.addEventListener('mouseup', stopDrag);
-                
-                // Prevent text selection during drag
-                e.preventDefault();
             }
             
             function drag(e) {
                 if (!isDragging) return;
                 
-                // Use requestAnimationFrame for smooth 60fps dragging
-                requestAnimationFrame(() => {
-                    const deltaX = e.clientX - dragStartX;
-                    const deltaY = e.clientY - dragStartY;
-                    
-                    let newX = popupStartX + deltaX;
-                    let newY = popupStartY + deltaY;
-                    
-                    // Get viewport dimensions
-                    const viewportWidth = window.innerWidth;
-                    const viewportHeight = window.innerHeight;
-                    
-                    // Get popup dimensions
-                    const popupRect = imagePopup.getBoundingClientRect();
-                    const popupWidth = popupRect.width;
-                    const popupHeight = popupRect.height;
-                    
-                    // Constrain to viewport bounds
-                    newX = Math.max(0, Math.min(newX, viewportWidth - popupWidth));
-                    newY = Math.max(0, Math.min(newY, viewportHeight - popupHeight));
-                    
-                    // Apply new position using left/top for absolute positioning
-                    imagePopup.style.left = newX + 'px';
-                    imagePopup.style.top = newY + 'px';
-                    imagePopup.style.transform = 'none'; // Remove centering transform
-                });
+                // Calculate new position
+                const deltaX = e.clientX - dragStartX;
+                const deltaY = e.clientY - dragStartY;
+                
+                let newX = popupStartX + deltaX;
+                let newY = popupStartY + deltaY;
+                
+                // Get viewport dimensions
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // Get popup dimensions
+                const popupRect = imagePopup.getBoundingClientRect();
+                const popupWidth = popupRect.width;
+                const popupHeight = popupRect.height;
+                
+                // Constrain to viewport bounds
+                newX = Math.max(0, Math.min(newX, viewportWidth - popupWidth));
+                newY = Math.max(0, Math.min(newY, viewportHeight - popupHeight));
+                
+                // Apply new position directly to avoid CSS conflicts
+                imagePopup.style.left = newX + 'px';
+                imagePopup.style.top = newY + 'px';
+                imagePopup.style.transform = 'none';
             }
             
             function stopDrag() {

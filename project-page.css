@@ -489,6 +489,8 @@
     contain: layout style paint;
 }
 
+
+
 .image-center-popup .popup-nav {
     background-color: #f4f4f4;
     padding: 15px 30px;
@@ -595,32 +597,34 @@
 
 /* Popup dragging state - Disable animations during drag */
 .image-center-popup.dragging {
-    animation: none !important;
-    transition: none !important;
+    animation: none;
+    transition: none;
 }
 
 /* Popup resizing state - Disable animations during resize */
 .image-center-popup.resizing {
-    animation: none !important;
-    transition: none !important;
+    animation: none;
+    transition: none;
+}
+
+
+
+/* Smooth size transitions when not actively resizing or dragging */
+.image-center-popup:not(.resizing):not(.dragging) {
+    transition: width 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                height 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Smooth GPU-accelerated interactions */
 .image-center-popup {
     /* Enable GPU acceleration */
     will-change: transform, width, height;
-    /* Smooth transitions when not dragging/resizing */
-    transition: width 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                height 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    /* Note: No transform transition to avoid conflicts with dragging */
+    /* No transitions to avoid conflicts with dragging and resizing */
+    /* Transitions are only applied during specific states when needed */
 }
 
 /* Prevent body scroll when popup is active - CSS-only approach */
-.image-center-popup.active ~ body,
-.image-center-popup.active ~ * {
-    /* This selector ensures popup state doesn't affect other elements */
-    /* The popup is completely isolated */
-}
+
 
 /* Popup animation keyframes */
 @keyframes popupEnter {
