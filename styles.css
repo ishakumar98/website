@@ -1070,7 +1070,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 0 0 auto;
   min-width: 245px;
   max-width: 300px;
@@ -1081,7 +1081,7 @@ body {
   height: 210px;
   flex-shrink: 0;
   position: relative;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 11px;
   box-sizing: border-box;
 }
@@ -1091,7 +1091,7 @@ body {
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .work-item .title {
@@ -1099,7 +1099,7 @@ body {
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .work-item .title span {
@@ -1107,7 +1107,7 @@ body {
   color: #000000;
   font-weight: 400;
   text-align: center;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0 6px;
   border-radius: 4px;
 }
@@ -1116,6 +1116,7 @@ body {
 .work-item:hover .wrapper-image {
   background-color: rgba(29, 28, 29, 0.06);
   border-radius: 8px;
+  transform: translateY(-2px);
 }
 
 /* Text file hover - background hugs the image content */
@@ -1162,6 +1163,7 @@ body {
 
 .work-container {
   padding: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 } 
 
 /* Navigation breadcrumb styling */
@@ -1193,6 +1195,27 @@ body {
   opacity: 1;
   padding: 0 4px;
   border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Individual letter styling for animations */
+.name-display .letter {
+  display: inline-block;
+  transition: all 400ms ease-out;
+  transform: rotate(0deg) translateY(0px);
+  letter-spacing: -0.23em;
+}
+
+/* Bio text links styling */
+.bio-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bio-link:hover {
+  color: #EA2CFF;
 }
 
 /* Forward slash styling */
@@ -1229,4 +1252,6 @@ body {
   margin-top: 1rem;
   display: inline-block;
 }
+
+
 

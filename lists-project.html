@@ -171,63 +171,92 @@
                 const viewportHeight = window.innerHeight;
                 const projectImagesHeight = projectImagesSection.offsetHeight;
                 
+                // LERP variables for smooth movement
+                let currentTop = viewportHeight;
+                let targetTop = viewportHeight;
+                const lerpFactor = 0.05; // More inertia - lower = gooier
+                
+                // Momentum variables for LSVP-style gooey feel
+                let velocity = 0;
+                let isScrolling = false;
+                let lastScrollY = 0;
+                let scrollTimeout;
+                
                 // Set initial position: top edge at bottom of viewport
                 projectImagesSection.style.top = viewportHeight + 'px';
                 
                 function updateProjectImagesPosition() {
                     const scrollY = window.pageYOffset;
+                    const scrollDelta = scrollY - lastScrollY;
+                    lastScrollY = scrollY;
+                    
+                    // Detect if user is actively scrolling
+                    isScrolling = true;
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        isScrolling = false;
+                    }, 100); // Consider scrolling stopped after 100ms
                     
                     // Apply scroll multiplier to slow down overall movement (LSVP technique)
-                    const scrollMultiplier = 0.6; // Makes scroll feel 40% slower
+                    const scrollMultiplier = 0.25; // Even slower for more gooey feel
                     const adjustedScrollY = scrollY * scrollMultiplier;
                     
                     // Calculate scroll progress based on images container height
-                    // The text is fixed, so we only need to consider the images container
                     const maxScroll = projectImagesHeight;
                     const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
                     
-                    // Apply easing for smooth movement with momentum building
-                    // Start slower, build momentum, then ease out
+                    // Enhanced easing for more dramatic momentum building and deceleration
                     let easedProgress;
-                    if (scrollProgress < 0.3) {
-                        // Start very slow (0-30% of scroll)
-                        easedProgress = scrollProgress * scrollProgress * 0.5;
-                    } else if (scrollProgress < 0.7) {
-                        // Build momentum (30-70% of scroll)
-                        easedProgress = 0.045 + (scrollProgress - 0.3) * 1.5;
+                    if (scrollProgress < 0.25) {
+                        // Start even slower (0-25% of scroll) - more dramatic slow start
+                        easedProgress = scrollProgress * scrollProgress * scrollProgress * 0.3;
+                    } else if (scrollProgress < 0.65) {
+                        // Build momentum (25-65% of scroll) - more aggressive acceleration
+                        easedProgress = 0.012 + (scrollProgress - 0.25) * 2.2;
                     } else {
-                        // Ease out with more dramatic deceleration (70-100% of scroll)
-                        easedProgress = 0.645 + (1 - Math.pow(1 - (scrollProgress - 0.7) / 0.3, 3.5));
+                        // Ease out with very dramatic deceleration (65-100% of scroll)
+                        const finalProgress = (scrollProgress - 0.65) / 0.35;
+                        easedProgress = 0.892 + (1 - Math.pow(1 - finalProgress, 4.5));
                     }
                     
                     // Calculate new top position
-                    // Start: top edge at bottom of viewport (viewportHeight)
-                    // End: top edge at top of viewport (0) - so it fills the whole viewport
                     const startTop = viewportHeight;
                     const endTop = 0;
                     const newTop = startTop - (easedProgress * (startTop - endTop));
                     
-                    // Apply position with smoothing and weighted feel
-                    projectImagesSection.style.top = newTop + 'px';
-                    
-                    // Add subtle transform for extra weighted feel
-                    const transformY = -(scrollY * 0.15); // Very subtle weighted movement
-                    projectImagesSection.style.transform = `translateY(${transformY}px)`;
+                    // Apply LERP for smooth, fluid movement
+                    targetTop = newTop;
                 }
                 
-                // Update on scroll with throttling for smooth performance
-                let ticking = false;
-                function throttledUpdate() {
-                    if (!ticking) {
-                        requestAnimationFrame(() => {
-                            updateProjectImagesPosition();
-                            ticking = false;
-                        });
-                        ticking = true;
+                // Enhanced LERP update function with momentum
+                function updateLERP() {
+                    if (isScrolling) {
+                        // During active scroll: smooth interpolation
+                        currentTop += (targetTop - currentTop) * lerpFactor;
+                    } else {
+                        // After scroll stops: apply momentum for gooey feel
+                        velocity += (targetTop - currentTop) * 0.02; // Momentum force
+                        velocity *= 0.92; // Air resistance/damping
+                        currentTop += velocity;
+                        
+                        // Stop momentum when very close to target
+                        if (Math.abs(targetTop - currentTop) < 0.5 && Math.abs(velocity) < 0.1) {
+                            currentTop = targetTop;
+                            velocity = 0;
+                        }
+                    }
+                    
+                    // Apply the smoothed position
+                    projectImagesSection.style.top = currentTop + 'px';
+                    
+                    // Continue animation if we're still moving or have momentum
+                    if (Math.abs(targetTop - currentTop) > 0.1 || Math.abs(velocity) > 0.1) {
+                        requestAnimationFrame(updateLERP);
                     }
                 }
                 
-                window.addEventListener('scroll', throttledUpdate);
+                // Update on scroll
+                window.addEventListener('scroll', updateProjectImagesPosition);
                 
                 // Initial position update
                 updateProjectImagesPosition();

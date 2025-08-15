@@ -79,6 +79,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, 200);
 
+    // Random letter animation system (ALMA-style)
+    function initRandomLetterAnimations() {
+        const letters = document.querySelectorAll('.name-display .letter');
+        
+        if (letters.length === 0) return;
+        
+        // Generate random transform values for each letter
+        function generateRandomTransform() {
+            const rotation = (Math.random() - 0.5) * 12; // -6 to +6 degrees
+            const translateY = (Math.random() - 0.5) * 6; // -3 to +3 pixels
+            const translateX = (Math.random() - 0.5) * 4; // -2 to +2 pixels
+            return `rotate(${rotation}deg) translateY(${translateY}px) translateX(${translateX}px)`;
+        }
+        
+        // Apply random transforms on hover
+        const nameDisplay = document.querySelector('.name-display');
+        if (nameDisplay) {
+            nameDisplay.addEventListener('mouseenter', function() {
+                letters.forEach(letter => {
+                    // Skip space characters
+                    if (letter.textContent.trim() === '') return;
+                    
+                    const randomTransform = generateRandomTransform();
+                    letter.style.transform = randomTransform;
+                });
+            });
+            
+            nameDisplay.addEventListener('mouseleave', function() {
+                letters.forEach(letter => {
+                    letter.style.transform = 'rotate(0deg) translateY(0px) translateX(0px)';
+                });
+            });
+        }
+    }
+    
+    // Initialize random letter animations
+    initRandomLetterAnimations();
+    
     // Interactive name effect cycling
     let currentEffect = 1;
     const nameText = document.querySelector('.name-text');
@@ -198,6 +236,10 @@ document.addEventListener('DOMContentLoaded', function() {
             requestAnimationFrame(updateWorkContainerLERP);
         }
     }
+    
+
+
+
 
 
 }); 
