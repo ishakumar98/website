@@ -177,13 +177,28 @@
                 function updateProjectImagesPosition() {
                     const scrollY = window.pageYOffset;
                     
+                    // Apply scroll multiplier to slow down overall movement (LSVP technique)
+                    const scrollMultiplier = 0.6; // Makes scroll feel 40% slower
+                    const adjustedScrollY = scrollY * scrollMultiplier;
+                    
                     // Calculate scroll progress based on images container height
                     // The text is fixed, so we only need to consider the images container
                     const maxScroll = projectImagesHeight;
-                    const scrollProgress = Math.min(scrollY / maxScroll, 1);
+                    const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
                     
-                    // Apply easing for smooth movement
-                    const easedProgress = 1 - Math.pow(1 - scrollProgress, 3); // easeOutCubic
+                    // Apply easing for smooth movement with momentum building
+                    // Start slower, build momentum, then ease out
+                    let easedProgress;
+                    if (scrollProgress < 0.3) {
+                        // Start very slow (0-30% of scroll)
+                        easedProgress = scrollProgress * scrollProgress * 0.5;
+                    } else if (scrollProgress < 0.7) {
+                        // Build momentum (30-70% of scroll)
+                        easedProgress = 0.045 + (scrollProgress - 0.3) * 1.5;
+                    } else {
+                        // Ease out with more dramatic deceleration (70-100% of scroll)
+                        easedProgress = 0.645 + (1 - Math.pow(1 - (scrollProgress - 0.7) / 0.3, 3.5));
+                    }
                     
                     // Calculate new top position
                     // Start: top edge at bottom of viewport (viewportHeight)
@@ -192,12 +207,27 @@
                     const endTop = 0;
                     const newTop = startTop - (easedProgress * (startTop - endTop));
                     
-                    // Apply position with smoothing
+                    // Apply position with smoothing and weighted feel
                     projectImagesSection.style.top = newTop + 'px';
+                    
+                    // Add subtle transform for extra weighted feel
+                    const transformY = -(scrollY * 0.15); // Very subtle weighted movement
+                    projectImagesSection.style.transform = `translateY(${transformY}px)`;
                 }
                 
-                // Update on scroll
-                window.addEventListener('scroll', updateProjectImagesPosition);
+                // Update on scroll with throttling for smooth performance
+                let ticking = false;
+                function throttledUpdate() {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            updateProjectImagesPosition();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }
+                
+                window.addEventListener('scroll', throttledUpdate);
                 
                 // Initial position update
                 updateProjectImagesPosition();
@@ -211,6 +241,50 @@
             window.addEventListener('resize', () => {
                 adjustFontSize();
                 initProjectImagesScroll();
+            });
+        </script>
+        
+        <!-- Subtle Weighted Scroll Effect -->
+        <script>
+            function initWeightedScroll() {
+                // Add subtle weight to scrolling without changing positioning
+                let ticking = false;
+                
+                function updateScrollWeight() {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            const scrolled = window.pageYOffset;
+                            
+                            // Very subtle header movement for depth
+                            const header = document.querySelector('.page-header');
+                            if (header) {
+                                const yPos = -(scrolled * 0.1); // Very subtle
+                                header.style.transform = `translateY(${yPos}px)`;
+                            }
+                            
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }
+                
+                // Throttle scroll events for performance
+                let scrollTimeout;
+                window.addEventListener('scroll', () => {
+                    if (scrollTimeout) return;
+                    scrollTimeout = setTimeout(() => {
+                        updateScrollWeight();
+                        scrollTimeout = null;
+                    }, 16); // ~60fps
+                });
+                
+                // Initial call
+                updateScrollWeight();
+            }
+            
+            // Initialize weighted scroll when DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                initWeightedScroll();
             });
         </script>
         
