@@ -105,7 +105,7 @@ class FontOptimizer {
             @font-face {
                 font-family: 'Tumla';
                 src: url('./fonts/Tumla-trial/variable/Tumla-TRIALVariableVF.ttf') format('truetype-variations');
-                font-weight: 400 900;
+                font-weight: 100 900;
                 font-display: ${this.fontDisplay};
                 font-feature-settings: 'liga' 1, 'kern' 1;
             }
@@ -113,7 +113,7 @@ class FontOptimizer {
             @font-face {
                 font-family: 'Akke';
                 src: url('./fonts/akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf') format('truetype-variations');
-                font-weight: 400 900;
+                font-weight: 100 900;
                 font-display: ${this.fontDisplay};
                 font-feature-settings: 'liga' 1, 'kern' 1;
             }
