@@ -53,7 +53,7 @@ Add a new project to `project-data.json`:
 ```
 
 ### Step 2: Create Project Page
-Copy `project-template-clean.html` and rename it to `your-project-project.html`
+Copy `project-template.html` and rename it to `your-project-project.html`
 
 ### Step 3: Update Links
 Update the link in `index.html` to point to your new project page.
@@ -73,7 +73,7 @@ website-project/
 ├── project-script.js          # Shared functionality
 ├── project-template.html      # Base template
 ├── project-page.css           # Project page styles
-├── calendar-project-new.html  # Example implementation
+├── calendar-project.html      # Example implementation
 └── PROJECT_TEMPLATE_README.md # This file
 ```
 
@@ -108,10 +108,10 @@ website-project/
 ## Example: Calendar Project
 The calendar project demonstrates the full system:
 - **ID**: `calendar`
-- **Filename**: `calendar-project-new.html`
+- **Filename**: `calendar-project.html`
 - **Data**: Defined in `project-data.json` under `projects.calendar`
 
 ## Next Steps
-1. Test the new template system with `calendar-project-new.html`
+1. Test the new template system with `calendar-project.html`
 2. Create your next project using the template
 3. Customize the system as needed for your workflow
