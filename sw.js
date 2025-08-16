@@ -40,8 +40,8 @@ const STATIC_FILES = [
     '/js/css/layout.css',
     '/js/css/components.css',
     '/js/css/main.css',
-    './fonts/akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf',
-    './fonts/Tumla-trial/variable/Tumla-TRIALVariableVF.ttf',
+    '/fonts/akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf',
+    '/fonts/Tumla-trial/variable/Tumla-TRIALVariableVF.ttf',
     '/images/folder.svg',
     '/images/text-file-icon.png',
     '/images/text-file-icon.svg'
