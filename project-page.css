@@ -290,8 +290,8 @@
 
 /* PROJECT CONTENT AREA - Clear, defined styling */
 .project-content-area {
-  margin: 2rem 2rem 2rem 2rem;
-  padding: 0;
+  margin: 0;
+  padding: 2rem;
   width: calc(100% - 4rem);
   display: block;
   position: fixed;
@@ -303,8 +303,8 @@
 
 /* Project text block styling */
 .project-text-block {
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
   width: 100%;
 }
 
@@ -316,10 +316,10 @@
   color: #000000;
   max-width: none;
   width: 100%;
-  margin: 0 0 1.5em 0 !important; /* Add bottom margin for spacing between paragraphs */
-  padding: 0 !important;
-  text-align: left !important;
-  text-indent: 0 !important;
+  margin: 0 0 1.5em 0; /* Add bottom margin for spacing between paragraphs */
+  padding: 0;
+  text-align: left;
+  text-indent: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
   /* Ensure no layout shifts during slant */
@@ -331,7 +331,7 @@
 
 /* Remove margin from last paragraph to avoid extra space at bottom */
 .project-description:last-child {
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 
 /* Individual letter styling for project descriptions - override conflicting .letter rules */
@@ -345,8 +345,8 @@
   position: relative;
   transform-origin: left center;
   /* Ensure no unwanted spacing */
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
 }
 
 /* Word container styling - prevents word breaking */
@@ -368,8 +368,8 @@
 
 /* Ensure first letter has no left margin */
 .project-description .letter:first-child {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .project-description:first-child {
@@ -378,7 +378,6 @@
 
 /* Project credits styling */
 .project-credits {
-  margin-top: 2rem;
 }
 
 .credits-text {
@@ -387,7 +386,6 @@
   font-size: 16px;
   line-height: 1.4;
   color: #000000;
-  margin: 0;
   text-align: left;
   opacity: 0.8;
   transition: font-variation-settings 400ms ease-out;
