@@ -4,6 +4,20 @@
 
 This is a sophisticated, enterprise-grade portfolio website with a comprehensive system architecture. **Before making any changes, you MUST read the documentation to understand how everything works together.**
 
+## 📁 **Project Structure**
+
+Your project is organized into a clean, professional folder structure:
+
+```
+📚 docs/          # All documentation (start here!)
+🔧 js/            # All JavaScript files and modules
+🎨 fonts/         # Typography assets
+🖼️ images/        # Visual assets and project images
+📄 Root files     # Main HTML and configuration
+```
+
+**See [docs/PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) for complete folder organization.**
+
 ## 🚨 **Critical First Steps**
 
 ### **1. Start Here - System Overview**
