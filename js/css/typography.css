@@ -6,7 +6,7 @@
 /* Font Face Declarations */
 @font-face {
     font-family: 'Tumla';
-    src: url('../Tumla-trial/static/Tumla-TRIALRegular.otf') format('opentype');
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALRegular.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -14,7 +14,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('../Tumla-trial/static/Tumla-TRIALMedium.otf') format('opentype');
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALMedium.otf') format('opentype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -22,7 +22,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('../Tumla-trial/static/Tumla-TRIALBold.otf') format('opentype');
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALBold.otf') format('opentype');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -30,7 +30,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('../Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -38,7 +38,7 @@
 
 @font-face {
     font-family: 'Akke';
-    src: url('../akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf') format('truetype-variations');
+    src: url('../../fonts/akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf') format('truetype-variations');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;

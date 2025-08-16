@@ -7,7 +7,7 @@
 /* Tumla - Modern, elegant font family with multiple weights */
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALHairline.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALHairline.otf') format('opentype');
     font-weight: 100;
     font-style: normal;
     font-display: swap;
@@ -15,7 +15,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALExtraLight.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALExtraLight.otf') format('opentype');
     font-weight: 200;
     font-style: normal;
     font-display: swap;
@@ -23,7 +23,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -31,7 +31,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALRegular.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALRegular.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -39,7 +39,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALMedium.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALMedium.otf') format('opentype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -47,7 +47,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALSemiBold.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALSemiBold.otf') format('opentype');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -55,7 +55,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALBold.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALBold.otf') format('opentype');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -63,7 +63,7 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('Tumla-trial/static/Tumla-TRIALBlack.otf') format('opentype');
+    src: url('/fonts/Tumla-trial/static/Tumla-TRIALBlack.otf') format('opentype');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -72,7 +72,7 @@
 /* Akke Variable Font - Modern variable font with multiple axes */
 @font-face {
     font-family: 'Akke';
-    src: url('akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf') format('truetype-variations');
+    src: url('/fonts/akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf') format('truetype-variations');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -984,7 +984,7 @@ body {
 
 /* Removed duplicate work-section rule */
 
-.finder li .wrapper-image img[src="folder.svg"] {
+.finder li .wrapper-image img[src="images/folder.svg"] {
   filter: hue-rotate(0deg) saturate(1.2) brightness(1.1);
 }
 
