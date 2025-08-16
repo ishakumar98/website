@@ -236,10 +236,27 @@ document.addEventListener('DOMContentLoaded', function() {
             requestAnimationFrame(updateWorkContainerLERP);
         }
     }
+
+    // Navigation stack functionality
+    const workLinks = document.querySelectorAll('.work-link');
     
-
-
-
-
+    workLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const projectTitle = this.querySelector('.title span').textContent;
+            
+            // Store the project title in sessionStorage for the project page
+            sessionStorage.setItem('projectTitle', projectTitle);
+            
+            // If it's a link to a project page, let it navigate
+            if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+                return; // Allow normal navigation
+            }
+            
+            // For placeholder links, prevent default and show message
+            e.preventDefault();
+    
+            alert(`Project "${projectTitle}" - Coming soon!`);
+        });
+    });
 
 }); 

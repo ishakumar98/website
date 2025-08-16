@@ -880,60 +880,14 @@ strong {
   text-align: left;
 }
 
-.theme-picker-column {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
 
-.theme-picker {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.theme-picker:hover {
-  transform: scale(1.1);
-  animation: wiggle 0.6s ease-in-out infinite;
-}
-
-@keyframes wiggle {
-  0%, 100% {
-    transform: scale(1.1) rotate(0deg);
-  }
-  25% {
-    transform: scale(1.1) rotate(-3deg);
-  }
-  75% {
-    transform: scale(1.1) rotate(3deg);
-  }
-}
 
 .flower-icon {
   width: 14px;
   height: 14px;
 }
 
-/* Theme System */
-:root {
-  --primary-color: #FECCF1;
-  --secondary-color: #FBE2FF;
-  --background-color: #FFF5F8;
-  --text-color: #000000;
-  --folder-top: #FFC5F0;
-  --folder-bottom: #FECCF1;
-  --work-shadow: rgba(255, 204, 241, 0.3);
-}
 
-/* Persimmon Theme */
-[data-theme="persimmon"] {
-  --primary-color: #FF6B35;
-  --secondary-color: #FFE4D6;
-  --background-color: #FEFED8;
-  --text-color: #2D1810;
-  --folder-top: #FF8C69;
-  --folder-bottom: #FFB08F;
-  --work-shadow: rgba(254, 254, 216, 0.3);
-}
 
 /* Apply theme colors */
 body {
@@ -952,86 +906,11 @@ body {
   filter: hue-rotate(0deg) saturate(1.2) brightness(1.1);
 }
 
-[data-theme="persimmon"] .finder li .wrapper-image img[src="folder.svg"] {
-  filter: hue-rotate(25deg) saturate(1.5) brightness(1.2);
-}
 
 
 
-/* Theme Switcher Styles */
-.theme-switcher {
-  position: fixed;
-  top: 32px;
-  right: 32px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 10000;
-  min-width: 280px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
 
-.theme-info h3 {
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
 
-.theme-info p {
-  margin: 0 0 20px 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #666;
-}
-
-.theme-nav {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.theme-nav-btn {
-  background: #FCE8FF;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #1a1a1a;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
-}
-
-.theme-nav-btn:hover {
-  background: #FECCF1;
-  transform: translateY(-1px);
-}
-
-.theme-nav-btn:hover {
-  background: #FECCF1;
-  transform: translateY(-1px);
-}
-
-.theme-nav-btn:active {
-  transform: translateY(0);
-}
-
-.theme-indicator {
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
-}
-
-#theme-counter {
-  color: #FF7DCB;
-  font-weight: 600;
-}
 
 /* Dandelion Section Styles */
 #dandelion-section {
@@ -1267,10 +1146,7 @@ body {
   text-align: left;
 }
 
-.theme-picker {
-  margin-top: 1rem;
-  display: inline-block;
-}
+
 
 
 

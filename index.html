@@ -138,83 +138,8 @@
     <script src="script.js"></script>
     <script src="scroll-behavior.js"></script>
     
-    <script>
-        // Theme cycling functionality
-        let currentTheme = 'default';
-        const themes = ['default', 'persimmon'];
-        
-        function cycleTheme() {
-            const currentIndex = themes.indexOf(currentTheme);
-            const nextIndex = (currentIndex + 1) % themes.length;
-            const nextTheme = themes[nextIndex];
-            
-            // Remove current theme
-            document.documentElement.removeAttribute('data-theme');
-            if (currentTheme !== 'default') {
-                document.documentElement.removeAttribute('data-theme');
-            }
-            
-            // Apply next theme
-            if (nextTheme !== 'default') {
-                document.documentElement.setAttribute('data-theme', nextTheme);
-            }
-            
-            currentTheme = nextTheme;
-    
-        }
-        
-        // Add click event to theme picker with stronger event handling
-        document.addEventListener('DOMContentLoaded', function() {
-            const themePicker = document.querySelector('.theme-picker');
-            if (themePicker) {
-                // Use mousedown instead of click to prevent fireworks interference
-                themePicker.addEventListener('mousedown', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
-            
-                    cycleTheme();
-                    return false;
-                });
-                
-                // Also prevent any other click events
-                themePicker.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
-                    return false;
-                });
-            }
-        });
-    </script>
-    <script>
-        // Name hover effects removed
-        const nameElement = document.querySelector('.name-text');
-        
-        // Navigation stack functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const workLinks = document.querySelectorAll('.work-link');
-            
-            workLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const projectTitle = this.querySelector('.title span').textContent;
-                    
-                    // Store the project title in sessionStorage for the project page
-                    sessionStorage.setItem('projectTitle', projectTitle);
-                    
-                    // If it's a link to a project page, let it navigate
-                    if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
-                        return; // Allow normal navigation
-                    }
-                    
-                    // For placeholder links, prevent default and show message
-                    e.preventDefault();
-            
-                    alert(`Project "${projectTitle}" - Coming soon!`);
-                });
-            });
-        });
-    </script>
+
+
     
 
 </body>
