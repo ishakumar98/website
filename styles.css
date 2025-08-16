@@ -385,7 +385,7 @@ body {
 }
 
 .intro {
-    font-family: 'Modern Era', sans-serif;
+    font-family: 'Tumla', sans-serif;
     font-size: 1.1rem;
     color: #333333;
     max-width: 100%;
@@ -774,7 +774,7 @@ strong {
   line-height: 1.6;
   color: #000000;
   opacity: 0.8;
-  font-family: 'Modern Era', sans-serif;
+  font-family: 'Tumla', sans-serif;
   position: relative;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -785,6 +785,7 @@ strong {
   color: #000000;
   text-decoration: none;
   opacity: 0.8;
+  font-weight: bold;
   transition: all 0.3s ease;
 }
 
@@ -879,12 +880,12 @@ strong {
 
 .bio-column h1 {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.6;
   color: #000000;
   opacity: 0.8;
-  font-family: 'Modern Era', sans-serif;
+  font-family: 'Tumla', sans-serif;
   text-align: left;
 }
 
@@ -1195,6 +1196,7 @@ body {
 .name-link {
   text-decoration: none;
   color: inherit;
+  font-weight: bold;
   transition: all 0.15s cubic-bezier(0.4, 0.2, 1);
   opacity: 0.75;
   padding: 0 4px;
@@ -1236,6 +1238,7 @@ body {
 .bio-link {
   text-decoration: none;
   color: inherit;
+  font-weight: bold;
   transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1264,12 +1267,12 @@ body {
 
 .bio-text {
   margin: 1rem 0;
-  font-size: 12px;
+  font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.6;
   color: #000000;
   opacity: 0.8;
-  font-family: 'Modern Era', sans-serif;
+  font-family: 'Tumla', sans-serif;
   text-align: left;
 }
 
