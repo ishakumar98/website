@@ -5,13 +5,14 @@
 // CONSTANTS - All magic numbers extracted for easy adjustment
 // ============================================================================
 
-// ISHA Slant Effect System
-const SLANT_CONFIG = {
-    MOUSE_RADIUS: 125,           // Distance from mouse where slant effect activates (px)
-    MAX_SLANT_VALUE: 24,         // Maximum slant angle (positive = rightward)
-    TRANSITION_DURATION: 400,    // Smooth transition back to upright (ms)
-    CONTENT_DELAY: 100           // Delay for content population (ms)
-};
+        // ISHA Weight Effect System (for Akke Variable Font)
+        const SLANT_CONFIG = {
+            MOUSE_RADIUS: 125,           // Distance from mouse where weight effect activates (px)
+            MAX_WEIGHT_VALUE: 900,       // Maximum weight value for Akke variable font
+            MIN_WEIGHT_VALUE: 25,        // Minimum weight value for Akke variable font (ultra-thin)
+            TRANSITION_DURATION: 400,    // Smooth transition back to normal (ms)
+            CONTENT_DELAY: 100           // Delay for content population (ms)
+        };
 
 // Dynamic Font Sizing
 const FONT_CONFIG = {
@@ -96,8 +97,9 @@ async function loadProjectData() {
             title: "Calendar",
             year: "2024 - 2025",
             description: [
-                "I currently design for Slack's Productivity Team. Our goal is to expand the value of Slack beyond messaging. From 2024 to 2025, our team worked to imagine and engineer a native Calendar experience in Slack.",
-                "Calendar aims to integrate all your tools & data into a single, unified layer that allows you to manage all the things competing for your time. I contributed several elements of the visual design, and led design strategy to create an overall vision for the project. We wanted the experience to feel powerful, and playful — true to Slack's personality and promise."
+                "This work was completed while staffed on Slack's Zero to One product team as a product design lead. From 2024 to 2025, our team worked to design a native Calendar experience in Slack.",
+                "Calendar aims to integrate all your tools & data into a single, unified layer that allows you to manage all the things competing for your time, right in Slack. I contributed several elements of the visual design, and led design strategy to create an overall vision for the project.",
+                "We wanted the experience to feel powerful, and playful — true to Slack's personality and product value. This work is currently in progress, and set to GA next year."
             ],
             credits: "Many thanks to Samuel Kang, Amanda Glanz, Timothy Wittig, Ford St. John, Elyse Vest, Parag Shah, Stewart Taylor, and Stuart Lovinggood for their talent and time.",
             images: [
@@ -356,16 +358,16 @@ function initISHASlantSystem() {
                     const distance = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2));
                     
                     if (distance < SLANT_CONFIG.MOUSE_RADIUS) {
-                        // Map distance to slant using constants - positive values for rightward slant
-                        const slantValue = map(distance, 0, SLANT_CONFIG.MOUSE_RADIUS, SLANT_CONFIG.MAX_SLANT_VALUE, 0);
+                        // Map distance to weight using constants - higher weight when closer to mouse
+                        const weightValue = map(distance, 0, SLANT_CONFIG.MOUSE_RADIUS, SLANT_CONFIG.MAX_WEIGHT_VALUE, SLANT_CONFIG.MIN_WEIGHT_VALUE);
                         span.style.transition = '0ms';
-                        span.style.fontVariationSettings = `"slnt" ${slantValue}`;
+                        span.style.fontVariationSettings = `"wght" ${weightValue}`;
                         
 
                     } else {
-                        // Smooth transition back to upright when far from mouse
+                        // Smooth transition back to normal weight when far from mouse
                         span.style.transition = `font-variation-settings ${SLANT_CONFIG.TRANSITION_DURATION}ms ease-out`;
-                        span.style.fontVariationSettings = '"slnt" 0';
+                        span.style.fontVariationSettings = '"wght" 25';
                     }
                 });
             });
@@ -387,10 +389,11 @@ function adjustFontSize() {
     
     const viewportHeight = window.innerHeight;
     const headerHeight = document.querySelector('.page-header')?.offsetHeight || 0;
+    const creditsSection = document.querySelector('.project-credits')?.offsetHeight || 0;
     const margins = FONT_CONFIG.TOTAL_MARGINS; // Combined top + bottom margins
-    const availableHeight = viewportHeight - headerHeight - margins;
     
-
+    // Calculate available height for text content only
+    const availableHeight = viewportHeight - headerHeight - creditsSection - margins - 100; // Extra buffer for spacing
     
     // Start with a large font size and reduce until it fits
     let fontSize = FONT_CONFIG.INITIAL_SIZE;
@@ -403,8 +406,7 @@ function adjustFontSize() {
     // Check if the entire text block fits
     const textBlock = document.querySelector('.project-text-block');
     if (textBlock) {
-
-        
+        // Reduce font size until content fits
         while (textBlock.scrollHeight > availableHeight && fontSize > FONT_CONFIG.MIN_SIZE) {
             fontSize -= 1;
             textElements.forEach(element => {
@@ -412,23 +414,25 @@ function adjustFontSize() {
             });
         }
         
-        // Ensure no scrolling by setting a final check
+        // Final check to ensure content fits
         if (textBlock.scrollHeight > availableHeight) {
             fontSize = Math.floor(availableHeight / textBlock.scrollHeight * fontSize);
             textElements.forEach(element => {
                 element.style.fontSize = fontSize + 'px';
             });
         }
-        
-
     }
     
     // Also adjust empty line height proportionally to font size
     const emptyLines = document.querySelectorAll('.empty-line-break');
-    const lineHeight = Math.max(FONT_CONFIG.LINE_HEIGHT_MIN, fontSize * FONT_CONFIG.LINE_HEIGHT_RATIO); // Proportional to font size, minimum 0.3em
+    const lineHeight = Math.max(FONT_CONFIG.LINE_HEIGHT_MIN, fontSize * FONT_CONFIG.LINE_HEIGHT_RATIO);
     emptyLines.forEach(line => {
         line.style.height = lineHeight + 'em';
     });
+    
+    console.log('Font size adjusted to:', fontSize, 'px');
+    console.log('Available height:', availableHeight, 'px');
+    console.log('Text block height:', textBlock?.scrollHeight, 'px');
 }
 
 // Initialize when DOM is loaded

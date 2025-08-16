@@ -32,7 +32,7 @@
   right: 0.67rem;
   top: 50%;
   transform: translateY(-50%);
-  font-family: 'Modern Era', sans-serif;
+  font-family: 'Tumla', sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #000000;
@@ -49,7 +49,7 @@
 
 
 .project-name {
-    font-family: 'Modern Era', sans-serif;
+    font-family: 'Tumla', sans-serif;
     font-size: clamp(2.5rem, 12vw, 18vw);
     font-weight: 600;
     color: var(--text-color);
@@ -68,7 +68,7 @@
 }
 
 .project-intro {
-    font-family: 'Modern Era', sans-serif;
+    font-family: 'Tumla', sans-serif;
     font-size: 1.1rem;
     color: var(--text-color);
     max-width: 100%;
@@ -106,7 +106,7 @@
     color: var(--text-color);
     padding: 6px 12px;
     border-radius: 8px;
-    font-family: 'Modern Era', sans-serif;
+    font-family: 'Tumla', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
@@ -309,13 +309,14 @@
 }
 
 .project-description {
-  font-family: 'TT Norms Pro', sans-serif;
-  font-variation-settings: 'slnt' 0;
-  line-height: 1.2;
+  font-family: 'Akke', sans-serif;
+  font-weight: 25;
+  font-variation-settings: 'wght' 25;
+  line-height: 1.5; /* Increased from 0.75 to 1.5 for better readability */
   color: #000000;
   max-width: none;
   width: 100%;
-  margin: 0 !important;
+  margin: 0 0 1.5em 0 !important; /* Add bottom margin for spacing between paragraphs */
   padding: 0 !important;
   text-align: left !important;
   text-indent: 0 !important;
@@ -326,6 +327,11 @@
   /* Ensure proper word wrapping */
   word-break: normal;
   white-space: normal;
+}
+
+/* Remove margin from last paragraph to avoid extra space at bottom */
+.project-description:last-child {
+  margin-bottom: 0 !important;
 }
 
 /* Individual letter styling for project descriptions - override conflicting .letter rules */
@@ -376,7 +382,8 @@
 }
 
 .credits-text {
-  font-family: 'TT Norms Pro', sans-serif;
+  font-family: 'Tumla', sans-serif;
+  font-weight: 300;
   font-size: 16px;
   line-height: 1.4;
   color: #000000;

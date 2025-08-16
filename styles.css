@@ -1,70 +1,86 @@
+
+
+
+
+
+
+/* Tumla - Modern, elegant font family with multiple weights */
 @font-face {
-    font-family: 'Modern Era';
-    src: url('Modern Era/Normal/ModernEraTRIAL-Regular.otf') format('opentype');
-    font-weight: 400;
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALHairline.otf') format('opentype');
+    font-weight: 100;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Modern Era';
-    src: url('Modern Era/Normal/ModernEraTRIAL-Bold.otf') format('opentype');
-    font-weight: 700;
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALExtraLight.otf') format('opentype');
+    font-weight: 200;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Modern Era';
-    src: url('Modern Era/Normal/ModernEraTRIAL-Medium.otf') format('opentype');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Modern Era';
-    src: url('Modern Era/Normal/ModernEraTRIAL-Light.otf') format('opentype');
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
     font-weight: 300;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Modern Era';
-    src: url('Modern Era/Normal/ModernEraTRIAL-Italic.otf') format('opentype');
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALRegular.otf') format('opentype');
     font-weight: 400;
-    font-style: italic;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Modern Era';
-    src: url('Modern Era/Normal/ModernEraTRIAL-BoldItalic.otf') format('opentype');
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALMedium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALSemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALBold.otf') format('opentype');
     font-weight: 700;
-    font-style: italic;
-}
-
-/* Editorial Old Font */
-@font-face {
-    font-family: 'Editorial Old';
-    src: url('/Users/isha.kumar/website-project/PP Editorial Old - Free For Personal Use v1.0/otf/PPEditorialOld-Regular.otf') format('opentype');
-    font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Editorial Old';
-    src: url('/Users/isha.kumar/website-project/PP Editorial Old - Free For Personal Use v1.0/otf/PPEditorialOld-Italic.otf') format('opentype');
-    font-weight: 400;
-    font-style: italic;
+    font-family: 'Tumla';
+    src: url('Tumla-trial/static/Tumla-TRIALBlack.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
     font-display: swap;
 }
 
-/* TT Norms Pro Variable Font - Supports slant variations */
+/* Akke Variable Font - Modern variable font with multiple axes */
 @font-face {
-    font-family: 'TT Norms Pro';
-    src: url('TT_Norms_Pro_Variable_Trial.woff2') format('woff2-variations');
+    font-family: 'Akke';
+    src: url('akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf') format('truetype-variations');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
+
+
+
+
 
 * {
     margin: 0;
@@ -80,7 +96,7 @@ a {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Modern Era', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Tumla', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #FFF5F8;
   color: #000000;
   line-height: 1.6;
@@ -163,7 +179,7 @@ body {
 }
 
 .header-text p {
-    font-family: 'Fondation', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Tumla', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 400;
     font-size: 18px;
     line-height: 1.6;
@@ -290,7 +306,7 @@ body {
 
 /* Keep the old .name class for fallback */
 .name {
-    font-family: 'Modern Era', sans-serif;
+    font-family: 'Tumla', sans-serif;
     font-size: clamp(2.5rem, 12vw, 18vw);
     font-weight: 600;
     color: #000000;
@@ -1043,7 +1059,7 @@ body {
   margin: 0;
   font-size: 12px;
   color: #9e9e9e;
-  font-family: 'Maxeville Test', sans-serif;
+  font-family: 'Tumla', sans-serif;
 } 
 
 /* Work Section Styles */

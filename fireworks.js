@@ -134,7 +134,7 @@ class Particle {
   
     show() {
       textSize(16); // Smaller text size to fit in center
-      textFont('Modern Era'); // Changed to Modern Era font
+      textFont('Tumla'); // Changed to Tumla font
       angleMode(DEGREES);
   
       if (!this.firework) {
