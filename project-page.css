@@ -1,4 +1,15 @@
 /* Project Page Layout - General structure for all folder items */
+
+/* CSS Custom Properties for scalable dimensions */
+:root {
+  --flower-height: 6em;
+  --flower-margin-top: 2rem;
+  --flower-margin-bottom: 1.5rem;
+  --container-padding-top: 16px;
+  --container-padding-bottom: 16px;
+  --image-container-height: 168px; /* Total height of visible image container */
+}
+
 .project-page-container {
     min-height: 100vh;
     background: linear-gradient(to bottom, #FCDFE3 0%, #FEF3F9 25%);
@@ -293,12 +304,13 @@
   margin: 0;
   padding: 2rem;
   width: calc(100% - 4rem);
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
   z-index: 5;
+  height: var(--image-container-top, 100vh);
+  overflow: auto; /* Allow scrolling if content exceeds height */
 }
 
 /* Project text block styling */
@@ -316,7 +328,7 @@
   color: #000000;
   max-width: none;
   width: 100%;
-  margin: 0 0 1.5em 0; /* Add bottom margin for spacing between paragraphs */
+  margin: 0;
   padding: 0;
   text-align: left;
   text-indent: 0;
@@ -327,12 +339,10 @@
   /* Ensure proper word wrapping */
   word-break: normal;
   white-space: normal;
+
 }
 
-/* Remove margin from last paragraph to avoid extra space at bottom */
-.project-description:last-child {
-  margin-bottom: 0;
-}
+
 
 /* Individual letter styling for project descriptions - override conflicting .letter rules */
 .project-description .letter {
@@ -372,9 +382,7 @@
   padding-left: 0;
 }
 
-.project-description:first-child {
-  margin-bottom: 1rem;
-}
+
 
 /* Project credits styling */
 .project-credits {
@@ -383,8 +391,7 @@
 .credits-text {
   font-family: 'Tumla', sans-serif;
   font-weight: 300;
-  font-size: 16px;
-  line-height: 1.4;
+  font-size: 1rem;
   color: #000000;
   text-align: left;
   opacity: 0.8;

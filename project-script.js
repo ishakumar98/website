@@ -14,14 +14,7 @@
             CONTENT_DELAY: 100           // Delay for content population (ms)
         };
 
-// Dynamic Font Sizing
-const FONT_CONFIG = {
-    INITIAL_SIZE: 100,           // Starting font size (px)
-    MIN_SIZE: 8,                 // Minimum font size (px)
-    TOTAL_MARGINS: 80,           // Combined top + bottom margins (px)
-    LINE_HEIGHT_MIN: 0.3,        // Minimum line height multiplier
-    LINE_HEIGHT_RATIO: 0.01      // Font size to line height ratio
-};
+
 
 // Animation & Scroll Behavior
 const ANIMATION_CONFIG = {
@@ -59,8 +52,7 @@ async function initProjectPage() {
     // Initialize project images scroll behavior (pass elements as parameters)
     initProjectImagesScroll(projectImagesSection, flowerElement);
     
-    // Initialize dynamic font sizing (pass elements as parameters)
-    adjustFontSize(pageHeader);
+
     
     // Initialize image popups
     initImagePopups();
@@ -249,6 +241,15 @@ function populateProjectContent() {
             imageList.appendChild(li);
         });
     }
+    
+    // Now that all content is populated, wait for CSS to be fully applied
+    // Use multiple requestAnimationFrame calls to ensure styles are computed
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            const pageHeader = document.querySelector('.page-header');
+            adjustFontSize(pageHeader);
+        });
+    });
 }
 
 // ISHA-Style Mouse-Position Slant System
@@ -385,88 +386,148 @@ function map(value, x1, y1, x2, y2) {
     return (value - x1) * (y2 - x2) / (y1 - x1) + x2;
 }
 
-// Dynamic font sizing function
+// Dynamic font sizing for both description and credits to fill container height
 function adjustFontSize(pageHeader) {
     const textElements = document.querySelectorAll('.project-description');
-    if (textElements.length === 0) {
+    const creditsElements = document.querySelectorAll('.credits-text');
+    const contentArea = document.querySelector('.project-content-area');
+    
+    if (textElements.length === 0 || !contentArea) {
         return;
     }
     
-    const viewportHeight = window.innerHeight;
-    const topMargin = FONT_CONFIG.TOTAL_MARGINS / 2; // Top margin only
-    const bottomMargin = FONT_CONFIG.TOTAL_MARGINS / 2; // Bottom margin only
-    
-    // Calculate available height by measuring actual space to image container
+    // Get the image container to calculate available space
     const projectImagesSection = document.querySelector('.project-images-section');
-    const imageContainerTop = projectImagesSection ? projectImagesSection.getBoundingClientRect().top : viewportHeight;
-    const availableHeight = imageContainerTop - topMargin - bottomMargin;
-    
-    // Use a more accurate approach: start with a reasonable font size and adjust
-    let fontSize = 24; // Start with a reasonable size
-    let textFits = false;
-    let attempts = 0;
-    const maxAttempts = 20;
-    
-    // Binary search approach to find the right font size
-    let minSize = FONT_CONFIG.MIN_SIZE;
-    let maxSize = 120;
-    
-    while (attempts < maxAttempts && !textFits) {
-        // Apply current font size
-        textElements.forEach(element => {
-            element.style.fontSize = fontSize + 'px';
-        });
-        
-        // Measure actual text height
-        const textBlock = document.querySelector('.project-text-block');
-        const actualTextHeight = textBlock ? textBlock.scrollHeight : 0;
-        
-        // Check if text fits within available height
-        if (actualTextHeight <= availableHeight && actualTextHeight > 0) {
-            // Text fits! Check if we can make it larger
-            const nextSize = fontSize + 1;
-            textElements.forEach(element => {
-                element.style.fontSize = nextSize + 'px';
-            });
-            
-            const nextHeight = textBlock ? textBlock.scrollHeight : 0;
-            if (nextHeight <= availableHeight) {
-                // Can go larger
-                fontSize = nextSize;
-                minSize = fontSize;
-            } else {
-                // Perfect fit found
-                textFits = true;
-            }
-        } else if (actualTextHeight > availableHeight) {
-            // Text too big, reduce size
-            maxSize = fontSize;
-            fontSize = Math.floor((minSize + maxSize) / 2);
-        } else {
-            // Text too small, increase size
-            minSize = fontSize;
-            fontSize = Math.floor((minSize + maxSize) / 2);
-        }
-        
-        attempts++;
+    if (!projectImagesSection) {
+        return;
     }
     
-    // Ensure font size stays within reasonable bounds
-    fontSize = Math.max(FONT_CONFIG.MIN_SIZE, Math.min(fontSize, 120));
+    // Calculate image container top position and set CSS custom property
+    const imageContainerTop = projectImagesSection.getBoundingClientRect().top;
+    const contentAreaTop = contentArea.getBoundingClientRect().top;
     
-    // Apply the final font size
+    // Set the CSS custom property for content container height
+    document.documentElement.style.setProperty('--image-container-top', imageContainerTop + 'px');
+    
+    console.log('CSS Variable set:', {
+        '--image-container-top': imageContainerTop + 'px',
+        'Container height calculation': `calc(100vh - ${imageContainerTop}px)`,
+        'Viewport height': window.innerHeight + 'px'
+    });
+    
+    // Calculate total available height for both description and credits
+    const totalAvailableHeight = imageContainerTop - contentAreaTop;
+    
+    // Subtract gap between description and credits
+    const gap = 24; // 1.5rem = 24px
+    const contentAvailableHeight = totalAvailableHeight - gap;
+    
+    // First, apply test font sizes to measure content
+    const testFontSize = 16;
     textElements.forEach(element => {
-        element.style.fontSize = fontSize + 'px';
+        element.style.fontSize = testFontSize + 'px';
+    });
+    creditsElements.forEach(element => {
+        element.style.fontSize = testFontSize + 'px';
     });
     
-    // Scale empty line heights proportionally to the calculated font size
-    const emptyLines = document.querySelectorAll('.empty-line-break');
-    const lineHeight = Math.max(0.3, fontSize * 0.02);
-    emptyLines.forEach(line => {
-        line.style.height = lineHeight + 'em';
+    // Count total lines for description and credits
+    let descriptionLines = 0;
+    let creditsLines = 0;
+    
+    textElements.forEach(element => {
+        const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+        const elementHeight = element.offsetHeight;
+        descriptionLines += Math.ceil(elementHeight / lineHeight);
     });
     
-    console.log('Font size:', fontSize, 'px, Available height:', availableHeight, 'px, Text height:', textBlock?.scrollHeight, 'px');
+    creditsElements.forEach(element => {
+        const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+        const elementHeight = element.offsetHeight;
+        creditsLines += Math.ceil(elementHeight / lineHeight);
+    });
+    
+    // Calculate optimal font size to fill the available height
+    // Both description and credits will use the same font size for consistency
+    const totalLines = descriptionLines + creditsLines;
+    const lineHeightRatio = 1.5; // From CSS line-height: 1.5
+    const optimalFontSize = Math.floor(contentAvailableHeight / (totalLines * lineHeightRatio));
+    
+    // Apply the calculated font size to both description and credits
+    const finalFontSize = Math.max(8, Math.min(48, optimalFontSize));
+    
+    textElements.forEach(element => {
+        element.style.fontSize = finalFontSize + 'px';
+    });
+    
+    creditsElements.forEach(element => {
+        element.style.fontSize = finalFontSize + 'px';
+    });
+    
+    // Safety check: if content is still too tall, reduce font size until it fits
+    let safetyAttempts = 0;
+    let currentFontSize = finalFontSize;
+    
+    while (safetyAttempts < 10) {
+        // Measure current content height
+        let currentDescriptionHeight = 0;
+        let currentCreditsHeight = 0;
+        
+        textElements.forEach(element => {
+            currentDescriptionHeight += element.offsetHeight;
+        });
+        
+        creditsElements.forEach(element => {
+            currentCreditsHeight += element.offsetHeight;
+        });
+        
+        const totalCurrentHeight = currentDescriptionHeight + currentCreditsHeight + gap;
+        
+        // Check if content fits
+        if (totalCurrentHeight <= contentAvailableHeight) {
+            console.log('Content now fits with font size:', currentFontSize + 'px');
+            break;
+        }
+        
+        // Reduce font size and try again
+        currentFontSize = Math.max(8, currentFontSize - 2);
+        textElements.forEach(element => {
+            element.style.fontSize = currentFontSize + 'px';
+        });
+        creditsElements.forEach(element => {
+            element.style.fontSize = currentFontSize + 'px';
+        });
+        
+        safetyAttempts++;
+    }
+    
+    // Measure final result for logging
+    let finalDescriptionHeight = 0;
+    let finalCreditsHeight = 0;
+    
+    textElements.forEach(element => {
+        finalDescriptionHeight += element.offsetHeight;
+    });
+    
+    creditsElements.forEach(element => {
+        finalCreditsHeight += element.offsetHeight;
+    });
+    
+    console.log('Container measurements:', {
+        viewportHeight: window.innerHeight + 'px',
+        contentAreaTop: contentAreaTop + 'px',
+        imageContainerTop: imageContainerTop + 'px',
+        totalAvailableHeight: totalAvailableHeight + 'px',
+        contentAvailableHeight: contentAvailableHeight + 'px',
+        finalFontSize: finalFontSize + 'px',
+        descriptionHeight: finalDescriptionHeight + 'px',
+        creditsHeight: finalCreditsHeight + 'px',
+        gap: gap + 'px',
+        totalContentHeight: finalDescriptionHeight + finalCreditsHeight + gap + 'px',
+        descriptionLines: descriptionLines,
+        creditsLines: creditsLines,
+        totalLines: totalLines
+    });
 }
 
 // Initialize when DOM is loaded
