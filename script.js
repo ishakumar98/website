@@ -164,22 +164,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Scroll overlay effect (keep existing functionality exactly the same)
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        const finderSection = document.querySelector('.finder');
-        const introSection = document.querySelector('.row-filters');
-        
-        if (finderSection && introSection) {
-            const introBottom = introSection.offsetTop + introSection.offsetHeight;
-            const finderTop = finderSection.offsetTop;
+    if (window.scrollManager) {
+        window.scrollManager.addScrollListener('finder-overlay', (scrollY) => {
+            const finderSection = document.querySelector('.finder');
+            const introSection = document.querySelector('.row-filters');
             
-            if (scrollY > introBottom - window.innerHeight) {
-                const progress = Math.min((scrollY - (introBottom - window.innerHeight)) / 200, 1);
-                finderSection.style.transform = `translateY(${progress * 60}px)`;
-                finderSection.style.opacity = progress;
+            if (finderSection && introSection) {
+                const introBottom = introSection.offsetTop + introSection.offsetHeight;
+                const finderTop = introSection.offsetTop;
+                
+                if (scrollY > introBottom - window.innerHeight) {
+                    const progress = Math.min((scrollY - (introBottom - window.innerHeight)) / 200, 1);
+                    finderSection.style.transform = `translateY(${progress * 60}px)`;
+                    finderSection.style.opacity = progress;
+                }
             }
-        }
-    });
+        }, 'normal');
+    }
 
     // Weighted Movement Effect for Work Container ONLY (LSVP-style)
     // IMPORTANT: This ONLY affects the work container movement, NOT the page scroll speed
@@ -193,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', () => {
         const workContainer = document.querySelector('.work-container');
         if (workContainer) {
-            const scrollY = window.scrollY; // Use normal scroll position
+            // scrollY is now passed as parameter from ScrollManager
             
             // Apply multiplier ONLY to the container movement, not to scroll
             const adjustedMovement = scrollY * containerMovementMultiplier;

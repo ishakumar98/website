@@ -75,13 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
   let smoothingFactor = 0.15; // Lower = smoother but less responsive
   
   // Clean scroll handler with improved throttling
-  function handleScroll() {
+  function handleScroll(scrollY, scrollDelta, isScrolling) {
     if (isScrolling) return;
     
     isScrolling = true;
     
     requestAnimationFrame(function() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop = scrollY;
       
       // Calculate scroll progress (0 = fully collapsed, 1 = fully expanded)
       const maxScroll = workSectionHeight;
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Calculate new top position
       // When scrollProgress = 0: top edge at bottom of viewport (fully collapsed)
-      // When scrollProgress = 1: bottom edge at bottom of viewport (fully expanded)
+      // When scrollProgress = 1: bottom edge at viewport bottom (fully expanded)
       let newTop = viewportHeight - (easedProgress * workSectionHeight);
       
       // Add hard constraint to prevent the container from going beyond bounds
@@ -133,8 +133,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Add scroll event listener
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  // Register with ScrollManager instead of direct event listener
+  if (window.scrollManager) {
+    window.scrollManager.addScrollListener('work-section-scroll', handleScroll, 'normal');
+  }
   
   // Handle window resize
   function handleResize() {

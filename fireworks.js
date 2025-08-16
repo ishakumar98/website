@@ -290,7 +290,9 @@ function windowResized() {
   }
 }
 
-// Stop new fireworks when scrolling
-window.addEventListener('scroll', function() {
-  clicked = true;
-}); 
+// Stop new fireworks when scrolling - register with ScrollManager
+if (window.scrollManager) {
+  window.scrollManager.addScrollListener('fireworks-stop', function() {
+    clicked = true;
+  }, 'low');
+} 

@@ -663,8 +663,10 @@ function initProjectImagesScroll(projectImagesSection, flowerElement) {
     // Start the animation loop
     updateProjectImagesPosition();
     
-    // Add scroll event listener for image container positioning
-    window.addEventListener('scroll', updateProjectImagesPosition);
+    // Register with ScrollManager instead of direct event listener
+    if (window.scrollManager) {
+        window.scrollManager.addScrollListener('project-images-scroll', updateProjectImagesPosition, 'high');
+    }
 }
 
 // Image Popup Functionality
