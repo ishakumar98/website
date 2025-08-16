@@ -10,16 +10,16 @@
             MOUSE_RADIUS: 125,           // Distance from mouse where weight effect activates (px)
             MAX_WEIGHT_VALUE: 900,       // Maximum weight value for Akke variable font
             MIN_WEIGHT_VALUE: 25,        // Minimum weight value for Akke variable font (ultra-thin)
-            TRANSITION_DURATION: 400,    // Smooth transition back to normal (ms)
-            CONTENT_DELAY: 100           // Delay for content population (ms)
+            TRANSITION_DURATION: getComputedStyle(document.documentElement).getPropertyValue('--animation-smooth').replace('ms', '') || 300,    // Use CSS variable or fallback
+            CONTENT_DELAY: getComputedStyle(document.documentElement).getPropertyValue('--animation-fast').replace('ms', '') || 100           // Use CSS variable or fallback
         };
 
 
 
 // Animation & Scroll Behavior
 const ANIMATION_CONFIG = {
-    LERP_FACTOR: 0.05,           // Smooth movement factor (lower = gooier)
-    SCROLL_STOP_DELAY: 100,      // Consider scrolling stopped after (ms)
+    LERP_FACTOR: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lerp-factor')) || 0.05,           // Use CSS variable or fallback
+    SCROLL_STOP_DELAY: getComputedStyle(document.documentElement).getPropertyValue('--animation-fast').replace('ms', '') || 100,      // Use CSS variable or fallback
     VELOCITY_MULTIPLIER: 0.01,   // Scroll velocity accumulation factor
     EASE_OUT_START: 0.65,        // Start of ease-out animation (0-1)
     EASE_OUT_POWER: 4.5,         // Ease-out curve power
@@ -609,7 +609,7 @@ function initProjectImagesScroll(projectImagesSection, flowerElement) {
         }, ANIMATION_CONFIG.SCROLL_STOP_DELAY); // Consider scrolling stopped after delay
         
         // Apply scroll multiplier to slow down overall movement (LSVP technique)
-        const scrollMultiplier = 0.25; // Even slower for more gooey feel (was 0.4)
+        const scrollMultiplier = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-multiplier')) || 0.25; // Use CSS variable or fallback
         const adjustedScrollY = scrollY * scrollMultiplier;
         
         // Calculate scroll progress based on images container height
@@ -648,7 +648,7 @@ function initProjectImagesScroll(projectImagesSection, flowerElement) {
         }
         
         // Apply damping to velocity
-        velocity *= 0.95;
+        velocity *= parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--velocity-damping')) || 0.95;
         
         // Clamp position to prevent overshooting
         currentTop = Math.max(endTop, Math.min(startTop, currentTop));

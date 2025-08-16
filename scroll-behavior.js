@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
   fireworksContainer.style.backgroundColor = '#FCE8FF';
   
   // Add smooth CSS transition for the background color
-  fireworksContainer.style.transition = 'background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+  fireworksContainer.style.transition = 'background-color var(--transition-smooth)';
   
   
   

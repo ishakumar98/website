@@ -65,11 +65,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add smooth page load animation
     document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease-in-out';
+    document.body.style.transition = 'opacity var(--transition-slow)';
     
     setTimeout(() => {
         document.body.style.opacity = '1';
-    }, 100);
+    }, getComputedStyle(document.documentElement).getPropertyValue('--animation-fast').replace('ms', '') || 100);
 
     // Trigger letter animations after page load
     setTimeout(() => {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         letters.forEach((letter, index) => {
             letter.style.animationDelay = `${0.1 + (index * 0.1)}s`;
         });
-    }, 200);
+    }, getComputedStyle(document.documentElement).getPropertyValue('--animation-smooth').replace('ms', '') || 200);
 
             // Random letter animation system (ISHA-style)
     function initRandomLetterAnimations() {
