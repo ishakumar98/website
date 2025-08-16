@@ -30,7 +30,6 @@
   margin: var(--flower-margin-top) auto var(--flower-margin-bottom) auto;
   text-align: center;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-
 }
 
 /* Bloomtype-style: CSS classes for different states */

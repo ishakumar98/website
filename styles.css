@@ -196,10 +196,19 @@ body {
     padding: 40px 0;
 }
 
+/* Container base styles */
+.container,
 .header .container {
     max-width: none;
     margin: 0 auto;
+}
+
+.header .container {
     padding: 0;
+}
+
+.container {
+    padding: 12px 0 0 0; /* Removed left and right padding since we handle it with item margins */
 }
 
 .nav-header {
@@ -208,12 +217,6 @@ body {
 
 .svg-container {
     width: 100%;
-}
-
-.container {
-    max-width: none;
-    margin: 0 auto;
-    padding: 12px 0 0 0; /* Removed left and right padding since we handle it with item margins */
 }
 
 @keyframes blink {
@@ -579,10 +582,7 @@ body {
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 24px 32px 0 32px;
-    }
-    
+    .container,
     .header .container {
         padding: 24px 32px 0 32px;
     }
@@ -624,10 +624,7 @@ body {
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 24px 16px 0 16px;
-    }
-    
+    .container,
     .header .container {
         padding: 24px 16px 0 16px;
     }
