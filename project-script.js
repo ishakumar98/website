@@ -348,35 +348,37 @@ function initISHASlantSystem() {
         if (!window.matchMedia("(pointer: coarse)").matches) {
 
             
-            document.addEventListener("mousemove", function(e) {
-                const letters = document.querySelectorAll(".project-description .letter");
-                
-                if (letters.length === 0) {
-                    return;
-                }
-                
-                letters.forEach((span, index) => {
-                    const rect = span.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
+            if (window.eventManager) {
+                window.eventManager.addListener(document, "mousemove", function(e) {
+                    const letters = document.querySelectorAll(".project-description .letter");
                     
-                    // Calculate distance from mouse to letter center (like ISHA does)
-                    const distance = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2));
-                    
-                    if (distance < SLANT_CONFIG.MOUSE_RADIUS) {
-                        // Map distance to weight using constants - higher weight when closer to mouse
-                        const weightValue = map(distance, 0, SLANT_CONFIG.MOUSE_RADIUS, SLANT_CONFIG.MAX_WEIGHT_VALUE, SLANT_CONFIG.MIN_WEIGHT_VALUE);
-                        span.style.transition = '0ms';
-                        span.style.fontVariationSettings = `"wght" ${weightValue}`;
-                        
-
-                    } else {
-                        // Smooth transition back to normal weight when far from mouse
-                        span.style.transition = `font-variation-settings ${SLANT_CONFIG.TRANSITION_DURATION}ms ease-out`;
-                        span.style.fontVariationSettings = '"wght" 25';
+                    if (letters.length === 0) {
+                        return;
                     }
+                    
+                    letters.forEach((span, index) => {
+                        const rect = span.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        
+                        // Calculate distance from mouse to letter center (like ISHA does)
+                        const distance = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2));
+                        
+                        if (distance < SLANT_CONFIG.MOUSE_RADIUS) {
+                            // Map distance to weight using constants - higher weight when closer to mouse
+                            const weightValue = map(distance, 0, SLANT_CONFIG.MOUSE_RADIUS, SLANT_CONFIG.MAX_WEIGHT_VALUE, SLANT_CONFIG.MIN_WEIGHT_VALUE);
+                            span.style.transition = '0ms';
+                            span.style.fontVariationSettings = `"wght" ${weightValue}`;
+                            
+
+                        } else {
+                            // Smooth transition back to normal weight when far from mouse
+                            span.style.transition = `font-variation-settings ${SLANT_CONFIG.TRANSITION_DURATION}ms ease-out`;
+                            span.style.fontVariationSettings = '"wght" 25';
+                        }
+                    });
                 });
-            });
+            }
         }
     }, SLANT_CONFIG.CONTENT_DELAY); // Small delay to ensure content is populated
 }
@@ -580,10 +582,10 @@ function initProjectImagesScroll(projectImagesSection, flowerElement) {
     }
     
     // Initialize alternating spin direction for flower hover
-    if (flowerElement) {
+    if (flowerElement && window.eventManager) {
         let spinDirection = 'clockwise'; // Start with clockwise
         
-        flowerElement.addEventListener('mouseenter', () => {
+        window.eventManager.addListener(flowerElement, 'mouseenter', () => {
             // Toggle spin direction on each hover
             if (spinDirection === 'clockwise') {
                 flowerElement.setAttribute('data-spin-direction', 'counter');
@@ -694,44 +696,40 @@ function initImagePopups() {
     
     // Add click event listeners to all project images
     projectImages.forEach((img, index) => {
-
-        
-        img.addEventListener('click', () => {
-
-            try {
-                currentImageIndex = index;
-                
-                // Set image source and filename
-                popupImage.src = img.src;
-                popupImage.alt = img.alt || '';
-                
-                // Get filename from title span
-                const titleSpan = img.closest('.image')?.querySelector('.title span');
-                const filename = titleSpan ? titleSpan.textContent : 'image.png';
-                popupFilename.textContent = filename;
-                
-
-                
-                // Show popup
-                imagePopup.classList.add('active');
-                
-            } catch (error) {
-                console.error('Error opening popup:', error);
-            }
-        });
+        if (window.eventManager) {
+            window.eventManager.addListener(img, 'click', () => {
+                try {
+                    currentImageIndex = index;
+                    
+                    // Set image source and filename
+                    popupImage.src = img.src;
+                    popupImage.alt = img.alt || '';
+                    
+                    // Get filename from title span
+                    const titleSpan = img.closest('.image')?.querySelector('.title span');
+                    const filename = titleSpan ? titleSpan.textContent : 'image.png';
+                    popupFilename.textContent = filename;
+                    
+                    // Show popup
+                    imagePopup.classList.add('active');
+                    
+                } catch (error) {
+                    console.error('Error opening popup:', error);
+                }
+            });
+        }
     });
     
     // Close popup
-    if (popupClose) {
-        popupClose.addEventListener('click', () => {
-
+    if (popupClose && window.eventManager) {
+        window.eventManager.addListener(popupClose, 'click', () => {
             imagePopup.classList.remove('active');
         });
     }
     
     // Navigation
-    if (popupNavLeft) {
-        popupNavLeft.addEventListener('click', () => {
+    if (popupNavLeft && window.eventManager) {
+        window.eventManager.addListener(popupNavLeft, 'click', () => {
             currentImageIndex = (currentImageIndex - 1 + projectImages.length) % projectImages.length;
             const img = projectImages[currentImageIndex];
             popupImage.src = img.src;
@@ -743,8 +741,8 @@ function initImagePopups() {
         });
     }
     
-    if (popupNavRight) {
-        popupNavRight.addEventListener('click', () => {
+    if (popupNavRight && window.eventManager) {
+        window.eventManager.addListener(popupNavRight, 'click', () => {
             currentImageIndex = (currentImageIndex + 1) % projectImages.length;
             const img = projectImages[currentImageIndex];
             popupImage.src = img.src;
@@ -760,12 +758,14 @@ function initImagePopups() {
 }
 
 // Handle window resize
-window.addEventListener('resize', () => {
-    // Re-query DOM elements for resize
-    const pageHeader = document.querySelector('.page-header');
-    const projectImagesSection = document.querySelector('.project-images-section');
-    const flowerElement = projectImagesSection?.querySelector('.flower-logo');
-    
-    adjustFontSize(pageHeader);
-    initProjectImagesScroll(projectImagesSection, flowerElement);
-});
+if (window.eventManager) {
+    window.eventManager.addListener(window, 'resize', () => {
+        // Re-query DOM elements for resize
+        const pageHeader = document.querySelector('.page-header');
+        const projectImagesSection = document.querySelector('.project-images-section');
+        const flowerElement = projectImagesSection?.querySelector('.flower-logo');
+        
+        adjustFontSize(pageHeader);
+        initProjectImagesScroll(projectImagesSection, flowerElement);
+    });
+}

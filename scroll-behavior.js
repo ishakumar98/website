@@ -156,7 +156,9 @@ document.addEventListener('DOMContentLoaded', function() {
     workSection.style.top = newTop + 'px';
   }
   
-  window.addEventListener('resize', handleResize);
+  if (window.eventManager) {
+    window.eventManager.addListener(window, 'resize', handleResize);
+  }
   
   
   
