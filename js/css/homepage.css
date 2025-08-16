@@ -116,13 +116,15 @@ body {
 /* Text Styling */
 .name-text {
     font-family: 'Tumla', sans-serif;
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    line-height: 1.1;
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    line-height: 1.6;
     color: var(--color-text);
     margin: 0;
     text-align: left;
-    letter-spacing: -0.02em;
+    opacity: 0.8;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
 }
 
 .name-display {
@@ -535,7 +537,7 @@ body {
     }
     
     .name-text {
-        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-size: var(--font-size-xs);
     }
     
     .bio-text {
