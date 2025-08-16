@@ -1,19 +1,71 @@
 /* Project Page Layout - General structure for all folder items */
 
-/* CSS Custom Properties for scalable dimensions */
+/* CSS Custom Properties - Comprehensive Design System */
 :root {
+  /* Color System */
+  --color-primary: #FF7DCB;
+  --color-primary-light: #FFBBC1;
+  --color-primary-lighter: #FFCCF1;
+  --color-primary-dark: #EA2CFF;
+  --color-background: #FFF5F8;
+  --color-background-light: #FCDFE3;
+  --color-background-lighter: #FCE8FF;
+  --color-text: #000000;
+  --color-text-muted: #666666;
+  --color-text-light: #9e9e9e;
+  --color-text-white: #ffffff;
+  --color-border: #e9ecef;
+  --color-border-light: #d1d1d1;
+  --color-accent: #3b4eff;
+  --color-accent-light: #f8f9fa;
+  --color-accent-muted: #6c757d;
+  
+  /* Spacing System */
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;       /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4rem;      /* 64px */
+  
+  /* Component Spacing */
+  --container-padding: var(--space-md);
+  --section-padding: var(--space-xl);
+  --item-gap: var(--space-md);
+  --work-item-gap: var(--space-md);
+  --header-padding: var(--space-3xl);
+  
+  /* Typography */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  
+  /* Shadows */
+  --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 0 25px 35px rgba(255, 125, 203, 0.15);
+  --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.3);
+  --shadow-lightbox: 0 20px 40px rgba(0, 0, 0, 0.3);
+  
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  
+  /* Project Page Specific */
   --flower-height: 6em;
   --flower-margin-top: 2rem;
   --flower-margin-bottom: 1.5rem;
   --container-padding-top: 16px;
   --container-padding-bottom: 16px;
   --image-container-height: 168px; /* Total height of visible image container */
-  
-  /* Shadow system */
-  --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-medium: 0 0 25px 35px rgba(255, 125, 203, 0.15);
-  --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.3);
-  --shadow-lightbox: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* Global Flower Logo Styling for all project pages */
@@ -59,7 +111,7 @@
   height: 50%;
   top: 25%;
   left: 25%;
-  background: #FCE8FF;
+  background: var(--color-background-lighter);
   position: absolute;
   border-radius: 100%;
   pointer-events: none;
@@ -82,7 +134,7 @@
   left: 0;
   width: 50%;
   height: 50%;
-  background: #FF7DCB;
+  background: var(--color-primary);
   border-radius: 100%;
 }
 
@@ -136,7 +188,7 @@
 .flower-logo:hover .top:after,
 .flower-logo:hover .bottom:before,
 .flower-logo:hover .bottom:after {
-  background: #FFBBC1; /* Default clockwise color */
+  background: var(--color-primary-light); /* Default clockwise color */
   transition: background 0.3s ease;
 }
 
@@ -145,7 +197,7 @@
 .flower-logo[data-spin-direction="counter"]:hover .top:after,
 .flower-logo[data-spin-direction="counter"]:hover .bottom:before,
 .flower-logo[data-spin-direction="counter"]:hover .bottom:after {
-  background: #FFCCF1; /* Counterclockwise color */
+  background: var(--color-primary-lighter); /* Counterclockwise color */
 }
 
 @keyframes rotate-clockwise {
@@ -165,7 +217,7 @@
 
 .project-page-container {
     min-height: 100vh;
-    background: linear-gradient(to bottom, #FCDFE3 0%, #FEF3F9 25%);
+    background: linear-gradient(to bottom, var(--color-background-light) 0%, var(--color-background) 25%);
     position: relative;
 }
 
@@ -202,9 +254,9 @@ body.project-page {
   top: 50%;
   transform: translateY(-50%);
   font-family: 'Tumla', sans-serif;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   font-weight: 500;
-  color: #000000;
+  color: var(--color-text);
   opacity: 0.8;
   text-transform: uppercase;
 }
@@ -804,7 +856,7 @@ body.project-page {
     transform: translate(-50%, -50%);
     height: auto;
     width: auto;
-    color: #000;
+    color: var(--color-text);
     font-size: 10px;
     font-weight: bold;
     line-height: 1;
@@ -1064,15 +1116,15 @@ body.project-page {
 
 .video .title {
     margin-top: 12px;
-    font-size: 14px;
-    color: #666;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
     font-weight: 500;
 }
 
 .video .action {
-    margin-top: 8px;
-    font-size: 12px;
-    color: #999;
+    margin-top: var(--space-sm);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
