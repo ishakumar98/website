@@ -6,6 +6,30 @@
 /* Font Face Declarations */
 @font-face {
     font-family: 'Tumla';
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALHairline.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALExtraLight.otf') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
     src: url('../../fonts/Tumla-trial/static/Tumla-TRIALRegular.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
@@ -22,6 +46,14 @@
 
 @font-face {
     font-family: 'Tumla';
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALSemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
     src: url('../../fonts/Tumla-trial/static/Tumla-TRIALBold.otf') format('opentype');
     font-weight: 700;
     font-style: normal;
@@ -30,8 +62,8 @@
 
 @font-face {
     font-family: 'Tumla';
-    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
-    font-weight: 300;
+    src: url('../../fonts/Tumla-trial/static/Tumla-TRIALBlack.otf') format('opentype');
+    font-weight: 900;
     font-style: normal;
     font-display: swap;
 }

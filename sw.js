@@ -20,7 +20,7 @@ const STATIC_FILES = [
     '/index.html',
     '/calendar-project.html',
     '/project-template.html',
-    '/styles.css',
+            '/js/css/main.css',
     '/project-page.css',
     '/js/scroll-manager.js',
     '/js/event-manager.js',

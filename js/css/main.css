@@ -8,6 +8,7 @@
 @import './typography.css';
 @import './layout.css';
 @import './components.css';
+@import './homepage.css';
 
 /* Additional global styles that don't fit in modules */
 /* These will be moved to appropriate modules in future iterations */
