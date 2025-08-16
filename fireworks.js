@@ -7,7 +7,7 @@ const isHomePage = window.location.pathname === '/' ||
                   window.location.pathname.endsWith('/');
 
 if (!isHomePage) {
-  console.log('Fireworks: Not on home page, script disabled');
+  
   // Exit the entire script
   throw new Error('Fireworks script disabled for non-home pages');
 }
@@ -204,7 +204,7 @@ let clicked = false;
 let canvas;
 
 function setup() {
-  console.log('Flower fireworks setup');
+  
   const container = document.getElementById('fireworks-container');
   
   if (!container) {
@@ -227,20 +227,13 @@ function draw() {
   // background(0, 0, 0, 25);
   clear();
   
+  // Only create new fireworks if not clicked or scrolled
   if (!clicked && random(1) < 0.01) { // Reduced to 0.01 for even fewer flowers
     fireworks.push(new Firework(random(width), height, letters[lettersCounter]));
     updateCounter();
   }
   
-  // for (let i = fireworks.length - 1; i >= 0; i--) {
-  //   fireworks[i].update();
-  //   fireworks[i].show();
-    
-  //   if (fireworks[i].done()) {
-  //     fireworks.splice(i, 1);
-  //   }
-  // }
-
+  // Always update and show existing fireworks
   for (let i=0;i<fireworks.length;i++) {
     fireworks[i].update();
     fireworks[i].show();
@@ -281,7 +274,7 @@ function mouseMoved(){
 }
 
 function keyPressed(){
-  console.log(key);
+  
   if (key == 'r'){
     document.body.style.cursor = 'url(cursor.png), auto'
   } else if (key == 't'){
@@ -295,4 +288,9 @@ function windowResized() {
   if (container && canvas) {
     resizeCanvas(container.offsetWidth, container.offsetHeight);
   }
-} 
+}
+
+// Stop new fireworks when scrolling
+window.addEventListener('scroll', function() {
+  clicked = true;
+}); 

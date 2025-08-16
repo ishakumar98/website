@@ -410,11 +410,7 @@ function adjustFontSize(pageHeader) {
     // Set the CSS custom property for content container height
     document.documentElement.style.setProperty('--image-container-top', imageContainerTop + 'px');
     
-    console.log('CSS Variable set:', {
-        '--image-container-top': imageContainerTop + 'px',
-        'Container height calculation': `calc(100vh - ${imageContainerTop}px)`,
-        'Viewport height': window.innerHeight + 'px'
-    });
+
     
     // Calculate total available height for both description and credits
     const totalAvailableHeight = imageContainerTop - contentAreaTop;
@@ -474,7 +470,7 @@ function adjustFontSize(pageHeader) {
         
         // Check if content fits
         if (totalCurrentHeight <= contentAvailableHeight) {
-            console.log('Content now fits with font size:', currentFontSize + 'px');
+    
             break;
         }
         
@@ -492,22 +488,6 @@ function adjustFontSize(pageHeader) {
     
     textElements.forEach(element => {
         finalDescriptionHeight += element.offsetHeight;
-    });
-    
-    console.log('Container measurements:', {
-        viewportHeight: window.innerHeight + 'px',
-        contentAreaTop: contentAreaTop + 'px',
-        imageContainerTop: imageContainerTop + 'px',
-        totalAvailableHeight: totalAvailableHeight + 'px',
-        contentAvailableHeight: contentAvailableHeight + 'px',
-        bottomPadding: bottomPadding + 'px',
-        descriptionFontSize: finalFontSize + 'px',
-        creditsFontSize: '1rem (16px)',
-        descriptionHeight: finalDescriptionHeight + 'px',
-        creditsHeight: creditsHeight + 'px',
-        gap: gap + 'px',
-        totalContentHeight: finalDescriptionHeight + creditsHeight + gap + 'px',
-        descriptionLines: descriptionLines
     });
 }
 

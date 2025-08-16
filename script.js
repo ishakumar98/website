@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.pathname.endsWith('/');
   
   if (!isHomePage) {
-    console.log('Script.js: Not on home page, script disabled');
+
     return;
   }
     // Add hover effects to folder items
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add click functionality
         item.addEventListener('click', function() {
             const label = this.querySelector('.folder-label').textContent;
-            console.log('Clicked folder:', label);
+    
             // You can add navigation or modal functionality here
         });
     });
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const text = this.textContent.trim();
-            console.log('Clicked action:', text);
+    
             // You can add specific functionality for each action
         });
     });

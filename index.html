@@ -169,7 +169,7 @@
             }
             
             currentTheme = nextTheme;
-            console.log('Theme changed to:', currentTheme);
+    
         }
         
         // Add click event to theme picker with stronger event handling
@@ -181,7 +181,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     e.stopImmediatePropagation();
-                    console.log('Theme picker clicked!');
+            
                     cycleTheme();
                     return false;
                 });
@@ -218,7 +218,7 @@
                     
                     // For placeholder links, prevent default and show message
                     e.preventDefault();
-                    console.log('Project clicked:', projectTitle);
+            
                     alert(`Project "${projectTitle}" - Coming soon!`);
                 });
             });

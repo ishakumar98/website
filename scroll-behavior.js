@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.pathname.endsWith('/');
   
   if (!isHomePage) {
-    console.log('Scroll behavior: Not on home page, script disabled');
+
     return;
   }
   
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add smooth CSS transition for the background color
   fireworksContainer.style.transition = 'background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   
-  console.log('Initializing scroll behavior for work section');
+  
   
   // Reset scroll position to top on page load/reload
   window.scrollTo(0, 0);
@@ -49,8 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Remove the body height setting that's causing issues
   // document.body.style.height = (viewportHeight + workSectionHeight) + 'px';
   
-  console.log('Work section height:', workSectionHeight);
-  console.log('Viewport height:', viewportHeight);
+  
   
   let isScrolling = false;
   
@@ -157,8 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   window.addEventListener('resize', handleResize);
   
-  console.log('Scroll behavior initialized successfully');
   
-  // Debug: Log that we're actually running
-  console.log('Scroll behavior: Script is ACTUALLY RUNNING on:', window.location.href);
+  
+  
 });
