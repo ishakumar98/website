@@ -213,6 +213,15 @@
   animation: rotate-counterclockwise var(--animation-very-slow);
 }
 
+/* Animation coordination support */
+.flower-logo.animation-paused {
+  animation-play-state: paused;
+}
+
+.flower-logo.animation-paused:hover {
+  animation: none;
+}
+
 /* Petal color changes on hover based on spin direction */
 .flower-logo:hover .top:before,
 .flower-logo:hover .top:after,
@@ -674,6 +683,11 @@ body.project-page {
   /* Disable browser back/forward gestures */
   overscroll-behavior-x: none;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Animation coordination support */
+.project-images-section.animation-paused {
+  transition: none;
 }
 
 .project-images-section::-webkit-scrollbar {

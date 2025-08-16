@@ -573,7 +573,16 @@ function initProjectImagesScroll(projectImagesSection, flowerElement) {
         const maxBottomMargin = 1.5; // 1.5rem
         const currentBottomMargin = maxBottomMargin - (progress * (maxBottomMargin - minBottomMargin));
         
-        // Apply the transform and margins directly
+        // Apply the transform and margins directly with animation coordination
+        if (window.animationCoordinator) {
+            window.animationCoordinator.registerJSAnimation(
+                flowerElement, 
+                'scale', 
+                'flower-scroll-scale', 
+                window.animationCoordinator.priorities.CRITICAL
+            );
+        }
+        
         flowerElement.style.transform = `scale(${currentScale}) rotate(0deg)`;
         flowerElement.style.marginTop = `${currentTopMargin}rem`;
         flowerElement.style.marginBottom = `${currentBottomMargin}rem`;
@@ -655,7 +664,16 @@ function initProjectImagesScroll(projectImagesSection, flowerElement) {
         // Clamp position to prevent overshooting
         currentTop = Math.max(endTop, Math.min(startTop, currentTop));
         
-        // Apply the calculated position
+        // Apply the calculated position with animation coordination
+        if (window.animationCoordinator) {
+            window.animationCoordinator.registerJSAnimation(
+                projectImagesSection, 
+                'translate', 
+                'project-images-scroll', 
+                window.animationCoordinator.priorities.CRITICAL
+            );
+        }
+        
         projectImagesSection.style.top = currentTop + 'px';
         
         // Continue animation loop

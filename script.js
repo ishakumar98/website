@@ -103,11 +103,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const nameDisplay = document.querySelector('.name-display');
         if (nameDisplay && window.eventManager) {
             window.eventManager.addListener(nameDisplay, 'mouseenter', function() {
-                letters.forEach(letter => {
+                letters.forEach((letter, index) => {
                     // Skip space characters
                     if (letter.textContent.trim() === '') return;
                     
                     const randomTransform = generateRandomTransform();
+                    
+                    // Register with animation coordinator to prevent conflicts
+                    if (window.animationCoordinator) {
+                        window.animationCoordinator.registerJSAnimation(
+                            letter, 
+                            'transform', 
+                            `letter-hover-${index}`, 
+                            window.animationCoordinator.priorities.HIGH
+                        );
+                    }
+                    
                     letter.style.transform = randomTransform;
                 });
             });
@@ -181,6 +192,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (scrollY > introBottom - window.innerHeight) {
                     const progress = Math.min((scrollY - (introBottom - window.innerHeight)) / 200, 1);
+                    // Register with animation coordinator to prevent conflicts
+                    if (window.animationCoordinator) {
+                        window.animationCoordinator.registerJSAnimation(
+                            finderSection, 
+                            'translate', 
+                            'finder-scroll-overlay', 
+                            window.animationCoordinator.priorities.HIGH
+                        );
+                    }
+                    
                     finderSection.style.transform = `translateY(${progress * 60}px)`;
                     finderSection.style.opacity = progress;
                 }
@@ -237,7 +258,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Smoothly interpolate between current and target position
         currentWorkTransformY += (targetWorkTransformY - currentWorkTransformY) * lerpFactor;
         
-        // Apply the smoothed transform
+        // Apply the smoothed transform with animation coordination
+        if (window.animationCoordinator) {
+            window.animationCoordinator.registerJSAnimation(
+                workContainer, 
+                'translate', 
+                'work-container-lerp', 
+                window.animationCoordinator.priorities.CRITICAL
+            );
+        }
+        
         workContainer.style.transform = `translateY(${currentWorkTransformY}px)`;
         
         // Continue animation if we're still moving
