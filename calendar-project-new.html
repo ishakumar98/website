@@ -19,7 +19,7 @@
             transition: 2s ease-in-out transform;
             animation-fill-mode: both;
             z-index: 1000;
-            margin: 2rem auto 0.75rem auto;
+            margin: 2rem auto 1.5rem auto;
             text-align: center;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
@@ -98,6 +98,11 @@
         /* Hover spin animation with random direction */
         .flower-logo:hover {
             animation: rotate-clockwise 1s;
+        }
+        
+        /* Hide the header */
+        .page-header {
+            display: none;
         }
         
         @keyframes rotate-clockwise {

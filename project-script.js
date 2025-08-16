@@ -444,9 +444,40 @@ function initProjectImagesScroll() {
     const viewportHeight = window.innerHeight;
     const projectImagesHeight = projectImagesSection.offsetHeight;
     
+    // Calculate initial positioning for flower visibility
+    const flowerElement = projectImagesSection.querySelector('.flower-logo');
+    let initialTop;
+    
+    if (flowerElement) {
+        // Get the flower's actual rendered dimensions
+        const flowerRect = flowerElement.getBoundingClientRect();
+        const flowerHeight = flowerRect.height;
+        
+        // Get computed styles for margins
+        const flowerStyles = getComputedStyle(flowerElement);
+        const flowerTopMargin = parseFloat(flowerStyles.marginTop);
+        const flowerBottomMargin = parseFloat(flowerStyles.marginBottom);
+        
+        // Get container padding (project-images-section has 16px top and bottom padding)
+        const containerStyles = getComputedStyle(projectImagesSection);
+        const containerTopPadding = parseFloat(containerStyles.paddingTop);
+        const containerBottomPadding = parseFloat(containerStyles.paddingBottom);
+        
+        // Calculate total space the flower takes up including container padding
+        const flowerTotalHeight = flowerHeight + flowerTopMargin + flowerBottomMargin;
+        const containerPadding = containerTopPadding + containerBottomPadding;
+        
+        // Position container so flower appears at bottom center of viewport
+        // This means: viewport bottom = flower bottom + flower bottom margin + container bottom padding
+        initialTop = viewportHeight - flowerTotalHeight - containerBottomPadding;
+    } else {
+        // Fallback: position container so top edge is at bottom of viewport
+        initialTop = viewportHeight;
+    }
+    
     // LERP variables for smooth movement
-    let currentTop = viewportHeight;
-    let targetTop = viewportHeight;
+    let currentTop = initialTop;
+    let targetTop = initialTop;
     const lerpFactor = ANIMATION_CONFIG.LERP_FACTOR; // More inertia - lower = gooier
     
     // Momentum variables for LSVP-style gooey feel
@@ -455,8 +486,8 @@ function initProjectImagesScroll() {
     let lastScrollY = 0;
     let scrollTimeout;
     
-    // Set initial position: top edge at bottom of viewport
-    projectImagesSection.style.top = viewportHeight + 'px';
+    // Set initial position for flower visibility
+    projectImagesSection.style.top = initialTop + 'px';
     
     function updateProjectImagesPosition() {
         const scrollY = window.pageYOffset;
@@ -493,7 +524,7 @@ function initProjectImagesScroll() {
         }
         
         // Calculate new top position
-        const startTop = viewportHeight;
+        const startTop = initialTop; // Use calculated initial position for flower visibility
         const endTop = 0;
         targetTop = startTop + (endTop - startTop) * easedProgress;
         
