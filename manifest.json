@@ -1,0 +1,125 @@
+{
+  "name": "Isha Kumar Portfolio",
+  "short_name": "Isha Portfolio",
+  "description": "Professional portfolio showcasing design, development, and creative work",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#EC4899",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["design", "development", "portfolio", "creative"],
+  "icons": [
+    {
+      "src": "/images/folder.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/text-file-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/text-file-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Home",
+      "short_name": "Home",
+      "description": "Go to homepage",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/images/folder.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Calendar Project",
+      "short_name": "Calendar",
+      "description": "View Calendar project",
+      "url": "/calendar-project.html",
+      "icons": [
+        {
+          "src": "/images/folder.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/Calendar.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Portfolio homepage with modern design"
+    },
+    {
+      "src": "/images/AI Scheduling.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Project showcase with interactive elements"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+portfolio",
+      "url": "/?project=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "permissions": [
+    "notifications",
+    "background-sync"
+  ],
+  "features": [
+    "Cross Platform",
+    "Offline Support",
+    "Fast Loading",
+    "Modern Design",
+    "Responsive Layout"
+  ],
+  "developer": {
+    "name": "Isha Kumar",
+    "url": "https://github.com/ishakumar"
+  },
+  "version": "1.0.0",
+  "revision": "1"
+}
