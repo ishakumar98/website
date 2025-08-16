@@ -7,6 +7,104 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="project-page.css">
     <script src="project-script.js" defer></script>
+    <style>
+        /* Flower Logo - Original Bloomtype Structure */
+        .flower-logo {
+            display: block;
+            position: relative;
+            width: 5.75em;
+            height: 5.75em;
+            cursor: pointer;
+            animation-duration: 1s;
+            transition: 2s ease-in-out transform;
+            animation-fill-mode: both;
+            z-index: 1000;
+            margin: 2rem auto 0.75rem auto;
+            text-align: center;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        /* Light blue center core */
+        .flower-logo:after {
+            content: "";
+            display: inline-block;
+            width: 50%;
+            height: 50%;
+            top: 25%;
+            left: 25%;
+            background: #FCE8FF;
+            position: absolute;
+            border-radius: 100%;
+            pointer-events: none;
+        }
+        
+        /* Yellow petals container */
+        .flower-logo .top,
+        .flower-logo .bottom {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        
+        /* Individual petals - positioned at corners like bloomtype */
+        .flower-logo .top:before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 50%;
+            background: #FF7DCB;
+            border-radius: 100%;
+        }
+        
+        .flower-logo .top:after {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 50%;
+            background: #FF7DCB;
+            border-radius: 100%;
+        }
+        
+        .flower-logo .bottom:before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            height: 50%;
+            background: #FF7DCB;
+            border-radius: 100%;
+        }
+        
+        .flower-logo .bottom:after {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            height: 50%;
+            background: #FF7DCB;
+            border-radius: 100%;
+        }
+        
+        /* Hover spin animation with random direction */
+        .flower-logo:hover {
+            animation: rotate-clockwise 1s;
+        }
+        
+        @keyframes rotate-clockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <!-- Image Center Popup -->
@@ -75,6 +173,12 @@
         
         <!-- Project Images Work Container -->
         <section class="project-images-section">
+            <!-- Flower Logo at top of container -->
+            <a href="index.html" class="flower-logo" id="flower-logo">
+                <div class="top"></div>
+                <div class="bottom"></div>
+            </a>
+            
             <ul class="image-list">
                 <!-- Images will be populated by JavaScript from project-data.json -->
             </ul>
