@@ -52,7 +52,6 @@ async function initProjectPage() {
     const pageHeader = document.querySelector('.page-header');
     const projectImagesSection = document.querySelector('.project-images-section');
     const flowerElement = projectImagesSection?.querySelector('.flower-logo');
-    const projectCredits = document.querySelector('.project-credits');
     
     // Initialize ISHA slant system
     initISHASlantSystem();
@@ -61,7 +60,7 @@ async function initProjectPage() {
     initProjectImagesScroll(projectImagesSection, flowerElement);
     
     // Initialize dynamic font sizing (pass elements as parameters)
-    adjustFontSize(pageHeader, projectCredits);
+    adjustFontSize(pageHeader);
     
     // Initialize image popups
     initImagePopups();
@@ -387,58 +386,87 @@ function map(value, x1, y1, x2, y2) {
 }
 
 // Dynamic font sizing function
-function adjustFontSize(pageHeader, projectCredits) {
+function adjustFontSize(pageHeader) {
     const textElements = document.querySelectorAll('.project-description');
     if (textElements.length === 0) {
         return;
     }
     
     const viewportHeight = window.innerHeight;
-    const headerHeight = pageHeader?.offsetHeight || 0;
-    const creditsSection = projectCredits?.offsetHeight || 0;
-    const margins = FONT_CONFIG.TOTAL_MARGINS; // Combined top + bottom margins
+    const topMargin = FONT_CONFIG.TOTAL_MARGINS / 2; // Top margin only
+    const bottomMargin = FONT_CONFIG.TOTAL_MARGINS / 2; // Bottom margin only
     
-    // Calculate available height for text content only
-    const availableHeight = viewportHeight - headerHeight - creditsSection - margins - 100; // Extra buffer for spacing
+    // Calculate available height by measuring actual space to image container
+    const projectImagesSection = document.querySelector('.project-images-section');
+    const imageContainerTop = projectImagesSection ? projectImagesSection.getBoundingClientRect().top : viewportHeight;
+    const availableHeight = imageContainerTop - topMargin - bottomMargin;
     
-    // Start with a large font size and reduce until it fits
-    let fontSize = FONT_CONFIG.INITIAL_SIZE;
+    // Use a more accurate approach: start with a reasonable font size and adjust
+    let fontSize = 24; // Start with a reasonable size
+    let textFits = false;
+    let attempts = 0;
+    const maxAttempts = 20;
     
-    // Apply font size to all paragraphs
+    // Binary search approach to find the right font size
+    let minSize = FONT_CONFIG.MIN_SIZE;
+    let maxSize = 120;
+    
+    while (attempts < maxAttempts && !textFits) {
+        // Apply current font size
+        textElements.forEach(element => {
+            element.style.fontSize = fontSize + 'px';
+        });
+        
+        // Measure actual text height
+        const textBlock = document.querySelector('.project-text-block');
+        const actualTextHeight = textBlock ? textBlock.scrollHeight : 0;
+        
+        // Check if text fits within available height
+        if (actualTextHeight <= availableHeight && actualTextHeight > 0) {
+            // Text fits! Check if we can make it larger
+            const nextSize = fontSize + 1;
+            textElements.forEach(element => {
+                element.style.fontSize = nextSize + 'px';
+            });
+            
+            const nextHeight = textBlock ? textBlock.scrollHeight : 0;
+            if (nextHeight <= availableHeight) {
+                // Can go larger
+                fontSize = nextSize;
+                minSize = fontSize;
+            } else {
+                // Perfect fit found
+                textFits = true;
+            }
+        } else if (actualTextHeight > availableHeight) {
+            // Text too big, reduce size
+            maxSize = fontSize;
+            fontSize = Math.floor((minSize + maxSize) / 2);
+        } else {
+            // Text too small, increase size
+            minSize = fontSize;
+            fontSize = Math.floor((minSize + maxSize) / 2);
+        }
+        
+        attempts++;
+    }
+    
+    // Ensure font size stays within reasonable bounds
+    fontSize = Math.max(FONT_CONFIG.MIN_SIZE, Math.min(fontSize, 120));
+    
+    // Apply the final font size
     textElements.forEach(element => {
         element.style.fontSize = fontSize + 'px';
     });
     
-    // Check if the entire text block fits
-    const textBlock = document.querySelector('.project-text-block');
-    if (textBlock) {
-        // Reduce font size until content fits
-        while (textBlock.scrollHeight > availableHeight && fontSize > FONT_CONFIG.MIN_SIZE) {
-            fontSize -= 1;
-            textElements.forEach(element => {
-                element.style.fontSize = fontSize + 'px';
-            });
-        }
-        
-        // Final check to ensure content fits
-        if (textBlock.scrollHeight > availableHeight) {
-            fontSize = Math.floor(availableHeight / textBlock.scrollHeight * fontSize);
-            textElements.forEach(element => {
-                element.style.fontSize = fontSize + 'px';
-            });
-        }
-    }
-    
-    // Also adjust empty line height proportionally to font size
+    // Scale empty line heights proportionally to the calculated font size
     const emptyLines = document.querySelectorAll('.empty-line-break');
-    const lineHeight = Math.max(FONT_CONFIG.LINE_HEIGHT_MIN, fontSize * FONT_CONFIG.LINE_HEIGHT_RATIO);
+    const lineHeight = Math.max(0.3, fontSize * 0.02);
     emptyLines.forEach(line => {
         line.style.height = lineHeight + 'em';
     });
     
-    console.log('Font size adjusted to:', fontSize, 'px');
-    console.log('Available height:', availableHeight, 'px');
-    console.log('Text block height:', textBlock?.scrollHeight, 'px');
+    console.log('Font size:', fontSize, 'px, Available height:', availableHeight, 'px, Text height:', textBlock?.scrollHeight, 'px');
 }
 
 // Initialize when DOM is loaded
@@ -526,12 +554,7 @@ function initProjectImagesScroll(projectImagesSection, flowerElement) {
         flowerElement.style.marginTop = `${currentTopMargin}rem`;
         flowerElement.style.marginBottom = `${currentBottomMargin}rem`;
         
-        // Debug logging
-        console.log('Container top:', containerTop);
-        console.log('Viewport height:', viewportHeight);
-        console.log('Progress:', progress);
-        console.log('Current scale:', currentScale);
-        console.log('Applied transform:', flowerElement.style.transform);
+
     }
     
     // Initialize alternating spin direction for flower hover
@@ -711,6 +734,11 @@ function initImagePopups() {
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    adjustFontSize();
-    initProjectImagesScroll();
+    // Re-query DOM elements for resize
+    const pageHeader = document.querySelector('.page-header');
+    const projectImagesSection = document.querySelector('.project-images-section');
+    const flowerElement = projectImagesSection?.querySelector('.flower-logo');
+    
+    adjustFontSize(pageHeader);
+    initProjectImagesScroll(projectImagesSection, flowerElement);
 });
