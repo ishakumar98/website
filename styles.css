@@ -146,7 +146,7 @@ body {
       box-shadow: var(--shadow-medium);
   width: 100%;
   min-height: 300px;
-  padding: 16px 0 16px 24px !important;
+  padding: 16px 0 16px 24px;
   overflow-x: auto;
   /* Hide scrollbar for macOS */
   scrollbar-width: none; /* Firefox */
@@ -800,13 +800,13 @@ strong {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: transparent !important;
-  background-color: transparent !important;
+  background: transparent;
+  background-color: transparent;
 }
 
 .page-header * {
-  background: transparent !important;
-  background-color: transparent !important;
+  background: transparent;
+  background-color: transparent;
 }
 
 .page-layout {
@@ -1005,7 +1005,7 @@ body {
   /* Hide scrollbar for macOS */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
-  padding-left: var(--space-xl) !important;
+  padding-left: var(--space-xl);
 }
 
 /* Hide scrollbar for WebKit browsers (Safari, Chrome) */
@@ -1133,7 +1133,7 @@ body {
 .name-link:hover {
   text-decoration: none;
   color: inherit;
-  background-color: rgba(29, 28, 29, 0.06) !important;
+  background-color: rgba(29, 28, 29, 0.06);
   padding: 0 var(--space-xs);
 }
 

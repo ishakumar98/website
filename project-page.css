@@ -76,9 +76,9 @@
   height: var(--flower-height);
   cursor: pointer;
   animation-duration: 1s;
-  transition: 0.6s ease-in-out transform !important;
-  transition: 0.6s ease-in-out margin-top !important;
-  transition: 0.6s ease-in-out margin-bottom !important;
+  transition: 0.6s ease-in-out transform;
+  transition: 0.6s ease-in-out margin-top;
+  transition: 0.6s ease-in-out margin-bottom;
   animation-fill-mode: both;
   z-index: 1000;
   margin: var(--flower-margin-top) auto var(--flower-margin-bottom) auto;
@@ -239,8 +239,8 @@ body.project-page {
 }
 
 .page-header * {
-  background: transparent !important;
-  background-color: transparent !important;
+  background: transparent;
+  background-color: transparent;
 }
 
 .page-content {
@@ -561,11 +561,11 @@ body.project-page {
 
 /* Individual letter styling for project descriptions - override conflicting .letter rules */
 .project-description .letter {
-  display: inline-block !important;
+  display: inline-block;
   /* Removed transition to allow JavaScript to control slant changes */
-  letter-spacing: normal !important;
-  opacity: 1 !important;
-  animation: none !important;
+  letter-spacing: normal;
+  opacity: 1;
+  animation: none;
   /* Prevent layout shifts during slant */
   position: relative;
   transform-origin: left center;
@@ -637,7 +637,7 @@ body.project-page {
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: var(--shadow-medium);
   width: 100%;
-  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-md) !important;
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-md);
   overflow-x: auto;
   overflow-y: hidden;
   /* Hide scrollbar for macOS */
@@ -664,7 +664,7 @@ body.project-page {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    display: none !important;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 10000;
@@ -846,8 +846,8 @@ body.project-page {
 
 .image-center-popup .popup-nav .popup-actions.popup-close {
     position: relative;
-    background-color: var(--popup-close-color, #ff5f57) !important;
-    border-color: var(--popup-close-color, #ff5f57) !important;
+      background-color: var(--popup-close-color, #ff5f57);
+  border-color: var(--popup-close-color, #ff5f57);
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-close:after {
@@ -916,19 +916,19 @@ body.project-page {
 
 /* Prevent transform conflicts when popup has been positioned by dragging */
 .image-center-popup[style*="left"] {
-    transform: none !important;
+    transform: none;
 }
 
 /* Prevent flickering when transitioning from dragging to normal state */
 .image-center-popup.active[style*="left"]:not(.closing) {
-    animation: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    animation: none;
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Ensure dragged popup stays visible and positioned during class changes */
 .image-center-popup.active[style*="left"] {
-    display: block !important;
+    display: block;
 }
 
 /* Smooth GPU-accelerated interactions */
