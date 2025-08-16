@@ -143,7 +143,7 @@ body {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 0 25px 35px var(--work-shadow);
+      box-shadow: var(--shadow-medium);
   width: 100%;
   min-height: 300px;
   padding: 16px 0 16px 24px !important;
@@ -443,7 +443,7 @@ body {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition-delay: calc(var(--item-index) * 0.1s);
+            transition-delay: 0.1s;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -889,15 +889,23 @@ strong {
 
 
 
+/* CSS Custom Properties for Shadows */
+:root {
+  --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 0 25px 35px rgba(255, 125, 203, 0.15);
+  --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.3);
+  --shadow-lightbox: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
 /* Apply theme colors */
 body {
   background-color: #FFF5F8;
-  color: var(--text-color);
+  color: #000000;
 }
 
 .name-column h1 a,
 .bio-column h1 {
-  color: var(--text-color);
+  color: #000000;
 }
 
 /* Removed duplicate work-section rule */
