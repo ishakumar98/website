@@ -386,7 +386,8 @@ function map(value, x1, y1, x2, y2) {
     return (value - x1) * (y2 - x2) / (y1 - x1) + x2;
 }
 
-// Dynamic font sizing for both description and credits to fill container height
+// Dynamic font sizing for description text to fill available container height
+// Credits text now has fixed 0.5rem size
 function adjustFontSize(pageHeader) {
     const textElements = document.querySelectorAll('.project-description');
     const creditsElements = document.querySelectorAll('.credits-text');
@@ -418,22 +419,19 @@ function adjustFontSize(pageHeader) {
     // Calculate total available height for both description and credits
     const totalAvailableHeight = imageContainerTop - contentAreaTop;
     
-    // Subtract gap between description and credits
+    // Subtract gap between description and credits and bottom padding
     const gap = 24; // 1.5rem = 24px
-    const contentAvailableHeight = totalAvailableHeight - gap;
+    const bottomPadding = 32; // 2rem = 32px (from CSS padding: 2rem)
+    const contentAvailableHeight = totalAvailableHeight - gap - bottomPadding;
     
-    // First, apply test font sizes to measure content
+    // First, apply test font size to measure description content
     const testFontSize = 16;
     textElements.forEach(element => {
         element.style.fontSize = testFontSize + 'px';
     });
-    creditsElements.forEach(element => {
-        element.style.fontSize = testFontSize + 'px';
-    });
     
-    // Count total lines for description and credits
+    // Count lines for description text only
     let descriptionLines = 0;
-    let creditsLines = 0;
     
     textElements.forEach(element => {
         const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
@@ -441,26 +439,22 @@ function adjustFontSize(pageHeader) {
         descriptionLines += Math.ceil(elementHeight / lineHeight);
     });
     
-    creditsElements.forEach(element => {
-        const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
-        const elementHeight = element.offsetHeight;
-        creditsLines += Math.ceil(elementHeight / lineHeight);
-    });
+    // Calculate available height for description (subtract credits height)
+    // Credits text is fixed at 1rem, so calculate its height
+    const creditsFontSize = 16; // 1rem = 16px
+    const creditsLineHeight = creditsFontSize * 1.5; // line-height: 1.5
+    const creditsHeight = creditsElements.length * creditsLineHeight;
     
-    // Calculate optimal font size to fill the available height
-    // Both description and credits will use the same font size for consistency
-    const totalLines = descriptionLines + creditsLines;
+    const descriptionAvailableHeight = contentAvailableHeight - creditsHeight;
+    
+    // Calculate optimal font size for description to fill available height
     const lineHeightRatio = 1.5; // From CSS line-height: 1.5
-    const optimalFontSize = Math.floor(contentAvailableHeight / (totalLines * lineHeightRatio));
+    const optimalFontSize = Math.floor(descriptionAvailableHeight / (descriptionLines * lineHeightRatio));
     
-    // Apply the calculated font size to both description and credits
+    // Apply the calculated font size to description only
     const finalFontSize = Math.max(8, Math.min(48, optimalFontSize));
     
     textElements.forEach(element => {
-        element.style.fontSize = finalFontSize + 'px';
-    });
-    
-    creditsElements.forEach(element => {
         element.style.fontSize = finalFontSize + 'px';
     });
     
@@ -471,17 +465,12 @@ function adjustFontSize(pageHeader) {
     while (safetyAttempts < 10) {
         // Measure current content height
         let currentDescriptionHeight = 0;
-        let currentCreditsHeight = 0;
         
         textElements.forEach(element => {
             currentDescriptionHeight += element.offsetHeight;
         });
         
-        creditsElements.forEach(element => {
-            currentCreditsHeight += element.offsetHeight;
-        });
-        
-        const totalCurrentHeight = currentDescriptionHeight + currentCreditsHeight + gap;
+        const totalCurrentHeight = currentDescriptionHeight + creditsHeight + gap;
         
         // Check if content fits
         if (totalCurrentHeight <= contentAvailableHeight) {
@@ -494,23 +483,15 @@ function adjustFontSize(pageHeader) {
         textElements.forEach(element => {
             element.style.fontSize = currentFontSize + 'px';
         });
-        creditsElements.forEach(element => {
-            element.style.fontSize = currentFontSize + 'px';
-        });
         
         safetyAttempts++;
     }
     
     // Measure final result for logging
     let finalDescriptionHeight = 0;
-    let finalCreditsHeight = 0;
     
     textElements.forEach(element => {
         finalDescriptionHeight += element.offsetHeight;
-    });
-    
-    creditsElements.forEach(element => {
-        finalCreditsHeight += element.offsetHeight;
     });
     
     console.log('Container measurements:', {
@@ -519,14 +500,14 @@ function adjustFontSize(pageHeader) {
         imageContainerTop: imageContainerTop + 'px',
         totalAvailableHeight: totalAvailableHeight + 'px',
         contentAvailableHeight: contentAvailableHeight + 'px',
-        finalFontSize: finalFontSize + 'px',
+        bottomPadding: bottomPadding + 'px',
+        descriptionFontSize: finalFontSize + 'px',
+        creditsFontSize: '1rem (16px)',
         descriptionHeight: finalDescriptionHeight + 'px',
-        creditsHeight: finalCreditsHeight + 'px',
+        creditsHeight: creditsHeight + 'px',
         gap: gap + 'px',
-        totalContentHeight: finalDescriptionHeight + finalCreditsHeight + gap + 'px',
-        descriptionLines: descriptionLines,
-        creditsLines: creditsLines,
-        totalLines: totalLines
+        totalContentHeight: finalDescriptionHeight + creditsHeight + gap + 'px',
+        descriptionLines: descriptionLines
     });
 }
 

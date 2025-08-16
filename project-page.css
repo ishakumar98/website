@@ -237,7 +237,7 @@ body.project-page {
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0;
+    gap: 1rem;
     justify-content: space-between;
     align-items: flex-start;
 }
@@ -317,7 +317,7 @@ body.project-page {
   left: 0;
   right: 0;
   z-index: 5;
-  height: var(--image-container-top, 100vh);
+  max-height: var(--image-container-top, 100vh);
   overflow: visible; /* No container scrolling - let page handle it */
 }
 
