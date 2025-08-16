@@ -97,8 +97,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Tumla', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #FFF5F8;
-  color: #000000;
+  background-color: var(--color-background);
+  color: var(--color-text);
   line-height: 1.6;
   font-weight: 400;
   transition: background-color 0.3s ease;
@@ -180,7 +180,7 @@ body {
     background: transparent;
     padding: var(--space-xl);
     border-radius: var(--space-sm);
-    border: 2px solid var(--color-primary);
+    border: var(--space-xs) solid var(--color-primary);
 }
 
 /* Work Content */
@@ -208,7 +208,7 @@ body {
 }
 
 .container {
-    padding: 12px 0 0 0; /* Removed left and right padding since we handle it with item margins */
+    padding: var(--space-md) 0 0 0; /* Removed left and right padding since we handle it with item margins */
 }
 
 .nav-header {
@@ -245,7 +245,7 @@ body {
 
 /* Wrapper and Content */
 .wrapper {
-    padding: 60px 0;
+    padding: var(--space-3xl) 0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -259,7 +259,7 @@ body {
 .listing-container {
     max-width: none;
     margin: 0 auto;
-    padding: 12px 64px 0 64px;
+    padding: var(--space-md) var(--space-3xl) 0 var(--space-3xl);
 }
 
 .row {
@@ -303,8 +303,8 @@ body {
     font-family: 'Tumla', sans-serif;
     font-size: clamp(2.5rem, 12vw, 18vw);
     font-weight: 600;
-    color: #000000;
-    margin-bottom: 2rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-xl);
     line-height: 1.1;
     letter-spacing: -0.02em;
     word-wrap: normal;
@@ -328,8 +328,8 @@ body {
 .name:hover::before {
     content: "Isha Kumar";
     position: absolute;
-    top: -2px;
-    left: -2px;
+      top: calc(-1 * var(--space-xs));
+  left: calc(-1 * var(--space-xs));
     color: var(--color-accent);
     z-index: -1;
     transform: scale(1.02);
@@ -338,8 +338,8 @@ body {
 .name:hover::after {
     content: "Isha Kumar";
     position: absolute;
-    top: 2px;
-    left: 2px;
+      top: var(--space-xs);
+  left: var(--space-xs);
     color: var(--color-primary);
     z-index: -2;
     transform: scale(0.98);
@@ -370,7 +370,7 @@ body {
 @keyframes letterAppear {
     0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(var(--space-xl));
     }
     100% {
         opacity: 1;
@@ -383,7 +383,7 @@ body {
     font-size: 1.1rem;
     color: var(--color-text);
     max-width: 100%;
-    margin-top: 2rem;
+    margin-top: var(--space-xl);
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: left;
@@ -401,7 +401,7 @@ body {
 }
 
 .row-home-finder {
-    margin-top: 40px;
+    margin-top: var(--space-3xl);
 }
 
 .row-home-finder::before {
@@ -410,7 +410,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
+    height: var(--space-xs);
     background-color: var(--color-border);
     opacity: 0.3;
 }
@@ -421,12 +421,12 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    column-gap: 20px;
-    row-gap: 40px;
+      column-gap: var(--space-xl);
+  row-gap: var(--space-3xl);
     padding-left: 0;
     padding-right: 0;
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(var(--space-3xl));
     transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     z-index: 2;
@@ -444,13 +444,13 @@ body {
 
 .finder li {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(var(--space-2xl));
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             transition-delay: 0.1s;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-sm);
     transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
 }
@@ -464,7 +464,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: var(--space-3xl);
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
 }
@@ -486,7 +486,7 @@ body {
 }
 
 .finder li:hover .title {
-    color: #666666;
+    color: var(--color-text-muted);
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -513,13 +513,13 @@ body {
 
 /* Blur other folders when one is hovered */
 .finder li.blurred {
-    filter: blur(2px);
+    filter: blur(var(--space-xs));
     opacity: 0.6;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .finder li.blurred .wrapper-image img {
-    filter: blur(2px) drop-shadow(0 0 0.3rem rgba(0, 0, 0, 0.05));
+    filter: blur(var(--space-xs)) drop-shadow(0 0 0.3rem rgba(0, 0, 0, 0.05));
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -544,7 +544,7 @@ body {
 
 .title {
     font-size: 17.5px;
-    color: #000000;
+    color: var(--color-text);
     font-weight: 400;
     margin-top: 12px;
     text-align: center;
@@ -554,7 +554,7 @@ body {
 }
 
 .wrapper-contact {
-    padding: 40px 0;
+    padding: var(--space-3xl) 0;
     position: relative;
 }
 
@@ -564,7 +564,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 200px;
+    height: var(--space-3xl);
     background: transparent;
     pointer-events: none;
     z-index: -1;
@@ -573,7 +573,7 @@ body {
 .wrapper-contact .container {
     max-width: none;
     margin: 0 auto;
-    padding: 24px 64px 0 64px;
+    padding: var(--space-xl) var(--space-3xl) 0 var(--space-3xl);
 }
 
 .wrapper-contact span {
@@ -880,8 +880,8 @@ strong {
 
 
 .flower-icon {
-  width: 14px;
-  height: 14px;
+  width: var(--space-sm);
+  height: var(--space-sm);
 }
 
 
@@ -972,8 +972,8 @@ body {
 /* Dandelion Section Styles */
 #dandelion-section {
   position: fixed;
-  bottom: 32px;
-  left: 32px;
+  bottom: var(--space-xl);
+  left: var(--space-xl);
   z-index: 1000;
   pointer-events: none;
 }
@@ -985,8 +985,8 @@ body {
 
 #dandelion-section h1 {
   margin: 0;
-  font-size: 12px;
-  color: #9e9e9e;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
   font-family: 'Tumla', sans-serif;
 } 
 
@@ -996,7 +996,7 @@ body {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 16px;
+  gap: var(--space-md);
   list-style: none;
       padding: var(--space-lg) 0 var(--space-lg) 0;
   margin: 0;
@@ -1005,7 +1005,7 @@ body {
   /* Hide scrollbar for macOS */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
-  padding-left: 24px !important;
+  padding-left: var(--space-xl) !important;
 }
 
 /* Hide scrollbar for WebKit browsers (Safari, Chrome) */
@@ -1197,7 +1197,7 @@ body {
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.6;
-  color: #000000;
+  color: var(--color-text);
   opacity: 0.8;
   font-family: 'Tumla', sans-serif;
   text-align: left;
