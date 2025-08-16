@@ -48,14 +48,20 @@ async function initProjectPage() {
     // Load project data
     await loadProjectData();
     
+    // Query all DOM elements upfront - single traversal
+    const pageHeader = document.querySelector('.page-header');
+    const projectImagesSection = document.querySelector('.project-images-section');
+    const flowerElement = projectImagesSection?.querySelector('.flower-logo');
+    const projectCredits = document.querySelector('.project-credits');
+    
     // Initialize ISHA slant system
     initISHASlantSystem();
     
-    // Initialize dynamic font sizing
-    adjustFontSize();
+    // Initialize project images scroll behavior (pass elements as parameters)
+    initProjectImagesScroll(projectImagesSection, flowerElement);
     
-    // Initialize project images scroll behavior
-    initProjectImagesScroll();
+    // Initialize dynamic font sizing (pass elements as parameters)
+    adjustFontSize(pageHeader, projectCredits);
     
     // Initialize image popups
     initImagePopups();
@@ -381,15 +387,15 @@ function map(value, x1, y1, x2, y2) {
 }
 
 // Dynamic font sizing function
-function adjustFontSize() {
+function adjustFontSize(pageHeader, projectCredits) {
     const textElements = document.querySelectorAll('.project-description');
     if (textElements.length === 0) {
         return;
     }
     
     const viewportHeight = window.innerHeight;
-    const headerHeight = document.querySelector('.page-header')?.offsetHeight || 0;
-    const creditsSection = document.querySelector('.project-credits')?.offsetHeight || 0;
+    const headerHeight = pageHeader?.offsetHeight || 0;
+    const creditsSection = projectCredits?.offsetHeight || 0;
     const margins = FONT_CONFIG.TOTAL_MARGINS; // Combined top + bottom margins
     
     // Calculate available height for text content only
@@ -439,13 +445,11 @@ function adjustFontSize() {
 document.addEventListener('DOMContentLoaded', initProjectPage);
 
 // Project Images Container Scroll Behavior
-function initProjectImagesScroll() {
-    const projectImagesSection = document.querySelector('.project-images-section');
+function initProjectImagesScroll(projectImagesSection, flowerElement) {
     const viewportHeight = window.innerHeight;
     const projectImagesHeight = projectImagesSection.offsetHeight;
     
     // Calculate initial positioning for flower visibility
-    const flowerElement = projectImagesSection.querySelector('.flower-logo');
     let initialTop;
     
     if (flowerElement) {

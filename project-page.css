@@ -290,7 +290,7 @@
 
 /* PROJECT CONTENT AREA - Clear, defined styling */
 .project-content-area {
-  margin: 2.5rem 2rem 2rem 2rem;
+  margin: 2rem 2rem 2rem 2rem;
   padding: 0;
   width: calc(100% - 4rem);
   display: block;
