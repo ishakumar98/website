@@ -11,7 +11,7 @@ class EventManager {
         this.debounceTimers = new Map();
         this.throttleTimers = new Map();
         
-        console.log('EventManager: Initialized');
+
     }
     
     // Add event listener with deduplication
@@ -60,7 +60,7 @@ class EventManager {
         // Add actual event listener
         element.addEventListener(eventType, callback, options);
         
-        console.log(`EventManager: Added listener "${listenerId}" for ${eventType} on`, element);
+
         return listenerId;
     }
     
@@ -91,7 +91,7 @@ class EventManager {
         // Remove from main tracking
         this.listeners.delete(listenerId);
         
-        console.log(`EventManager: Removed listener "${listenerId}"`);
+
         return true;
     }
     
@@ -113,7 +113,7 @@ class EventManager {
         // Clean up element tracking
         this.elementListeners.delete(element);
         
-        console.log(`EventManager: Removed ${removedCount} listeners from element`, element);
+
         return removedCount;
     }
     
@@ -129,7 +129,7 @@ class EventManager {
             }
         }
         
-        console.log(`EventManager: Removed ${removedCount} listeners for event type "${eventType}"`);
+
         return removedCount;
     }
     
@@ -216,7 +216,7 @@ class EventManager {
     
     // Cleanup all listeners
     cleanup() {
-        console.log('EventManager: Starting cleanup...');
+
         
         // Remove all listeners
         for (const [listenerId, listener] of this.listeners) {
@@ -230,13 +230,13 @@ class EventManager {
         this.debounceTimers.clear();
         this.throttleTimers.clear();
         
-        console.log('EventManager: Cleanup complete');
+
     }
     
     // Destroy the manager
     destroy() {
         this.cleanup();
-        console.log('EventManager: Destroyed');
+
     }
 }
 

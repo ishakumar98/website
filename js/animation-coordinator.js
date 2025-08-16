@@ -29,7 +29,7 @@ class AnimationCoordinator {
         };
         
         this.init();
-        console.log('AnimationCoordinator: Initialized');
+
     }
     
     init() {
@@ -113,7 +113,7 @@ class AnimationCoordinator {
         }
         this.activeAnimations.get(element).set(animationId, animation);
         
-        console.log(`AnimationCoordinator: Registered JS animation "${animationId}" for ${type} on`, element);
+
         return animationId;
     }
     
@@ -140,7 +140,7 @@ class AnimationCoordinator {
         }
         this.activeAnimations.get(element).set(animationName, animation);
         
-        console.log(`AnimationCoordinator: Registered CSS animation "${animationName}" for ${type} on`, element);
+
         return animationName;
     }
     
@@ -191,7 +191,7 @@ class AnimationCoordinator {
                 this.pauseJSAnimation(element, animation);
             }
             
-            console.log(`AnimationCoordinator: Paused animation "${animationId}" on`, element);
+    
         }
     }
     
@@ -231,7 +231,7 @@ class AnimationCoordinator {
                 this.resumeJSAnimation(element, animation);
             }
             
-            console.log(`AnimationCoordinator: Resumed animation "${animationId}" on`, element);
+    
         }
     }
     
@@ -322,7 +322,7 @@ class AnimationCoordinator {
             this.activeAnimations.delete(element);
         }
         
-        console.log(`AnimationCoordinator: Unregistered animation "${animationId}" from`, element);
+
     }
     
     // Get all active animations for an element
@@ -361,20 +361,7 @@ class AnimationCoordinator {
         };
     }
     
-    // Debug function to log current animation state
-    debug() {
-        console.log('=== AnimationCoordinator Debug ===');
-        console.log('Active Animations:', this.getStats());
-        
-        for (const [element, animations] of this.activeAnimations) {
-            console.log('Element:', element);
-            for (const [id, animation] of animations) {
-                console.log(`  - ${id}: ${animation.type} (${animation.source}) - Active: ${animation.isActive}`);
-            }
-        }
-        
-        console.log('================================');
-    }
+
     
     // Start conflict monitoring
     startConflictMonitoring() {
@@ -433,20 +420,20 @@ class AnimationCoordinator {
     
     // Cleanup all animations
     cleanup() {
-        console.log('AnimationCoordinator: Starting cleanup...');
+
         
         // Clear all active animations
         this.activeAnimations.clear();
         this.animationQueue.clear();
         this.performanceMetrics.clear();
         
-        console.log('AnimationCoordinator: Cleanup complete');
+
     }
     
     // Destroy the coordinator
     destroy() {
         this.cleanup();
-        console.log('AnimationCoordinator: Destroyed');
+
     }
 }
 

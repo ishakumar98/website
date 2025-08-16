@@ -40,14 +40,14 @@ class ScrollManager {
         // Sort listeners by priority (high, normal, low)
         this.sortListeners();
         
-        console.log(`ScrollManager: Added listener "${id}" with priority "${priority}"`);
+
     }
     
     // Remove specific listeners
     removeScrollListener(id) {
         if (this.listeners.has(id)) {
             this.listeners.delete(id);
-            console.log(`ScrollManager: Removed listener "${id}"`);
+    
         }
     }
     
@@ -144,7 +144,7 @@ class ScrollManager {
         this.stopAnimationLoop();
         window.removeEventListener('scroll', this.boundHandleScroll);
         this.listeners.clear();
-        console.log('ScrollManager: Destroyed');
+
     }
 }
 

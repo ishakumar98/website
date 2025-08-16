@@ -143,7 +143,7 @@ class FontOptimizer {
     trackFontLoad(fontName, loadTime) {
         this.loadedFonts.add(fontName);
         
-        console.log(`🔤 Font Loaded: ${fontName} (${loadTime.toFixed(2)}ms)`);
+
         
         // Track Core Web Vitals
         if (loadTime > 0) {
