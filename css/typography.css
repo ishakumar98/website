@@ -1,0 +1,411 @@
+/* Typography System
+ * Font families, sizes, weights, and text styling
+ * Extracted from styles.css for better organization
+ */
+
+/* Font Face Declarations */
+@font-face {
+    font-family: 'Tumla';
+    src: url('../Tumla-trial/static/Tumla-TRIALRegular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
+    src: url('../Tumla-trial/static/Tumla-TRIALMedium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
+    src: url('../Tumla-trial/static/Tumla-TRIALBold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tumla';
+    src: url('../Tumla-trial/static/Tumla-TRIALLight.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Akke';
+    src: url('../akke-trial/variable/AkkeVariable[XHGT,opsz,wdth,wght].ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Base Typography */
+body {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading Styles */
+h1, .h1 {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 var(--space-lg) 0;
+    color: var(--color-text);
+}
+
+h2, .h2 {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 var(--space-md) 0;
+    color: var(--color-text);
+}
+
+h3, .h3 {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0 0 var(--space-sm) 0;
+    color: var(--color-text);
+}
+
+h4, .h4 {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 0 0 var(--space-sm) 0;
+    color: var(--color-text);
+}
+
+h5, .h5 {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--color-text);
+}
+
+h6, .h6 {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--color-text);
+}
+
+/* Paragraph Styles */
+p {
+    margin: 0 0 var(--space-md) 0;
+    line-height: 1.6;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* Text Utilities */
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-secondary {
+    color: var(--color-text-muted);
+}
+
+.text-accent {
+    color: var(--color-accent);
+}
+
+.text-success {
+    color: var(--color-success);
+}
+
+.text-warning {
+    color: var(--color-warning);
+}
+
+.text-error {
+    color: var(--color-error);
+}
+
+/* Font Weight Utilities */
+.font-light {
+    font-weight: 300;
+}
+
+.font-normal {
+    font-weight: 400;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-black {
+    font-weight: 900;
+}
+
+/* Font Size Utilities */
+.text-xs {
+    font-size: var(--font-size-xs);
+}
+
+.text-sm {
+    font-size: var(--font-size-sm);
+}
+
+.text-base {
+    font-size: var(--font-size-base);
+}
+
+.text-lg {
+    font-size: var(--font-size-lg);
+}
+
+.text-xl {
+    font-size: var(--font-size-xl);
+}
+
+.text-2xl {
+    font-size: var(--font-size-2xl);
+}
+
+.text-3xl {
+    font-size: var(--font-size-3xl);
+}
+
+/* Text Alignment */
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* Text Transform */
+.uppercase {
+    text-transform: uppercase;
+}
+
+.lowercase {
+    text-transform: lowercase;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.normal-case {
+    text-transform: none;
+}
+
+/* Line Height Utilities */
+.leading-none {
+    line-height: 1;
+}
+
+.leading-tight {
+    line-height: 1.25;
+}
+
+.leading-snug {
+    line-height: 1.375;
+}
+
+.leading-normal {
+    line-height: 1.5;
+}
+
+.leading-relaxed {
+    line-height: 1.625;
+}
+
+.leading-loose {
+    line-height: 2;
+}
+
+/* Letter Spacing */
+.tracking-tighter {
+    letter-spacing: -0.05em;
+}
+
+.tracking-tight {
+    letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+    letter-spacing: 0;
+}
+
+.tracking-wide {
+    letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+    letter-spacing: 0.05em;
+}
+
+.tracking-widest {
+    letter-spacing: 0.1em;
+}
+
+/* Name Display Typography */
+.name-display {
+    color: inherit;
+    opacity: 1;
+    padding: 0 var(--space-xs);
+    border-radius: var(--space-xs);
+    position: relative;
+    cursor: pointer;
+}
+
+.name .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: letterAppear var(--animation-very-slow) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    margin: 0;
+    padding: 0;
+    letter-spacing: -0.02em;
+}
+
+/* Animation coordination support */
+.name .letter.animation-paused {
+    animation-play-state: paused;
+}
+
+/* Letter Animation Delays */
+.name .letter:nth-child(1) { animation-delay: var(--animation-fast); }
+.name .letter:nth-child(2) { animation-delay: var(--animation-medium); }
+.name .letter:nth-child(3) { animation-delay: var(--animation-smooth); }
+.name .letter:nth-child(4) { animation-delay: var(--animation-medium-fast); }
+.name .letter:nth-child(5) { animation-delay: var(--animation-slow); }
+.name .letter:nth-child(6) { animation-delay: var(--animation-very-slow); }
+.name .letter:nth-child(7) { animation-delay: var(--animation-slow-plus); }
+.name .letter:nth-child(8) { animation-delay: var(--animation-very-slow); }
+.name .letter:nth-child(9) { animation-delay: var(--animation-slow-plus-plus); }
+.name .letter:nth-child(10) { animation-delay: var(--animation-very-slow-plus); }
+.name .letter:nth-child(11) { animation-delay: var(--animation-very-slow-plus-plus); }
+
+/* Letter Appear Animation */
+@keyframes letterAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(var(--space-xl));
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Individual Letter Styling for Animations */
+.name-display .letter {
+    display: inline-block;
+    transition: all var(--animation-smooth) ease-out;
+    transform: rotate(0deg) translateY(0px);
+    letter-spacing: -0.23em;
+}
+
+/* Intro Typography */
+.intro {
+    font-family: 'Tumla', sans-serif;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    max-width: 100%;
+    margin-top: var(--space-xl);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
+    width: 100%;
+}
+
+/* Bio Text Typography */
+.bio-text {
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.8;
+    font-family: 'Tumla', sans-serif;
+    text-align: left;
+}
+
+/* Project Pill Typography */
+.project-pill {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-background-light);
+    color: var(--color-text);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+    h1, .h1 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    h2, .h2 {
+        font-size: var(--font-size-xl);
+    }
+    
+    h3, .h3 {
+        font-size: var(--font-size-lg);
+    }
+    
+    .intro {
+        font-size: var(--font-size-md);
+    }
+}
+
+@media (max-width: 480px) {
+    h1, .h1 {
+        font-size: var(--font-size-xl);
+    }
+    
+    h2, .h2 {
+        font-size: var(--font-size-lg);
+    }
+    
+    .intro {
+        font-size: var(--font-size-sm);
+    }
+}

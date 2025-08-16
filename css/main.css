@@ -1,0 +1,288 @@
+/* Main CSS Entry Point
+ * Imports all modular CSS files for organized structure
+ */
+
+/* Import CSS modules in dependency order */
+@import 'variables.css';
+@import 'utilities.css';
+@import 'typography.css';
+@import 'layout.css';
+@import 'components.css';
+
+/* Additional global styles that don't fit in modules */
+/* These will be moved to appropriate modules in future iterations */
+
+/* Blink animation for notifications */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Notification styling */
+.notification {
+    background-color: var(--color-accent-light);
+    border: 1px solid var(--color-border);
+    border-radius: var(--space-xs);
+    padding: var(--space-md) var(--space-md);
+    margin-bottom: var(--space-xl);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent-muted);
+}
+
+/* Row filters styling */
+.row-filters {
+    margin-top: var(--space-3xl);
+}
+
+.row-filters::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--space-xs);
+    background-color: var(--color-border);
+    opacity: 0.3;
+}
+
+/* Work link styling */
+.work-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all var(--transition-smooth);
+}
+
+.work-link:hover {
+    transform: translateY(-4px);
+}
+
+.work-link-inactive:hover .title span {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Navigation breadcrumb styling */
+.name-link {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    transition: all 0.15s cubic-bezier(0.4, 0.2, 1);
+    opacity: 0.75;
+    padding: 0 var(--space-xs);
+    border-radius: var(--space-xs);
+}
+
+.name-link:hover {
+    text-decoration: none;
+    color: inherit;
+    background-color: rgba(29, 28, 29, 0.06);
+    padding: 0 var(--space-xs);
+}
+
+.name-link.active {
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* Bio link styling */
+.bio-link {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bio-link:hover {
+    color: var(--color-primary-dark);
+}
+
+/* Forward slash styling */
+.slash {
+    color: inherit;
+    opacity: 0.75;
+    font-weight: 500;
+}
+
+/* Finder item styling */
+.finder li {
+    opacity: 0;
+    transform: translateY(var(--space-2xl));
+    transition: all var(--animation-very-slow) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-delay: var(--animation-fast);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    transition: all var(--animation-very-slow) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+}
+
+.finder.revealed li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.finder li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3xl);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+}
+
+.finder li .wrapper-image img {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.finder li .title {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.finder li:hover {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.finder li:hover .wrapper-image img {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.finder li:hover .title {
+    color: var(--color-text-muted);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Specific styling for the text file icon */
+.finder li .wrapper-image img[src="text-file-icon.png"] {
+    width: 167px;
+    height: 210px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Ensure text stays centered within the full list item width for text file items */
+.finder li.item-finder .title {
+    text-align: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Specific hover styling for the text file icon */
+.finder li:hover .wrapper-image img[src="text-file-icon.png"] {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Blur other folders when one is hovered */
+.finder li.blurred {
+    filter: blur(var(--space-xs));
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.finder li.blurred .wrapper-image img {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.finder li.blurred .title {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Folder item styling */
+.folder-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    transition: all var(--transition-smooth);
+    padding: var(--space-sm);
+    border-radius: var(--border-radius-md);
+}
+
+.folder-item:hover {
+    background: var(--color-background-light);
+}
+
+.folder-label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-align: center;
+    color: var(--color-text);
+}
+
+/* Action link styling */
+.action-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-smooth);
+    cursor: pointer;
+}
+
+.action-link:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* Work item styling */
+.work-item {
+    background: var(--color-background-light);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-light);
+    transition: all var(--transition-smooth);
+    cursor: pointer;
+}
+
+.work-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+}
+
+.work-item .title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+}
+
+.work-item .description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+/* Fireworks container styling */
+.fireworks-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(to bottom, #FCE8FF 0%, #FFF5F8 100%);
+    transition: background-color var(--transition-smooth);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .finder li {
+        gap: var(--space-lg);
+    }
+    
+    .work-item {
+        padding: var(--space-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .finder li {
+        gap: var(--space-md);
+    }
+    
+    .work-item {
+        padding: var(--space-sm);
+    }
+}
