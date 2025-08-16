@@ -12,16 +12,35 @@
         .flower-logo {
             display: block;
             position: relative;
-            width: 5.75em;
-            height: 5.75em;
+            width: 6em;
+            height: 6em;
             cursor: pointer;
             animation-duration: 1s;
-            transition: 2s ease-in-out transform;
+            transition: 0.6s ease-in-out transform !important, 0.6s ease-in-out margin-top !important, 0.6s ease-in-out margin-bottom !important;
             animation-fill-mode: both;
             z-index: 1000;
             margin: 2rem auto 1.5rem auto;
             text-align: center;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        /* Bloomtype-style: CSS classes for different states */
+        .flower-logo.flower-small {
+            transform: scale(0.52) rotate(0deg);
+            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .flower-logo.flower-medium {
+            transform: scale(0.76) rotate(0deg);
+            margin-top: 1.25rem;
+            margin-bottom: 0.875rem;
+        }
+        
+        .flower-logo.flower-normal {
+            transform: scale(1) rotate(0deg);
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         /* Light blue center core */
@@ -95,9 +114,13 @@
             border-radius: 100%;
         }
         
-        /* Hover spin animation with random direction */
+        /* Hover spin animation with alternating directions */
         .flower-logo:hover {
             animation: rotate-clockwise 1s;
+        }
+        
+        .flower-logo[data-spin-direction="counter"]:hover {
+            animation: rotate-counterclockwise 1s;
         }
         
         /* Hide the header */
@@ -108,6 +131,11 @@
         @keyframes rotate-clockwise {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes rotate-counterclockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
         }
     </style>
 </head>

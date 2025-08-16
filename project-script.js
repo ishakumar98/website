@@ -489,8 +489,66 @@ function initProjectImagesScroll() {
     // Set initial position for flower visibility
     projectImagesSection.style.top = initialTop + 'px';
     
+    // Viewport-based flower resizing function (more reliable than scroll-based)
+    function updateFlowerSize() {
+        if (!flowerElement) return;
+        
+        // Get the container's position relative to viewport
+        const containerRect = projectImagesSection.getBoundingClientRect();
+        const containerTop = containerRect.top;
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate how much of the container has moved past the top of viewport
+        // When container is at bottom: containerTop = viewportHeight (flower = normal size)
+        // When container is at top: containerTop = 0 (flower = minimum size)
+        const progress = Math.max(0, Math.min(1, (viewportHeight - containerTop) / viewportHeight));
+        
+        // Calculate flower scale: 1 (normal) to 0.52 (minimum)
+        const minScale = 0.52;
+        const maxScale = 1;
+        const currentScale = maxScale - (progress * (maxScale - minScale));
+        
+        // Calculate margins proportionally
+        const minTopMargin = 0.5; // 0.5rem
+        const maxTopMargin = 2; // 2rem
+        const currentTopMargin = maxTopMargin - (progress * (maxTopMargin - minTopMargin));
+        
+        const minBottomMargin = 0.25; // 0.25rem
+        const maxBottomMargin = 1.5; // 1.5rem
+        const currentBottomMargin = maxBottomMargin - (progress * (maxBottomMargin - minBottomMargin));
+        
+        // Apply the transform and margins directly
+        flowerElement.style.transform = `scale(${currentScale}) rotate(0deg)`;
+        flowerElement.style.marginTop = `${currentTopMargin}rem`;
+        flowerElement.style.marginBottom = `${currentBottomMargin}rem`;
+        
+        // Debug logging
+        console.log('Container top:', containerTop);
+        console.log('Viewport height:', viewportHeight);
+        console.log('Progress:', progress);
+        console.log('Current scale:', currentScale);
+        console.log('Applied transform:', flowerElement.style.transform);
+    }
+    
+    // Initialize alternating spin direction for flower hover
+    if (flowerElement) {
+        let spinDirection = 'clockwise'; // Start with clockwise
+        
+        flowerElement.addEventListener('mouseenter', () => {
+            // Toggle spin direction on each hover
+            if (spinDirection === 'clockwise') {
+                flowerElement.setAttribute('data-spin-direction', 'counter');
+                spinDirection = 'counter';
+            } else {
+                flowerElement.removeAttribute('data-spin-direction');
+                spinDirection = 'clockwise';
+            }
+        });
+    }
+    
     function updateProjectImagesPosition() {
-        const scrollY = window.pageYOffset;
+        // Use multiple scroll detection methods for better compatibility
+        const scrollY = window.pageYOffset || window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
         const scrollDelta = scrollY - lastScrollY;
         lastScrollY = scrollY;
         
@@ -508,6 +566,9 @@ function initProjectImagesScroll() {
         // Calculate scroll progress based on images container height
         const maxScroll = projectImagesHeight;
         const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
+        
+        // Update flower size based on scroll progress (bloomtype-style)
+        updateFlowerSize();
         
         // Enhanced easing for more dramatic momentum building and deceleration
         let easedProgress;
