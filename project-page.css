@@ -95,8 +95,8 @@
 
 .flower-logo.flower-medium {
   transform: scale(0.76) rotate(0deg);
-  margin-top: 1.25rem;
-  margin-bottom: 0.875rem;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 
 .flower-logo.flower-normal {
@@ -292,7 +292,7 @@ body.project-page {
 
 .project-intro {
     font-family: 'Tumla', sans-serif;
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg);
     color: var(--text-color);
     max-width: 100%;
     margin-top: 2rem;
@@ -350,7 +350,7 @@ body.project-page {
 
 .back-button::before {
     content: "←";
-    font-size: 1.2rem;
+    font-size: var(--font-size-lg);
 }
 
 /* Responsive Design */
@@ -428,7 +428,7 @@ body.project-page {
     }
     
     .image-title span {
-        font-size: 0.85rem;
+        font-size: var(--font-size-sm);
     }
 }
 
@@ -470,10 +470,10 @@ body.project-page {
 }
 
 .image .wrapper-image img {
-    width: calc(100% - 24px);
-    height: calc(100% - 24px);
+      width: calc(100% - var(--space-lg));
+  height: calc(100% - var(--space-lg));
     object-fit: contain;
-    border: 8px solid white;
+    border: var(--space-sm) solid white;
     filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
     background-color: var(--color-background-lighter);
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -518,7 +518,7 @@ body.project-page {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-lg);
   position: fixed;
   top: 0;
   left: 0;
@@ -632,8 +632,8 @@ body.project-page {
   backdrop-filter: blur(6px);
   -webkit-backdrop-style: none;
   z-index: 1001;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  border-top-left-radius: var(--space-md);
+  border-top-right-radius: var(--space-md);
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: var(--shadow-medium);
   width: 100%;
@@ -702,11 +702,11 @@ body.project-page {
     position: absolute;
     top: -50px;
     right: 0;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    font-size: 24px;
-      width: var(--space-3xl);
+      background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: var(--font-size-2xl);
+  width: var(--space-3xl);
   height: var(--space-3xl);
     border-radius: 50%;
     cursor: pointer;
@@ -1174,10 +1174,10 @@ body.project-page {
     background: none;
     border: none;
     color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 4px;
+      font-size: var(--font-size-2xl);
+  cursor: pointer;
+  padding: var(--space-sm);
+  border-radius: var(--space-xs);
     transition: background-color 0.2s ease;
 }
 
