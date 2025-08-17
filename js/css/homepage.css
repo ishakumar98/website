@@ -245,8 +245,8 @@
 .work-section {
     position: absolute;
     left: 0;
-    /* Initial position showing shadow peek at viewport bottom */
-    top: calc(100vh - var(--work-shadow-height));
+    /* Position top edge at bottom of viewport to show shadow */
+    top: 100vh;
     background-color: rgba(254, 243, 249, 0.8);
     backdrop-filter: blur(var(--space-sm)); /* 8px - logical blur amount */
     -webkit-backdrop-style: none;

@@ -116,25 +116,108 @@
         
     </div>
     
+    <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    
+    <!-- Core Coordination Systems (Keep these) -->
     <script src="js/scroll-manager.js"></script>
     <script src="js/event-manager.js"></script>
     <script src="js/animation-coordinator.js"></script>
-    <script src="js/fireworks.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/scroll-behavior.js"></script>
     
-    <!-- Performance Optimization Modules -->
+    <!-- Module Loader System -->
+    <script src="js/module-loader.js"></script>
+    
+    <!-- Performance Optimization Modules (Keep these) -->
     <script src="js/image-optimizer.js"></script>
     <script src="js/font-optimizer.js"></script>
     <script src="js/css-optimizer.js"></script>
     <script src="js/performance-monitor.js"></script>
     <script src="js/performance-manager.js"></script>
     
-    <!-- Phase 4: Advanced Optimization Modules -->
+    <!-- Phase 4: Advanced Optimization Modules (Keep these) -->
     <script src="js/service-worker-manager.js"></script>
     <script src="js/webp-converter.js"></script>
     <script src="js/advanced-optimization-manager.js"></script>
+    
+    <!-- Initialize Homepage Modules -->
+    <script>
+        // Wait for everything to load, then initialize homepage modules
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                console.log('🚀 DOM loaded, checking for ModuleLoader...');
+                console.log('📍 Current pathname:', window.location.pathname);
+                console.log('🏠 Is homepage?', window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname.endsWith('/') || window.location.pathname.includes('/index.html') || window.location.pathname.includes('/website-project/index.html'));
+                
+                // Wait a bit for ModuleLoader to be available
+                let attempts = 0;
+                const maxAttempts = 20;
+                
+                const waitForModuleLoader = () => {
+                    if (window.moduleLoader) {
+                        console.log('✅ ModuleLoader found, initializing homepage modules...');
+                        
+                        // Load all modules (homepage modules will auto-detect and only initialize on homepage)
+                        window.moduleLoader.loadAllModules().then((moduleClasses) => {
+                            console.log('✅ All modules loaded successfully');
+                            
+                            // Check if homepage modules are available
+                            console.log('🔍 Checking module availability:');
+                            console.log('  - LetterAnimationManager:', !!window.LetterAnimationManager);
+                            console.log('  - FireworksManager:', !!window.FireworksManager);
+                            console.log('  - HomepageScrollManager:', !!window.HomepageScrollManager);
+                            console.log('  - HomepageInteractionManager:', !!window.HomepageInteractionManager);
+                            
+                            // Now instantiate the homepage modules
+                            console.log('🚀 Instantiating homepage modules...');
+                            
+                            try {
+                                // Create instances of homepage modules
+                                if (window.LetterAnimationManager) {
+                                    console.log('🔤 Creating LetterAnimationManager instance...');
+                                    new window.LetterAnimationManager();
+                                }
+                                
+                                if (window.FireworksManager) {
+                                    console.log('🎆 Creating FireworksManager instance...');
+                                    new window.FireworksManager();
+                                }
+                                
+                                if (window.HomepageScrollManager) {
+                                    console.log('📜 Creating HomepageScrollManager instance...');
+                                    new window.HomepageScrollManager();
+                                }
+                                
+                                if (window.HomepageInteractionManager) {
+                                    console.log('🖱️ Creating HomepageInteractionManager instance...');
+                                    new window.HomepageInteractionManager();
+                                }
+                                
+                                console.log('✅ All homepage modules instantiated successfully!');
+                                
+                            } catch (error) {
+                                console.error('❌ Error instantiating homepage modules:', error);
+                            }
+                            
+                        }).catch((error) => {
+                            console.error('❌ Failed to load homepage modules:', error);
+                        });
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        console.log(`⏳ ModuleLoader not ready yet, attempt ${attempts}/${maxAttempts}...`);
+                        setTimeout(waitForModuleLoader, 100);
+                    } else {
+                        console.error('❌ ModuleLoader failed to load after multiple attempts');
+                        console.log('🔍 Available global objects:', Object.keys(window).filter(key => key.includes('Manager') || key.includes('Loader')));
+                    }
+                };
+                
+                waitForModuleLoader();
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize homepage modules:', error);
+            }
+        });
+    </script>
     
 
 

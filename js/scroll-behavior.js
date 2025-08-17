@@ -24,14 +24,16 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
   
-  // Set initial background color to lavender
+  // Set initial background color to lavender using the system
+  console.log('Setting initial background color');
   if (window.animationCoordinator) {
     window.animationCoordinator.registerJSAnimation(
       fireworksContainer, 'background', 'fireworks-bg', 'MEDIUM'
     );
   }
-  fireworksContainer.style.setProperty('background-color', '#FCE8FF', 'important');
-  fireworksContainer.style.setProperty('transition', 'background-color var(--transition-smooth)', 'important');
+  fireworksContainer.style.backgroundColor = '#FCE8FF';
+  fireworksContainer.style.transition = 'background-color var(--transition-smooth)';
+  console.log('Initial background set to:', fireworksContainer.style.backgroundColor);
   
   
   
@@ -42,6 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Get the work section's natural height for scroll calculations
   const workSectionHeight = workSection.offsetHeight;
   window.workSectionHeight = workSectionHeight;
+  
+  // CSS handles initial positioning - no JavaScript override needed
+  console.log('CSS handles initial positioning, JavaScript only handles scroll behavior');
   
   // Remove the body height setting that's causing issues
   // document.body.style.height = (viewportHeight + workSectionHeight) + 'px';
@@ -68,8 +73,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Add position smoothing to reduce jitter
-  let lastTop = viewportHeight - 60; // Start from CSS initial position
+  let lastTop = 100; // Start from CSS initial position (100vh = 100% of viewport)
   let smoothingFactor = 0.15; // Lower = smoother but less responsive
+  
+  // Initialize lastTop from CSS position on first scroll
+  let isFirstScroll = true;
   
   // Clean scroll handler with improved throttling
   function handleScroll(scrollY, scrollDelta, isScrolling) {
@@ -79,6 +87,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     requestAnimationFrame(function() {
       const scrollTop = scrollY;
+      
+      // On first scroll, initialize lastTop from CSS position
+      if (isFirstScroll) {
+        const computedStyle = window.getComputedStyle(workSection);
+        lastTop = parseFloat(computedStyle.top);
+        isFirstScroll = false;
+        console.log('Initialized lastTop from CSS position:', lastTop);
+      }
       
       // Calculate scroll progress (0 = fully collapsed, 1 = fully expanded)
       const maxScroll = window.workSectionHeight || workSection.offsetHeight;
@@ -95,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Add hard constraint to prevent the container from going beyond bounds
       // This prevents the bouncy behavior when scrolling fast
       const minTop = viewportHeight - maxScroll; // Bottom edge at viewport bottom
-      const maxTop = viewportHeight - 60; // Top edge with full shadow visible at viewport bottom (CSS initial position)
+      const maxTop = viewportHeight; // Top edge at viewport bottom (CSS initial position)
       
       newTop = Math.max(minTop, Math.min(maxTop, newTop));
       
@@ -112,13 +128,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Round the position to reduce jitter (sub-pixel positioning can cause jitter)
       newTop = Math.round(newTop);
       
-      // Apply the new position with animation coordination
-      if (window.animationCoordinator) {
-        window.animationCoordinator.registerJSAnimation(
-          workSection, 'position', 'work-scroll', 'HIGH'
-        );
-      }
-      workSection.style.setProperty('top', newTop + 'px', 'important');
+      // Apply the new position directly for smooth scrolling
+      workSection.style.top = newTop + 'px';
       
       // Background color transition effect
       // Transition from #FCE8FF (lavender) to main page background color
@@ -129,8 +140,18 @@ document.addEventListener('DOMContentLoaded', function() {
       const g = Math.round(initialColor[1] + (finalColor[1] - initialColor[1]) * easedProgress);
       const b = Math.round(initialColor[2] + (finalColor[2] - initialColor[2]) * easedProgress);
       
-      // Use setProperty with important to ensure it overrides CSS
-      fireworksContainer.style.setProperty('background-color', `rgb(${r}, ${g}, ${b})`, 'important');
+      // Debug background color changes
+      console.log('Scroll Progress:', scrollProgress, 'Eased Progress:', easedProgress);
+      console.log('Color:', `rgb(${r}, ${g}, ${b})`);
+      console.log('Fireworks Container:', fireworksContainer);
+      
+      // Apply background color change through the system
+      if (window.animationCoordinator) {
+        window.animationCoordinator.registerJSAnimation(
+          fireworksContainer, 'background', 'fireworks-scroll', 'HIGH'
+        );
+      }
+      fireworksContainer.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
       
       isScrolling = false;
     });
@@ -138,7 +159,20 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Register with ScrollManager instead of direct event listener
   if (window.scrollManager) {
+    console.log('ScrollManager available, registering scroll listener');
     window.scrollManager.addScrollListener('work-section-scroll', handleScroll, 'normal');
+  } else {
+    console.error('ScrollManager not available');
+  }
+  
+  // Reset work section to initial CSS position
+  function resetWorkSectionPosition() {
+    console.log('Resetting work section position to 100vh');
+    // Force reset by removing inline styles first, then setting CSS position
+    workSection.style.removeProperty('top');
+    workSection.style.setProperty('top', '100vh', 'important');
+    lastTop = viewportHeight;
+    console.log('Position reset complete, current top:', workSection.style.top);
   }
   
   // Handle window resize
@@ -156,16 +190,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const easedProgress = ultraSmoothEase(scrollProgress);
     const newTop = newViewportHeight - (easedProgress * newWorkSectionHeight);
     
-    if (window.animationCoordinator) {
-      window.animationCoordinator.registerJSAnimation(
-        workSection, 'position', 'work-resize', 'HIGH'
-      );
-    }
-    workSection.style.setProperty('top', newTop + 'px', 'important');
+    workSection.style.top = newTop + 'px';
   }
   
   if (window.eventManager) {
     window.eventManager.addListener(window, 'resize', handleResize);
+    // Ensure position resets on page reload
+    window.eventManager.addListener(window, 'load', resetWorkSectionPosition);
   }
   
   

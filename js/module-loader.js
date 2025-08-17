@@ -74,7 +74,12 @@ class ModuleLoader {
             'image-popup-manager': 'ImagePopupManager',
             'scroll-manager': 'ProjectScrollManager',
             'text-slant-manager': 'TextSlantManager',
-            'font-sizing-manager': 'FontSizingManager'
+            'font-sizing-manager': 'FontSizingManager',
+
+            'letter-animation-manager': 'LetterAnimationManager',
+            'fireworks-manager': 'FireworksManager',
+            'homepage-scroll-manager': 'HomepageScrollManager',
+            'homepage-interaction-manager': 'HomepageInteractionManager'
         };
         
         const className = classMap[moduleName];
@@ -92,7 +97,11 @@ class ModuleLoader {
             'image-popup-manager',
             'scroll-manager',
             'text-slant-manager',
-            'font-sizing-manager'
+            'font-sizing-manager',
+            'letter-animation-manager',
+            'fireworks-manager',
+            'homepage-scroll-manager',
+            'homepage-interaction-manager'
         ];
         
         try {
@@ -116,7 +125,11 @@ class ModuleLoader {
             'image-popup-manager',
             'scroll-manager',
             'text-slant-manager',
-            'font-sizing-manager'
+            'font-sizing-manager',
+            'letter-animation-manager',
+            'fireworks-manager',
+            'homepage-scroll-manager',
+            'homepage-interaction-manager'
         ];
         
         return requiredModules.every(moduleName => this.loadedModules.has(moduleName));
