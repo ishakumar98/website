@@ -923,7 +923,7 @@ body.project-page {
   /* Initially hidden - no animation until start-bloom class is added */
   transform: scale(0%, 0%);
   opacity: 0;
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.3s ease-out, transform 2s ease-in-out;
   
   /* Centered positioning */
   margin: var(--flower-margin-top) auto var(--flower-margin-bottom) auto;
@@ -964,6 +964,7 @@ body.project-page {
   border-radius: 100%;
   animation-duration: 1s;
   animation-fill-mode: both;
+  transition: background var(--transition-smooth);
 }
 
 /* Petal positioning - Set permanent variables for hover animations */
@@ -1020,6 +1021,12 @@ body.project-page {
   background: var(--color-primary);
 }
 
+/* Ensure flower is properly scaled after blooming for hover effects */
+.flower[logo] {
+  transform: scale(100%, 100%);
+  transition: transform 2s ease-in-out;
+}
+
 /* Start blooming animation when class is added */
 .flower.start-bloom {
     animation: scaleUp 1s;
@@ -1053,18 +1060,15 @@ body.project-page {
   100% { transform: translate(50%, -50%); }
 }
 
-/* Hover Effects - Bloomtype's exact approach */
+/* Hover Effects - Combined rotation and petal color changes */
 /* Only enable hover effects after the flower has bloomed */
 .flower[logo]:hover {
-  animation: rotate 1s forwards !important;
-  /* This ensures the MutationObserver can detect the style change */
+  /* Rotate the already-scaled flower */
+  transform: scale(100%, 100%) rotate(360deg);
   will-change: transform;
 }
 
-/* Animation coordination support - System pattern */
-/* Note: animation-paused functionality removed as it was unused */
-
-/* Petal color changes on hover - keep our color system */
+/* Petal color changes on hover - combined with rotation */
 /* Only enable after blooming */
 .flower[logo]:hover .top:before,
 .flower[logo]:hover .top:after,
@@ -1082,12 +1086,13 @@ body.project-page {
   background: var(--color-primary-lighter);
 }
 
-/* Simple rotation animation - Bloomtype's exact approach */
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+
+
+/* Ensure petals maintain their bloomed positions after [intro] animations */
+.flower[logo] .top:before,
+.flower[logo] .top:after,
+.flower[logo] .bottom:before,
+.flower[logo] .bottom:after {
+  /* Keep the final positions from the bloom animations */
+  animation-fill-mode: forwards;
 }

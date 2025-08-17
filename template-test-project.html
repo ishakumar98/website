@@ -119,10 +119,8 @@
                         // Add [intro] attribute to trigger petal blooming
                         flower.setAttribute('intro', '');
                         
-                        // After petal blooming completes, add [logo] attribute for final state
-                        setTimeout(() => {
-                            flower.setAttribute('logo', '');
-                        }, 2250); // 1s scaleUp + 1.25s delay + 1s petal bloom
+                        // After petal blooming completes, FlowerManager will set [logo] attribute
+                        // No need to set it here - let the module handle its own state
                     }, 1000);
                 }
             }, 500); // 0.5 second delay before flower appears
