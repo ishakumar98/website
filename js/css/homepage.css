@@ -245,17 +245,18 @@
 .work-section {
     position: absolute;
     left: 0;
+    right: 0; /* Ensure it extends to the right edge */
     /* Position top edge at bottom of viewport to show shadow */
     top: 100vh;
     background-color: rgba(254, 243, 249, 0.8);
     backdrop-filter: blur(var(--space-sm)); /* 8px - logical blur amount */
     -webkit-backdrop-style: none;
     z-index: 10;
-    border-top-left-radius: var(--space-md);
-    border-top-right-radius: var(--space-md);
+    border-top-left-radius: 48px;
+    border-top-right-radius: 48px;
     box-shadow: var(--shadow-medium);
-    width: 100%;
-    padding: var(--space-xl) var(--space-2xl); /* 32px top/bottom, 48px left/right */
+    /* width: 100%; - Removed to prevent width conflicts with left:0; right:0 */
+    padding: var(--space-3xl) var(--space-2xl); /* 64px top/bottom, 48px left/right */
     overflow-x: hidden;
     
     /* CSS Grid layout for predictable columns */
