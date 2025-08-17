@@ -232,13 +232,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Observe the work container section
-    const workContainer = document.querySelector('.work-container');
-    if (workContainer) {
-        observer.observe(workContainer);
+    // Observe the work section
+    const workSection = document.querySelector('.work-section');
+    if (workSection) {
+        observer.observe(workSection);
         
         // Add item indices for staggered animation
-        const workItems = workContainer.querySelectorAll('.work-item');
+        const workItems = workSection.querySelectorAll('.work-item');
         workItems.forEach((item, index) => {
             item.style.setProperty('--item-index', index);
         });
@@ -291,11 +291,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (window.eventManager) {
         window.eventManager.addListener(window, 'scroll', (event) => {
-        const workContainer = document.querySelector('.work-container');
-        if (workContainer) {
+        const workSection = document.querySelector('.work-section');
+        if (workSection) {
             // Reset any previous transform conflicts
             if (window.animationCoordinator) {
-                window.animationCoordinator.unregisterAnimation(workContainer, 'work-container-lerp');
+                window.animationCoordinator.unregisterAnimation(workSection, 'work-section-lerp');
             }
             
             // scrollY is now passed as parameter from ScrollManager
