@@ -200,7 +200,9 @@ class EventManager {
     generateListenerId(element, eventType, callback) {
         const elementId = element.id || element.className || element.tagName || 'unknown';
         const callbackName = callback.name || 'anonymous';
-        return `${elementId}_${eventType}_${callbackName}_${Date.now()}`;
+        // Use callback.toString() hash for better deduplication without timestamp
+        const callbackHash = callback.toString().slice(0, 50).replace(/[^a-zA-Z0-9]/g, '');
+        return `${elementId}_${eventType}_${callbackHash}`;
     }
     
     // Get statistics
