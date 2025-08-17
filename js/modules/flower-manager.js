@@ -5,7 +5,6 @@
 class FlowerManager {
     constructor() {
         this.flowerElement = null;
-        this.spinDirection = 'clockwise';
         this.isInitialized = false;
         
         this.init();
@@ -14,7 +13,6 @@ class FlowerManager {
     init() {
         this.findFlowerElement();
         if (this.flowerElement) {
-            this.setupEventListeners();
             this.triggerBloom();
             this.isInitialized = true;
         }
@@ -27,47 +25,9 @@ class FlowerManager {
         }
     }
     
-    setupEventListeners() {
-        if (this.flowerElement && window.eventManager) {
-            window.eventManager.addListener(this.flowerElement, 'mouseenter', () => {
-                // Only allow hover effects if the flower has fully bloomed
-                if (!this.flowerElement.hasAttribute('logo')) {
-                    console.log('🚫 Flower not ready for hover - no logo attribute yet');
-                    return;
-                }
-                
-                this.toggleSpinDirection();
-                // CSS transition handles the rotation automatically
-                
-                // DEBUG: Log current transform state
-                const computedStyle = getComputedStyle(this.flowerElement);
-                console.log('🖱️ Mouse ENTER - Flower hover started');
-                console.log('Current transform:', computedStyle.transform);
-                console.log('Current transition:', computedStyle.transition);
-                console.log('Has logo attribute:', this.flowerElement.hasAttribute('logo'));
-                console.log('Element classes:', this.flowerElement.className);
-            });
-            
-            window.eventManager.addListener(this.flowerElement, 'mouseleave', () => {
-                // CSS transition automatically returns to original position
-                
-                // DEBUG: Log transform state after hover
-                const computedStyle = getComputedStyle(this.flowerElement);
-                console.log('🖱️ Mouse LEAVE - Flower hover ended');
-                console.log('Current transform:', computedStyle.transform);
-            });
-        }
-    }
+
     
-    toggleSpinDirection() {
-        if (this.spinDirection === 'clockwise') {
-            this.flowerElement.setAttribute('data-spin-direction', 'counter');
-            this.spinDirection = 'counter';
-        } else {
-            this.flowerElement.removeAttribute('data-spin-direction');
-            this.spinDirection = 'clockwise';
-        }
-    }
+
     
     // Flower now only handles bloom and hover states
     // No more scrolling or scaling complexity
@@ -75,22 +35,30 @@ class FlowerManager {
     triggerBloom() {
         if (this.flowerElement) {
             // CSS handles the bloom animation via start-bloom class
-            // After bloom completes, enable hover effects by setting [logo] attribute
+            // Set [intro] attribute to trigger petal blooming - CSS handles all timing
+            this.flowerElement.setAttribute('intro', '');
             
-            // Timing: 1s scaleUp + 1.25s delay + 1s petal bloom = 3.25s total
-            setTimeout(() => {
-                if (this.flowerElement) {
+            // Listen for CSS animation completion to automatically set [logo] state
+            this.setupAnimationListener();
+        }
+    }
+    
+    setupAnimationListener() {
+        // Listen for the last petal animation to complete
+        const lastPetal = this.flowerElement.querySelector('.bottom:after');
+        if (lastPetal) {
+            // Use CSS animation events to detect when blooming is complete
+            this.flowerElement.addEventListener('animationend', (event) => {
+                if (event.animationName === 'bottomRight') {
+                    // Last petal animation completed - set logo state for hover effects
                     this.flowerElement.setAttribute('logo', '');
-                    console.log('🌸 Flower bloom complete - [logo] attribute set, hover effects enabled');
+                    console.log('🌸 Flower bloom complete - CSS animation finished, hover effects enabled');
                 }
-            }, 3250); // Total bloom time
+            });
         }
     }
     
     destroy() {
-        if (this.flowerElement && window.eventManager) {
-            window.eventManager.removeAllListeners(this.flowerElement);
-        }
         this.flowerElement = null;
         this.isInitialized = false;
     }

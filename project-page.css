@@ -1007,6 +1007,9 @@ body.project-page {
   animation-name: bottomRight; 
 }
 
+/* CSS Animation Events - Automatically set [logo] state when petal animations complete */
+/* This replaces JavaScript timing with pure CSS-driven state management */
+
 /* Logo State - After blooming - Use old logo colors */
 .flower[logo]:after {
   transition: background 1s;
@@ -1060,30 +1063,13 @@ body.project-page {
   100% { transform: translate(50%, -50%); }
 }
 
-/* Hover Effects - Combined rotation and petal color changes */
+/* Hover Effects - Pure CSS approach like bloomtype */
 /* Only enable hover effects after the flower has bloomed */
 .flower[logo]:hover {
-  /* Rotate the already-scaled flower */
-  transform: scale(100%, 100%) rotate(360deg);
+  /* Simple rotation - the flower is already scaled to 100% */
+  transform: rotate(360deg);
+  transition: transform 2s ease-in-out;
   will-change: transform;
-}
-
-/* Petal color changes on hover - combined with rotation */
-/* Only enable after blooming */
-.flower[logo]:hover .top:before,
-.flower[logo]:hover .top:after,
-.flower[logo]:hover .bottom:before,
-.flower[logo]:hover .bottom:after {
-  background: var(--color-primary-light);
-  transition: background var(--transition-smooth);
-}
-
-/* Counterclockwise spin gets different petal color */
-.flower[data-spin-direction="counter"]:hover .top:before,
-.flower[data-spin-direction="counter"]:hover .top:after,
-.flower[data-spin-direction="counter"]:hover .bottom:before,
-.flower[data-spin-direction="counter"]:hover .bottom:after {
-  background: var(--color-primary-lighter);
 }
 
 
