@@ -9,6 +9,7 @@
 @import './layout.css';
 @import './components.css';
 @import './homepage.css';
+@import './text-file-popup.css';
 
 /* Additional global styles that don't fit in modules */
 /* These will be moved to appropriate modules in future iterations */
@@ -50,7 +51,7 @@
 .work-link {
     text-decoration: none;
     color: inherit;
-    display: block;
+    /* display: block; - Removed to prevent flexbox conflicts */
     transition: all var(--transition-smooth);
 }
 

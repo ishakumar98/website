@@ -86,6 +86,16 @@
                         <img src="images/folder.svg" alt="folder">
                     </div>
                     <div class="title">
+                        <span>Lists</span>
+                    </div>
+                </a>
+            </div>
+            <div class="work-item">
+                <a class="work-link" href="#">
+                    <div class="wrapper-image">
+                        <img src="images/folder.svg" alt="folder">
+                    </div>
+                    <div class="title">
                         <span>Client Redesign</span>
                     </div>
                 </a>
@@ -101,14 +111,14 @@
                 </a>
             </div>
             <div class="work-item">
-                <a class="work-link" href="#">
+                <div class="text-file-item" data-textfile="about">
                     <div class="wrapper-image">
                         <img src="images/text-file-icon.png" alt="about">
                     </div>
                     <div class="title">
                         <span>About</span>
                     </div>
-                </a>
+                </div>
             </div>
         </section>
         
@@ -182,6 +192,11 @@
                                         if (window.HomepageInteractionManager) {
                                             console.log('Creating HomepageInteractionManager...');
                                             new window.HomepageInteractionManager();
+                                        }
+                                        
+                                        if (window.TextFileManager) {
+                                            console.log('Creating TextFileManager...');
+                                            new window.TextFileManager();
                                         }
                                         
                                     } catch (error) {
