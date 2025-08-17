@@ -20,6 +20,9 @@ class HomepageScrollManager {
             FIREWORKS_BACKGROUND: 'var(--color-background-lighter)',  // #FCE8FF (lavender)
             WORK_BACKGROUND: 'var(--color-background)',               // #FFF5F8 (light pink)
             
+            // Selectors
+            WORK_SECTION_SELECTOR: '.work-section',
+            
             // Animation timing from design system
             TRANSITION_DURATION: 'var(--transition-smooth)',
             
