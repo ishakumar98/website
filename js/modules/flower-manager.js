@@ -7,7 +7,6 @@ class FlowerManager {
         this.flowerElement = null;
         this.spinDirection = 'clockwise';
         this.isInitialized = false;
-        this.hasBloomed = false;
         
         this.init();
     }
@@ -31,25 +30,18 @@ class FlowerManager {
     setupEventListeners() {
         if (this.flowerElement && window.eventManager) {
             window.eventManager.addListener(this.flowerElement, 'mouseenter', () => {
-                console.log('🖱️ Mouse ENTER - Flower hover started');
                 this.toggleSpinDirection();
                 // Register CSS hover animation with AnimationCoordinator
                 if (window.animationCoordinator) {
-                    console.log('🔧 Registering CSS animation with AnimationCoordinator');
                     window.animationCoordinator.registerCSSAnimation(this.flowerElement, 'rotate', 'flower-hover-rotate', window.animationCoordinator.priorities.HIGH);
                 }
             });
             
             window.eventManager.addListener(this.flowerElement, 'mouseleave', () => {
-                console.log('🖱️ Mouse LEAVE - Flower hover ended');
-                
                 // Unregister CSS animation when hover ends
                 if (window.animationCoordinator) {
-                    console.log('🔧 Unregistering CSS animation');
                     window.animationCoordinator.unregisterAnimation(this.flowerElement, 'flower-hover-rotate');
                 }
-                
-                console.log('✅ Hover ended. Flower scaling remains independent of hover state.');
             });
         }
     }
@@ -64,21 +56,16 @@ class FlowerManager {
         }
     }
     
-    // Flower scaling is now completely independent of hover state
-    // It only responds to actual scroll events from ProjectScrollManager
-    
     // Flower now only handles bloom and hover states
     // No more scrolling or scaling complexity
     
     triggerBloom() {
-        if (this.flowerElement && !this.hasBloomed) {
-            this.flowerElement.setAttribute('bloom', '');
+        if (this.flowerElement) {
+            // CSS handles the bloom animation via start-bloom class
+            // After bloom completes, enable hover effects
             setTimeout(() => {
-                this.hasBloomed = true;
-                this.flowerElement.removeAttribute('bloom');
                 this.flowerElement.setAttribute('logo', ''); // Enable hover effects
-                // CSS will handle the reset naturally - no direct manipulation needed
-            }, 2500);
+            }, 2250); // 1s scaleUp + 1.25s delay + 1s petal bloom
         }
     }
     

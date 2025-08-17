@@ -1,11 +1,10 @@
 // Project Scroll Manager Module
-// Handles LSVP-style smooth scrolling for project images with flower logo scaling
+// Handles LSVP-style smooth scrolling for project images with initial positioning
 // Extracted from project-script.js for better organization
 
 class ProjectScrollManager {
     constructor() {
         this.projectImagesSection = null;
-        this.flowerElement = null;
         this.isInitialized = false;
         this.animationLoopActive = false;
         this.currentTop = 0;
@@ -41,31 +40,15 @@ class ProjectScrollManager {
     tryInitialize() {
         if (this.isInitialized) return;
         
-        console.log('ProjectScrollManager: Attempting to initialize...');
-        
         this.findElements();
         if (this.projectImagesSection) {
-            console.log('ProjectScrollManager: Found project images section, setting up scroll behavior...');
             this.setupScrollBehavior();
             this.isInitialized = true;
-            console.log('ProjectScrollManager: Successfully initialized!');
-        } else {
-            console.log('ProjectScrollManager: Project images section not found, will retry...');
         }
     }
     
     findElements() {
         this.projectImagesSection = document.querySelector('.project-images-section');
-        
-        if (this.projectImagesSection) {
-            this.flowerElement = this.projectImagesSection.querySelector('.flower');
-        } else {
-            this.flowerElement = null;
-        }
-        
-        if (!this.projectImagesSection) {
-            return;
-        }
     }
     
     setupScrollBehavior() {
@@ -74,7 +57,6 @@ class ProjectScrollManager {
         }
         
         const viewportHeight = window.innerHeight;
-        const projectImagesHeight = this.projectImagesSection.offsetHeight;
         
         // Calculate initial positioning for flower visibility
         let initialTop = this.calculateInitialPosition(viewportHeight);
@@ -90,28 +72,7 @@ class ProjectScrollManager {
         let lastScrollY = 0;
         let scrollTimeout;
         
-        // Use the CSS position as the starting point
-        const cssTop = getComputedStyle(this.projectImagesSection).top;
-        const cssTopValue = parseFloat(cssTop);
-        
-        // Store the CSS position for our calculations
-        this.initialTop = cssTopValue;
-        
-        // Register the CSS positioning with AnimationCoordinator to prevent conflicts
-        if (window.animationCoordinator) {
-            window.animationCoordinator.registerCSSAnimation(
-                this.projectImagesSection,
-                'top',
-                'project-images-initial-position',
-                window.animationCoordinator.priorities.MEDIUM
-            );
-        }
-        
-        // Initialize flower hover effects
-        this.setupFlowerHoverEffects();
-        
-        // Don't start animation loop yet - wait for actual scrolling
-        // Store the initial position for later use
+        // Store the initial position for our calculations
         this.initialTop = initialTop;
         this.lerpFactor = lerpFactor;
         this.velocity = velocity;
@@ -130,6 +91,73 @@ class ProjectScrollManager {
                 this.startAnimationLoop();
             }
         });
+    }
+    
+    // Start the animation loop (only called when scrolling begins)
+    startAnimationLoop() {
+        if (this.animationLoopActive) return; // Prevent multiple loops
+        
+        this.animationLoopActive = true;
+        
+        // Initialize currentTop to match the current CSS position to prevent jumping
+        const currentCSSTop = getComputedStyle(this.projectImagesSection).top;
+        this.currentTop = parseFloat(currentCSSTop);
+        
+        const updateProjectImagesPosition = () => {
+            if (!this.animationLoopActive) return; // Stop if disabled
+            
+            // Use multiple scroll detection methods for better compatibility
+            const scrollY = window.pageYOffset || window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            const scrollDelta = scrollY - this.lastScrollY;
+            this.lastScrollY = scrollY;
+            
+            // Detect if user is actively scrolling
+            this.isScrolling = true;
+            clearTimeout(this.scrollTimeout);
+            this.scrollTimeout = setTimeout(() => {
+                this.isScrolling = false;
+            }, parseInt(this.animationConfig.SCROLL_STOP_DELAY));
+            
+            // Apply scroll multiplier to slow down overall movement (LSVP technique)
+            const scrollMultiplier = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-multiplier')) || 0.25;
+            const adjustedScrollY = scrollY * scrollMultiplier;
+            
+            // Calculate scroll progress based on images container height
+            const maxScroll = this.projectImagesSection.offsetHeight;
+            const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
+            
+            // Enhanced easing for more dramatic momentum building and deceleration
+            let easedProgress = this.calculateEasedProgress(scrollProgress);
+            
+            // Calculate new top position
+            const startTop = this.initialTop;
+            const endTop = 0;
+            const targetTop = startTop + (endTop - startTop) * easedProgress;
+            
+            // Apply LERP for smooth movement
+            this.currentTop += (targetTop - this.currentTop) * this.lerpFactor;
+            
+            // Apply momentum when scrolling
+            if (this.isScrolling) {
+                this.velocity += scrollDelta * this.animationConfig.VELOCITY_MULTIPLIER;
+                this.currentTop += this.velocity;
+            }
+            
+            // Apply damping to velocity
+            this.velocity *= parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--velocity-damping')) || 0.95;
+            
+            // Clamp position to prevent overshooting
+            this.currentTop = Math.max(endTop, Math.min(startTop, this.currentTop));
+            
+            // Apply the calculated position
+            this.projectImagesSection.style.top = this.currentTop + 'px';
+            
+            // Continue animation loop
+            requestAnimationFrame(updateProjectImagesPosition);
+        };
+        
+        // Start the loop
+        updateProjectImagesPosition();
     }
     
     // Calculate initial position for flower visibility
@@ -185,113 +213,6 @@ class ProjectScrollManager {
         return imageContainerTop;
     }
     
-    // Setup flower hover effects
-    setupFlowerHoverEffects() {
-        if (!this.flowerElement || !window.eventManager) return;
-        
-        let spinDirection = 'clockwise'; // Start with clockwise
-        
-        window.eventManager.addListener(this.flowerElement, 'mouseenter', () => {
-            // Toggle spin direction on each hover
-            if (spinDirection === 'clockwise') {
-                this.flowerElement.setAttribute('data-spin-direction', 'counter');
-                spinDirection = 'counter';
-            } else {
-                this.flowerElement.removeAttribute('data-spin-direction');
-                spinDirection = 'clockwise';
-            }
-        });
-    }
-    
-    // Start the animation loop (only called when scrolling begins)
-    startAnimationLoop() {
-        if (this.animationLoopActive) return; // Prevent multiple loops
-        
-        this.animationLoopActive = true;
-        
-        // Initialize currentTop to match the current CSS position to prevent jumping
-        const currentCSSTop = getComputedStyle(this.projectImagesSection).top;
-        this.currentTop = parseFloat(currentCSSTop);
-        
-        // Unregister CSS positioning since JS is now controlling it
-        if (window.animationCoordinator) {
-            window.animationCoordinator.unregisterAnimation(
-                this.projectImagesSection, 
-                'project-images-initial-position'
-            );
-        }
-        
-        const updateProjectImagesPosition = () => {
-            if (!this.animationLoopActive) return; // Stop if disabled
-            
-            // Use multiple scroll detection methods for better compatibility
-            const scrollY = window.pageYOffset || window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-            const scrollDelta = scrollY - this.lastScrollY;
-            this.lastScrollY = scrollY;
-            
-            // Detect if user is actively scrolling
-            this.isScrolling = true;
-            clearTimeout(this.scrollTimeout);
-            this.scrollTimeout = setTimeout(() => {
-                this.isScrolling = false;
-            }, parseInt(this.animationConfig.SCROLL_STOP_DELAY));
-            
-            // Apply scroll multiplier to slow down overall movement (LSVP technique)
-            const scrollMultiplier = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-multiplier')) || 0.25;
-            const adjustedScrollY = scrollY * scrollMultiplier;
-            
-            // Calculate scroll progress based on images container height
-            const maxScroll = this.projectImagesSection.offsetHeight;
-            const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
-            
-            // Update flower size based on scroll progress (bloomtype-style)
-            if (window.flowerManager && window.flowerManager.isInitialized) {
-                window.flowerManager.updateFlowerSize(scrollProgress);
-            }
-            
-            // Enhanced easing for more dramatic momentum building and deceleration
-            let easedProgress = this.calculateEasedProgress(scrollProgress);
-            
-            // Calculate new top position
-            const startTop = this.initialTop;
-            const endTop = 0;
-            const targetTop = startTop + (endTop - startTop) * easedProgress;
-            
-            // Apply LERP for smooth movement
-            this.currentTop += (targetTop - this.currentTop) * this.lerpFactor;
-            
-            // Apply momentum when scrolling
-            if (this.isScrolling) {
-                this.velocity += scrollDelta * this.animationConfig.VELOCITY_MULTIPLIER;
-                this.currentTop += this.velocity;
-            }
-            
-            // Apply damping to velocity
-            this.velocity *= parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--velocity-damping')) || 0.95;
-            
-            // Clamp position to prevent overshooting
-            this.currentTop = Math.max(endTop, Math.min(startTop, this.currentTop));
-            
-            // Apply the calculated position with animation coordination
-            if (window.animationCoordinator) {
-                window.animationCoordinator.registerJSAnimation(
-                    this.projectImagesSection, 
-                    'top', 
-                    'project-images-scroll', 
-                    window.animationCoordinator.priorities.CRITICAL
-                );
-            }
-            
-            this.projectImagesSection.style.top = this.currentTop + 'px';
-            
-            // Continue animation loop
-            requestAnimationFrame(updateProjectImagesPosition);
-        };
-        
-        // Start the loop
-        updateProjectImagesPosition();
-    }
-    
     // Calculate eased progress for smooth animation
     calculateEasedProgress(scrollProgress) {
         let easedProgress;
@@ -315,12 +236,9 @@ class ProjectScrollManager {
     handleResize() {
         if (!this.isInitialized) return;
         
-        // Get the CSS position (which should already be correct)
-        const cssTop = getComputedStyle(this.projectImagesSection).top;
-        const cssTopValue = parseFloat(cssTop);
-        
-        // Update our stored initial position
-        this.initialTop = cssTopValue;
+        // Recalculate position on resize
+        const viewportHeight = window.innerHeight;
+        this.calculateInitialPosition(viewportHeight);
     }
     
     // Check if initialized
@@ -364,16 +282,6 @@ class ProjectScrollManager {
         
         // Stop animation loop
         this.animationLoopActive = false;
-        
-        // Re-register CSS positioning for fallback
-        if (window.animationCoordinator) {
-            window.animationCoordinator.registerCSSAnimation(
-                this.projectImagesSection,
-                'top',
-                'project-images-initial-position',
-                window.animationCoordinator.priorities.MEDIUM
-            );
-        }
         
         // Unregister from ScrollManager
         if (window.scrollManager) {
