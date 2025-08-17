@@ -14,7 +14,7 @@
 
 /* Page Header Layout */
 .page-header {
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -262,7 +262,7 @@
     /* CSS Grid layout for predictable columns */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     align-items: start;
     
     /* Smooth animations for layout changes */
