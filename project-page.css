@@ -358,8 +358,6 @@ body.project-page {
 .project-images-section {
   position: absolute;
   /* top position will be set dynamically by JavaScript based on flower dimensions */
-  /* DEBUG: Add !important to ensure JavaScript positioning takes precedence */
-  top: 0 !important; /* This will be overridden by JavaScript */
   background-color: rgba(254, 243, 249, 0.8);
   backdrop-filter: blur(6px);
   -webkit-backdrop-style: none;

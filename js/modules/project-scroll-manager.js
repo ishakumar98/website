@@ -134,10 +134,23 @@ class ProjectScrollManager {
     
     // Calculate initial position for flower visibility
     calculateInitialPosition(viewportHeight) {
-        // Use CSS variables to calculate flower dimensions immediately - no waiting for flower to render
-        const flowerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-height')) || 96; // 6em * 16px
-        const flowerTopMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-top')) || 32; // 2rem * 16px
-        const flowerBottomMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-bottom')) || 24; // 1.5rem * 16px
+        // Use CSS variables to calculate flower dimensions - convert em/rem to pixels
+        const flowerHeightRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-height');
+        const flowerTopMarginRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-top');
+        const flowerBottomMarginRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-bottom');
+        
+        // Convert CSS units to pixels
+        const flowerHeight = this.convertCSSUnitToPixels(flowerHeightRaw);
+        const flowerTopMargin = this.convertCSSUnitToPixels(flowerTopMarginRaw);
+        const flowerBottomMargin = this.convertCSSUnitToPixels(flowerBottomMarginRaw);
+        
+        // Validate that we got reasonable values
+        if (!flowerHeight || flowerHeight < 10 || !flowerTopMargin || !flowerBottomMargin) {
+            console.error('ProjectScrollManager: Invalid flower dimensions after conversion:', {
+                height: flowerHeight, topMargin: flowerTopMargin, bottomMargin: flowerBottomMargin
+            });
+            return viewportHeight; // Fallback to full viewport height
+        }
         
         // Get container padding (project-images-section has 16px top and bottom padding)
         const containerStyles = getComputedStyle(this.projectImagesSection);
@@ -150,12 +163,12 @@ class ProjectScrollManager {
         
         // Calculate where the image container should be positioned
         // We want the bottom of the flower to be visible at the bottom of the viewport
-        // So: viewport bottom = flower bottom + flower bottom margin + container bottom padding
-        const imageContainerStartPosition = viewportHeight - flowerTotalHeight - containerBottomPadding;
+        // So: viewport bottom = flower bottom + flower bottom margin
+        // Include top padding to give flower breathing room above it
+        const imageContainerTop = viewportHeight - flowerTotalHeight - containerTopPadding;
         
         // The content area height should be the space from top of viewport to where image container starts
-        // This is simply the imageContainerStartPosition since it's measured from the top
-        const contentAreaHeight = imageContainerStartPosition;
+        const contentAreaHeight = imageContainerTop;
         
         // DEBUG: Log the calculation values
         console.log('ProjectScrollManager - Position Calculation:', {
@@ -164,8 +177,9 @@ class ProjectScrollManager {
             flowerTopMargin,
             flowerBottomMargin,
             flowerTotalHeight,
+            containerTopPadding,
             containerBottomPadding,
-            imageContainerStartPosition,
+            imageContainerTop,
             contentAreaHeight
         });
         
@@ -174,12 +188,12 @@ class ProjectScrollManager {
         document.documentElement.style.setProperty('--image-container-top', contentAreaHeight + 'px');
         
         // Also update the actual position of the image container to match our calculation
-        this.projectImagesSection.style.top = imageContainerStartPosition + 'px';
+        this.projectImagesSection.style.top = imageContainerTop + 'px';
         
         // DEBUG: Log what we're setting
         console.log('ProjectScrollManager - Setting positions:', {
             '--image-container-top': contentAreaHeight + 'px',
-            'top': imageContainerStartPosition + 'px'
+            'top': imageContainerTop + 'px'
         });
         
         // Notify other modules that image container position is ready
@@ -253,7 +267,7 @@ class ProjectScrollManager {
             const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
             
             // Update flower size based on scroll progress (bloomtype-style)
-            if (window.flowerManager && window.flowerManager.isReady()) {
+            if (window.flowerManager && window.flowerManager.isInitialized) {
                 window.flowerManager.updateFlowerSize(scrollProgress);
             }
             
@@ -334,6 +348,34 @@ class ProjectScrollManager {
     // Check if initialized
     isReady() {
         return this.isInitialized;
+    }
+    
+    // Convert CSS units (em, rem, px) to pixels
+    convertCSSUnitToPixels(value) {
+        if (!value) return 0;
+        
+        // Remove any whitespace
+        value = value.trim();
+        
+        // If it's already in pixels, return the number
+        if (value.endsWith('px')) {
+            return parseFloat(value);
+        }
+        
+        // If it's in rem, convert to pixels (1rem = 16px)
+        if (value.endsWith('rem')) {
+            const remValue = parseFloat(value);
+            return remValue * 16;
+        }
+        
+        // If it's in em, convert to pixels (1em = 16px for root element)
+        if (value.endsWith('em')) {
+            const emValue = parseFloat(value);
+            return emValue * 16;
+        }
+        
+        // If no unit specified, assume pixels
+        return parseFloat(value);
     }
     
     // Destroy and cleanup
