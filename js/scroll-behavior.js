@@ -6,8 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.pathname.includes('index.html') ||
                     window.location.pathname.endsWith('/');
   
+  console.log('Scroll behavior script loaded, isHomePage:', isHomePage);
+  
   if (!isHomePage) {
-
+    console.log('Not home page, returning');
     return;
   }
   
@@ -47,9 +49,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get the work section's natural height after render
     const workSectionHeight = workSection.offsetHeight;
     
+    console.log('Positioning work section:', {
+      viewportHeight,
+      workSectionHeight,
+      calculatedTop: viewportHeight - 60
+    });
+    
     // Position so top edge with full box shadow is visible at viewport bottom
     // Shadow is 0 0 25px 35px = 60px total, so show that much
     workSection.style.top = (viewportHeight - 60) + 'px';
+    
+    console.log('Work section positioned, current top:', workSection.style.top);
     
     // Store height for scroll calculations
     window.workSectionHeight = workSectionHeight;
