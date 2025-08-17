@@ -124,6 +124,8 @@
     <script src="js/event-manager.js"></script>
     <script src="js/animation-coordinator.js"></script>
     
+
+    
     <!-- Module Loader System -->
     <script src="js/module-loader.js"></script>
     
@@ -143,52 +145,64 @@
             <script>
                 // Wait for everything to load, then initialize homepage modules
                 document.addEventListener('DOMContentLoaded', async () => {
+                    console.log('DOMContentLoaded: Starting homepage initialization...');
+                    
                     try {
                         // Wait a bit for ModuleLoader to be available
                         let attempts = 0;
                         const maxAttempts = 20;
                         
                         const waitForModuleLoader = () => {
+                            console.log(`Attempt ${attempts + 1}: Checking for moduleLoader...`);
+                            
                             if (window.moduleLoader) {
+                                console.log('ModuleLoader found! Loading modules...');
+                                
                                 // Load all modules (homepage modules will auto-detect and only initialize on homepage)
                                 window.moduleLoader.loadAllModules().then((moduleClasses) => {
+                                    console.log('Modules loaded successfully:', moduleClasses);
+                                    
                                     try {
                                         // Create instances of homepage modules
                                         if (window.LetterAnimationManager) {
+                                            console.log('Creating LetterAnimationManager...');
                                             new window.LetterAnimationManager();
                                         }
                                         
                                         if (window.FireworksManager) {
+                                            console.log('Creating FireworksManager...');
                                             new window.FireworksManager();
                                         }
                                         
                                         if (window.HomepageScrollManager) {
+                                            console.log('Creating HomepageScrollManager...');
                                             new window.HomepageScrollManager();
                                         }
                                         
                                         if (window.HomepageInteractionManager) {
+                                            console.log('Creating HomepageInteractionManager...');
                                             new window.HomepageInteractionManager();
                                         }
                                         
                                     } catch (error) {
-                                        // Handle module instantiation error silently
+                                        console.error('Module instantiation error:', error);
                                     }
                                     
                                 }).catch((error) => {
-                                    // Handle module loading error silently
+                                    console.error('Module loading error:', error);
                                 });
                             } else if (attempts < maxAttempts) {
                                 attempts++;
                                 setTimeout(waitForModuleLoader, 100);
                             } else {
-                                // ModuleLoader failed to load after multiple attempts
+                                console.error('ModuleLoader failed to load after multiple attempts');
                             }
                         };
                         
                         waitForModuleLoader();
                         
                     } catch (error) {
-                        // Handle initialization error silently
+                        console.error('Homepage initialization error:', error);
                     }
                 });
             </script>

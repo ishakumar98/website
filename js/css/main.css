@@ -55,7 +55,6 @@
 }
 
 .work-link:hover {
-    transform: translateY(-4px);
 }
 
 .work-link-inactive:hover .title span {

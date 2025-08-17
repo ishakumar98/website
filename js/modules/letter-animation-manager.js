@@ -16,6 +16,14 @@ class LetterAnimationManager {
             TRANSITION_DURATION: 'var(--transition-smooth)' // Uses your CSS variables
         };
         
+        // Flower color palette from fireworks (enhancement)
+        this.flowerColors = [
+            '#537DBD', '#CA683E', '#D3B934', '#AF9E7D', '#D85959', 
+            '#956750', '#277325', '#F3B524', '#972723', '#5B388B', 
+            '#686B1C', '#142D86', '#A1A329', '#BF1E16', '#3853A5', 
+            '#D7537E', '#E99F22', '#CE5310', '#613B31'
+        ];
+        
         this.init();
     }
     
@@ -82,6 +90,7 @@ class LetterAnimationManager {
             if (letter.textContent.trim() === '') return;
             
             const randomTransform = this.generateRandomTransform();
+            const randomColor = this.getRandomFlowerColor();
             
             // Register with AnimationCoordinator to prevent conflicts if available
             if (window.AnimationCoordinator) {
@@ -95,6 +104,9 @@ class LetterAnimationManager {
             
             // Apply the transform (exact same as current implementation)
             letter.style.setProperty('transform', randomTransform, 'important');
+            
+            // ENHANCEMENT: Add random flower color (preserves existing effect)
+            letter.style.setProperty('color', randomColor, 'important');
         });
     }
     
@@ -107,6 +119,9 @@ class LetterAnimationManager {
             
             // Reset to normal position (exact same as current implementation)
             letter.style.setProperty('transform', 'rotate(0deg) translateY(0px) translateX(0px)', 'important');
+            
+            // ENHANCEMENT: Reset color back to normal (preserves existing effect)
+            letter.style.removeProperty('color');
         });
     }
     
@@ -117,6 +132,11 @@ class LetterAnimationManager {
         const translateX = (Math.random() - 0.5) * this.animationConfig.TRANSLATE_X_RANGE; // -2 to +2 pixels
         
         return `rotate(${rotation}deg) translateY(${translateY}px) translateX(${translateX}px)`;
+    }
+    
+    // Generate random flower color (enhancement)
+    getRandomFlowerColor() {
+        return this.flowerColors[Math.floor(Math.random() * this.flowerColors.length)];
     }
     
     // Register CSS animations with AnimationCoordinator - exact same as current implementation

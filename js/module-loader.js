@@ -13,7 +13,20 @@ class ModuleLoader {
     
     init() {
         this.isInitialized = true;
-
+    }
+    
+    // Check if current page is homepage
+    isHomepage() {
+        return window.location.pathname === '/' || 
+               window.location.pathname === '/index.html' || 
+               window.location.pathname.endsWith('/index.html') ||
+               window.location.pathname.endsWith('/');
+    }
+    
+    // Check if current page is a project page
+    isProjectPage() {
+        return window.location.pathname.includes('/project-') || 
+               window.location.pathname.includes('/calendar-project.html');
     }
     
     // Load a module by name
@@ -101,47 +114,80 @@ class ModuleLoader {
     
     // Load all required modules
     async loadAllModules() {
-        const requiredModules = [
-            'flower-manager',
-            'image-popup-manager',
-            'text-slant-manager',
-            'font-sizing-manager',
-            'letter-animation-manager',
-            'fireworks-manager',
-            'homepage-scroll-manager',
-            'homepage-interaction-manager',
-            'project-content-manager',
-            'project-scroll-manager'
-        ];
+        // Determine which modules to load based on current page
+        const isHomepage = this.isHomepage();
+        const isProjectPage = this.isProjectPage();
+        
+        let requiredModules = [];
+        
+        if (isHomepage) {
+            // Homepage-specific modules
+            requiredModules = [
+                'letter-animation-manager',
+                'fireworks-manager',
+                'homepage-scroll-manager',
+                'homepage-interaction-manager'
+            ];
+        } else if (isProjectPage) {
+            // Project page-specific modules
+            requiredModules = [
+                'flower-manager',
+                'image-popup-manager',
+                'text-slant-manager',
+                'font-sizing-manager',
+                'project-content-manager',
+                'project-scroll-manager'
+            ];
+        }
+        
+        // No common modules - each page type loads only what it needs
+        // requiredModules already contains exactly what's needed for each page type
         
         try {
+            console.log(`ModuleLoader: Loading ${requiredModules.length} modules for ${isHomepage ? 'homepage' : 'project page'}:`, requiredModules);
+            
             const modules = await Promise.all(
                 requiredModules.map(moduleName => this.loadModule(moduleName))
             );
             
-    
+            console.log(`ModuleLoader: Successfully loaded ${modules.length} modules:`, modules.map(m => m.constructor.name));
             return modules;
             
         } catch (error) {
+            console.error('ModuleLoader: Error loading modules:', error);
             throw error;
         }
     }
     
     // Check if all modules are loaded
     areAllModulesLoaded() {
-        const requiredModules = [
-            'flower-manager',
-            'image-popup-manager',
-            'text-slant-manager',
-            'font-sizing-manager',
-            'letter-animation-manager',
-            'fireworks-manager',
-            'homepage-scroll-manager',
-            'homepage-interaction-manager',
-            'project-content-manager',
-            'project-scroll-manager'
-        ];
+        // Determine which modules should be loaded based on current page
+        const isHomepage = this.isHomepage();
+        const isProjectPage = this.isProjectPage();
         
+        let requiredModules = [];
+        
+        if (isHomepage) {
+            // Homepage-specific modules
+            requiredModules = [
+                'letter-animation-manager',
+                'fireworks-manager',
+                'homepage-scroll-manager',
+                'homepage-interaction-manager'
+            ];
+        } else if (isProjectPage) {
+            // Project page-specific modules
+            requiredModules = [
+                'flower-manager',
+                'image-popup-manager',
+                'text-slant-manager',
+                'font-sizing-manager',
+                'project-content-manager',
+                'project-scroll-manager'
+            ];
+        }
+        
+        // No common modules - each page type loads only what it needs
         return requiredModules.every(moduleName => this.loadedModules.has(moduleName));
     }
     
@@ -197,7 +243,9 @@ class ModuleLoader {
 }
 
 // Create global instance
+console.log('ModuleLoader: Creating global instance...');
 window.moduleLoader = new ModuleLoader();
+console.log('ModuleLoader: Global instance created:', window.moduleLoader);
 
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
