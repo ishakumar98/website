@@ -555,20 +555,34 @@ body.project-page {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  /* Remove gap - we'll position credits at bottom manually */
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 5;
-  /* Height will be set dynamically by JavaScript based on image container position */
-  height: var(--image-container-top, 100vh);
-  overflow: visible; /* No container scrolling - let page handle it */
-  box-sizing: border-box; /* Ensure padding is included in width calculation */
-  
-  /* Debugging - keep this to see container boundaries */
+  height: var(--image-container-top, 100vh); /* Corrected to use var directly for height */
+  overflow: visible;
+  box-sizing: border-box;
+  /* Debugging CSS added and kept: */
   border: 2px solid red;
   background-color: rgba(255, 0, 0, 0.1);
+  /* Add padding visualization */
+  position: relative;
+}
+
+/* Debug: Show padding boundaries */
+.project-content-area::before {
+  content: '';
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  right: 2rem;
+  bottom: 2rem;
+  border: 2px dashed orange;
+  background-color: rgba(255, 165, 0, 0.1);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Project text block styling */
@@ -578,6 +592,11 @@ body.project-page {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  /* Make description expand to fill available space */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .project-description {
@@ -603,13 +622,31 @@ body.project-page {
   box-sizing: border-box;
   overflow-wrap: break-word;
   word-break: break-word;
-  
-  /* Temporary debugging - remove this after fixing */
+  /* Debugging CSS added and kept: */
   border: 1px solid blue;
   background-color: rgba(0, 0, 255, 0.1);
+  /* Add line spacing visualization */
+  position: relative;
 }
 
-
+/* Debug: Show line spacing */
+.project-description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent calc(1.5em - 1px),
+    rgba(0, 255, 0, 0.3) calc(1.5em - 1px),
+    rgba(0, 255, 0, 0.3) 1.5em
+  );
+  pointer-events: none;
+  z-index: -1;
+}
 
 /* Individual letter styling for project descriptions - override conflicting .letter rules */
 .project-description .letter {
@@ -653,6 +690,11 @@ body.project-page {
 
 /* Project credits styling */
 .project-credits {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* Position credits at bottom of container */
+  margin-top: auto;
 }
 
 .credits-text {
@@ -663,6 +705,29 @@ body.project-page {
   text-align: left;
   opacity: 0.8;
   transition: font-variation-settings var(--animation-smooth) ease-out;
+  /* Debugging CSS added and kept: */
+  border: 2px solid purple;
+  background-color: rgba(128, 0, 128, 0.2);
+  position: relative;
+}
+
+/* Debug: Show credits line spacing */
+.credits-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent calc(1.5em - 1px),
+    rgba(255, 255, 0, 0.3) calc(1.5em - 1px),
+    rgba(255, 255, 0, 0.3) 1.5em
+  );
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Project images styling */

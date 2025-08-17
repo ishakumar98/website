@@ -101,15 +101,6 @@ class FontSizingManager {
             element.style.fontSize = testFontSize + 'px';
         });
         
-        // Count lines for description text only
-        let descriptionLines = 0;
-        
-        this.textElements.forEach(element => {
-            const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
-            const elementHeight = element.offsetHeight;
-            descriptionLines += Math.ceil(elementHeight / lineHeight);
-        });
-        
         // Calculate available height for description (subtract credits height)
         // Credits text is fixed at 1rem, so calculate its height
         const creditsFontSize = 16; // 1rem = 16px
@@ -122,12 +113,20 @@ class FontSizingManager {
             creditsCount: this.creditsElements.length,
             creditsHeight: creditsHeight,
             descriptionAvailableHeight: descriptionAvailableHeight,
-            descriptionLines: descriptionLines
+            contentAvailableHeight: contentAvailableHeight
         });
         
-        // Calculate optimal font size for description to fill available height
-        const lineHeightRatio = 1.5; // From CSS line-height: 1.5
-        const optimalFontSize = Math.floor(descriptionAvailableHeight / (descriptionLines * lineHeightRatio));
+        // Instead of counting lines, let's calculate font size based on available height
+        // We want the description to fill the exact available height
+        // Measure the current description height with test font size
+        let currentDescriptionHeight = 0;
+        this.textElements.forEach(element => {
+            currentDescriptionHeight += element.offsetHeight;
+        });
+        
+        // Calculate the scale factor needed to make description fill available height
+        const scaleFactor = descriptionAvailableHeight / currentDescriptionHeight;
+        const optimalFontSize = Math.floor(testFontSize * scaleFactor);
         
         // Apply the calculated font size to description only
         const finalFontSize = Math.max(8, Math.min(48, optimalFontSize));
@@ -137,7 +136,9 @@ class FontSizingManager {
         });
         
         console.log('FontSizingManager: Font size calculation:', {
-            lineHeightRatio: lineHeightRatio,
+            testFontSize: testFontSize,
+            currentDescriptionHeight: currentDescriptionHeight,
+            scaleFactor: scaleFactor,
             optimalFontSize: optimalFontSize,
             finalFontSize: finalFontSize
         });
@@ -183,7 +184,8 @@ class FontSizingManager {
             finalDescriptionHeight: finalDescriptionHeight,
             totalHeight: finalDescriptionHeight + creditsHeight,
             targetHeight: contentAvailableHeight,
-            safetyAttempts: safetyAttempts
+            safetyAttempts: safetyAttempts,
+            creditsHeight: creditsHeight
         });
         
         console.log('FontSizingManager: Applied font size to', this.textElements.length, 'description elements');

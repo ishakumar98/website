@@ -149,7 +149,8 @@ class ProjectScrollManager {
         // So: viewport bottom = flower bottom + flower bottom margin + container bottom padding
         const imageContainerStartPosition = viewportHeight - flowerTotalHeight - containerBottomPadding;
         
-        // The content area height should be the space from top to where image container starts
+        // The content area height should be the space from top of viewport to where image container starts
+        // This is simply the imageContainerStartPosition since it's measured from the top
         const contentAreaHeight = imageContainerStartPosition;
         
         // Update the CSS custom property for font sizing manager
@@ -168,7 +169,7 @@ class ProjectScrollManager {
             containerBottomPadding: containerBottomPadding,
             imageContainerStartPosition: imageContainerStartPosition,
             contentAreaHeight: contentAreaHeight,
-            explanation: 'Container positioned so flower bottom is visible at viewport bottom'
+            explanation: 'Content area height = distance from viewport top to image container start'
         });
         
         // Notify other modules that image container position is ready
