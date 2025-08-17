@@ -261,9 +261,10 @@
     
     /* CSS Grid layout for predictable columns */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(6, auto); /* Auto-width columns for content-based sizing */
     gap: var(--space-sm);
     align-items: start;
+    justify-content: space-between; /* Left-align first item, right-align last item, distribute middle items */
     
     /* Smooth animations for layout changes */
     transition: all var(--transition-smooth);
@@ -285,6 +286,7 @@
     gap: var(--space-md);
     height: 250px; /* Fixed height for all items - image height (210px) + padding (11px) + margin (12px) + title height */
     width: 100%; /* Fill the grid cell */
+    min-width: 0; /* Allow items to shrink below their content size */
     /* Smooth animations for wrapping and layout changes */
     transition: all var(--transition-smooth), transform var(--transition-smooth);
     /* Enable smooth layout animations */
@@ -299,6 +301,7 @@
     position: relative;
     padding: 11px; /* Original padding value */
     box-sizing: border-box;
+    min-width: 0; /* Allow container to shrink */
     transition: all var(--transition-smooth); /* Smooth resizing transitions */
 }
 
@@ -449,15 +452,23 @@
 }
 
 /* Grid responsive adjustments */
+@media (max-width: 1199px) {
+    .work-section {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens - 2 rows */
+        gap: var(--space-md); /* Slightly larger gap for better spacing */
+    }
+}
+
 @media (max-width: 768px) {
     .work-section {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Smaller minimum width on tablets */
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets - 3 rows */
+        gap: var(--space-md);
     }
 }
 
 @media (max-width: 480px) {
     .work-section {
-        grid-template-columns: 1fr; /* Single column on mobile */
+        grid-template-columns: 1fr; /* Single column on mobile - 6 rows */
         gap: var(--space-md); /* Reduce gap on small screens */
     }
 }
