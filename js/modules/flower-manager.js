@@ -1,16 +1,14 @@
 // Flower Manager Module
-// Handles flower logo animations, scaling, and interactions
-// Coordinates with AnimationCoordinator for smooth animations
+// Handles flower logo bloom animation and hover interactions
+// Simple, focused functionality without scaling complexity
 
 class FlowerManager {
     constructor() {
         this.flowerElement = null;
-        this.currentScale = 1;
         this.spinDirection = 'clockwise';
         this.isInitialized = false;
         this.hasBloomed = false;
-        this.scrollScalingPaused = false;
-        this.lastScrollProgress = 0;
+        
         this.init();
     }
     
@@ -33,27 +31,25 @@ class FlowerManager {
     setupEventListeners() {
         if (this.flowerElement && window.eventManager) {
             window.eventManager.addListener(this.flowerElement, 'mouseenter', () => {
+                console.log('🖱️ Mouse ENTER - Flower hover started');
                 this.toggleSpinDirection();
-                this.pauseScrollScaling();
                 // Register CSS hover animation with AnimationCoordinator
                 if (window.animationCoordinator) {
+                    console.log('🔧 Registering CSS animation with AnimationCoordinator');
                     window.animationCoordinator.registerCSSAnimation(this.flowerElement, 'rotate', 'flower-hover-rotate', window.animationCoordinator.priorities.HIGH);
                 }
             });
             
             window.eventManager.addListener(this.flowerElement, 'mouseleave', () => {
-                // Wait for CSS animation to complete before resuming JS scaling
-                setTimeout(() => {
-                    this.scrollScalingPaused = false;
-                    if (this.hasBloomed && typeof this.lastScrollProgress !== 'undefined') {
-                        this.updateFlowerSize(this.lastScrollProgress);
-                    }
-                }, 1000); // Match the CSS animation duration
+                console.log('🖱️ Mouse LEAVE - Flower hover ended');
                 
                 // Unregister CSS animation when hover ends
                 if (window.animationCoordinator) {
+                    console.log('🔧 Unregistering CSS animation');
                     window.animationCoordinator.unregisterAnimation(this.flowerElement, 'flower-hover-rotate');
                 }
+                
+                console.log('✅ Hover ended. Flower scaling remains independent of hover state.');
             });
         }
     }
@@ -68,42 +64,11 @@ class FlowerManager {
         }
     }
     
-    pauseScrollScaling() {
-        this.scrollScalingPaused = true;
-    }
+    // Flower scaling is now completely independent of hover state
+    // It only responds to actual scroll events from ProjectScrollManager
     
-    resumeScrollScaling() {
-        // Wait for CSS animation to complete before resuming JS scaling
-        setTimeout(() => {
-            this.scrollScalingPaused = false;
-            if (this.hasBloomed && typeof this.lastScrollProgress !== 'undefined') {
-                this.updateFlowerSize(this.lastScrollProgress);
-            }
-        }, 1000); // Match the CSS animation duration
-    }
-    
-    updateFlowerSize(scrollProgress) {
-        if (!this.flowerElement || !this.hasBloomed || this.scrollScalingPaused) return;
-        
-        this.lastScrollProgress = scrollProgress;
-        
-        // Calculate scale based on scroll progress
-        const minScale = 0.3;
-        const maxScale = 1;
-        this.currentScale = maxScale - (scrollProgress * (maxScale - minScale));
-        
-        // Calculate margins based on scale
-        const baseTopMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-top')) || 2;
-        const baseBottomMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-bottom')) || 1.5;
-        
-        const currentTopMargin = baseTopMargin * this.currentScale;
-        const currentBottomMargin = baseBottomMargin * this.currentScale;
-        
-        // Apply scroll-based scaling - AnimationCoordinator will handle CSS conflicts
-        this.flowerElement.style.transform = `scale(${this.currentScale})`;
-        this.flowerElement.style.marginTop = `${currentTopMargin}rem`;
-        this.flowerElement.style.marginBottom = `${currentBottomMargin}rem`;
-    }
+    // Flower now only handles bloom and hover states
+    // No more scrolling or scaling complexity
     
     triggerBloom() {
         if (this.flowerElement && !this.hasBloomed) {
@@ -112,9 +77,7 @@ class FlowerManager {
                 this.hasBloomed = true;
                 this.flowerElement.removeAttribute('bloom');
                 this.flowerElement.setAttribute('logo', ''); // Enable hover effects
-                this.flowerElement.style.transform = '';
-                this.flowerElement.style.marginTop = 'var(--flower-margin-top)';
-                this.flowerElement.style.marginBottom = 'var(--flower-margin-bottom)';
+                // CSS will handle the reset naturally - no direct manipulation needed
             }, 2500);
         }
     }
