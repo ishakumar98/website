@@ -14,9 +14,12 @@ class FontSizingManager {
     }
     
     init() {
-        this.findElements();
+        // Wait for project content to be ready before initializing
+        document.addEventListener('projectContentReady', () => {
+                    this.findElements();
+        this.adjustFontSize();
         this.isInitialized = true;
-        console.log('FontSizingManager: Initialized');
+    });
     }
     
     findElements() {
@@ -24,83 +27,87 @@ class FontSizingManager {
         this.creditsElements = document.querySelectorAll('.credits-text');
         this.contentArea = document.querySelector('.project-content-area');
         this.projectImagesSection = document.querySelector('.project-images-section');
+        
+        console.log('FontSizingManager: Found elements:', {
+            textElements: this.textElements.length,
+            creditsElements: this.creditsElements.length,
+            contentArea: !!this.contentArea,
+            projectImagesSection: !!this.projectImagesSection
+        });
     }
     
-    adjustFontSize(pageHeader) {
+    adjustFontSize() {
         if (this.textElements.length === 0 || !this.contentArea) {
+            console.log('FontSizingManager: Missing elements - textElements:', this.textElements.length, 'contentArea:', !!this.contentArea);
             return;
         }
         
-        // Get the image container to calculate available space
-        if (!this.projectImagesSection) {
-            return;
-        }
+        // Get the actual container dimensions
+        const containerRect = this.contentArea.getBoundingClientRect();
+        const containerHeight = containerRect.height;
         
-        // Calculate image container top position and set CSS custom property
-        const imageContainerTop = this.projectImagesSection.getBoundingClientRect().top;
-        const contentAreaTop = this.contentArea.getBoundingClientRect().top;
-        
-        // Set the CSS custom property for content container height
-        document.documentElement.style.setProperty('--image-container-top', imageContainerTop + 'px');
-        
-        // Calculate total available height for both description and credits
-        const totalAvailableHeight = imageContainerTop - contentAreaTop;
-        
-        // Subtract gap between description and credits and bottom padding
-        const gap = 24; // 1.5rem = 24px
-        const bottomPadding = 32; // 2rem = 32px (from CSS padding: 2rem)
-        const contentAvailableHeight = totalAvailableHeight - gap - bottomPadding;
-        
-        // First, apply test font size to measure description content
-        const testFontSize = 16;
-        this.textElements.forEach(element => {
-            element.style.fontSize = testFontSize + 'px';
+        console.log('FontSizingManager: Container dimensions:', {
+            containerHeight: containerHeight,
+            containerTop: containerRect.top,
+            containerBottom: containerRect.bottom
         });
         
-        // Count lines for description text only
-        let descriptionLines = 0;
+        // Get container padding and gap from CSS variables
+        const containerPadding = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--space-xl')) * 2; // 2rem top + 2rem bottom
+        const contentGap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--space-lg')); // Gap between text and credits
         
-        this.textElements.forEach(element => {
-            const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
-            const elementHeight = element.offsetHeight;
-            descriptionLines += Math.ceil(elementHeight / lineHeight);
+        // Available height for text content (description + credits)
+        const textAvailableHeight = containerHeight - containerPadding - contentGap;
+        
+        console.log('FontSizingManager: Height calculations:', {
+            containerPadding: containerPadding,
+            contentGap: contentGap,
+            textAvailableHeight: textAvailableHeight
         });
         
         // Calculate available height for description (subtract credits height)
-        // Credits text is fixed at 1rem, so calculate its height
-        const creditsFontSize = 16; // 1rem = 16px
-        const creditsLineHeight = creditsFontSize * 1.5; // line-height: 1.5
-        const creditsHeight = this.creditsElements.length * creditsLineHeight;
+        const creditsHeight = this.creditsElements.length * 24; // 1rem = 16px, line-height: 1.5 = 24px
+        const descriptionAvailableHeight = textAvailableHeight - creditsHeight;
         
-        const descriptionAvailableHeight = contentAvailableHeight - creditsHeight;
-        
-        // Calculate optimal font size for description
-        const optimalFontSize = this.calculateOptimalFontSize(descriptionAvailableHeight, descriptionLines);
-        
-        // Apply the optimal font size
-        this.textElements.forEach(element => {
-            element.style.fontSize = optimalFontSize + 'px';
+        console.log('FontSizingManager: Credits and description height:', {
+            creditsCount: this.creditsElements.length,
+            creditsHeight: creditsHeight,
+            descriptionAvailableHeight: descriptionAvailableHeight
         });
         
-        console.log(`FontSizingManager: Adjusted font size to ${optimalFontSize}px for ${descriptionLines} lines`);
-    }
-    
-    calculateOptimalFontSize(availableHeight, lineCount) {
-        if (lineCount === 0) return 16;
-        
-        // Calculate font size based on available height and line count
+        // Simple font size calculation: fill the available height
         const lineHeight = 1.5; // CSS line-height
-        const optimalFontSize = availableHeight / (lineCount * lineHeight);
+        const optimalFontSize = Math.floor(descriptionAvailableHeight / lineHeight);
         
         // Clamp font size to reasonable bounds
-        const minFontSize = 12;
-        const maxFontSize = 24;
+        const finalFontSize = Math.max(12, Math.min(48, optimalFontSize));
         
-        return Math.max(minFontSize, Math.min(maxFontSize, optimalFontSize));
+        console.log('FontSizingManager: Font size calculation:', {
+            lineHeight: lineHeight,
+            optimalFontSize: optimalFontSize,
+            finalFontSize: finalFontSize
+        });
+        
+        // Apply the font size to description text
+        this.textElements.forEach(element => {
+            element.style.fontSize = finalFontSize + 'px';
+        });
+        
+        console.log('FontSizingManager: Applied font size to', this.textElements.length, 'description elements');
     }
+    
+
     
     refreshElements() {
         this.findElements();
+        this.adjustFontSize();
+    }
+    
+    // Handle window resize
+    handleResize() {
+        if (this.isInitialized) {
+            this.adjustFontSize();
+        }
     }
     
     getTextElements() {

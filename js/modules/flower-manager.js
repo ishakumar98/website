@@ -13,10 +13,12 @@ class FlowerManager {
     }
     
     init() {
-        this.findFlowerElement();
+        // Wait for project content to be ready before initializing
+        document.addEventListener('projectContentReady', () => {
+                    this.findFlowerElement();
         this.setupEventListeners();
         this.isInitialized = true;
-        console.log('FlowerManager: Initialized');
+    });
     }
     
     findFlowerElement() {
@@ -91,7 +93,6 @@ class FlowerManager {
             this.flowerElement = null;
         }
         this.isInitialized = false;
-        console.log('FlowerManager: Destroyed');
     }
 }
 

@@ -561,7 +561,7 @@ body.project-page {
   left: 0;
   right: 0;
   z-index: 5;
-  max-height: var(--image-container-top, 100vh);
+  /* Height will be set dynamically by JavaScript based on image container */
   overflow: visible; /* No container scrolling - let page handle it */
 }
 
@@ -665,6 +665,7 @@ body.project-page {
 /* Project Images Work Container - Exact copy of home page work container */
 .project-images-section {
   position: absolute;
+  top: calc(100vh - 200px); /* Initial position: flower visible at bottom center */
   background-color: rgba(254, 243, 249, 0.8);
   backdrop-filter: blur(6px);
   -webkit-backdrop-style: none;

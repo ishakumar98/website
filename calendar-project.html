@@ -6,10 +6,12 @@
     <title>Project Template</title>
     <link rel="stylesheet" href="js/css/main.css">
     <link rel="stylesheet" href="project-page.css">
-    <script src="js/scroll-manager.js"></script>
+    <!-- Core Coordination Systems -->
     <script src="js/event-manager.js"></script>
     <script src="js/animation-coordinator.js"></script>
-    <script src="js/project-script.js" defer></script>
+    
+    <!-- Module Loader System -->
+    <script src="js/module-loader.js"></script>
     
     <!-- Performance Optimization Modules -->
     <script src="js/image-optimizer.js"></script>
@@ -22,6 +24,80 @@
     <script src="js/service-worker-manager.js"></script>
     <script src="js/webp-converter.js"></script>
     <script src="js/advanced-optimization-manager.js"></script>
+    
+    <!-- Initialize Project Modules -->
+    <script>
+        // Wait for everything to load, then initialize project modules
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Wait a bit for ModuleLoader to be available
+                let attempts = 0;
+                const maxAttempts = 20;
+                
+                const waitForModuleLoader = () => {
+                    if (window.moduleLoader) {
+                        // Load all modules (project modules will auto-detect and only initialize on project pages)
+                        window.moduleLoader.loadAllModules().then((moduleClasses) => {
+                            try {
+                                // Create instances of project modules
+                                if (window.ProjectContentManager) {
+                                    window.projectContentManager = new window.ProjectContentManager();
+                                }
+                                
+                                if (window.ProjectScrollManager) {
+                                    window.projectScrollManager = new window.ProjectScrollManager();
+                                }
+                                
+                                if (window.FontSizingManager) {
+                                    window.fontSizingManager = new window.FontSizingManager();
+                                }
+                                
+                                if (window.TextSlantManager) {
+                                    window.textSlantManager = new window.TextSlantManager();
+                                }
+                                
+                                if (window.ImagePopupManager) {
+                                    window.imagePopupManager = new window.ImagePopupManager();
+                                }
+                                
+                                if (window.FlowerManager) {
+                                    window.flowerManager = new window.FlowerManager();
+                                }
+                                
+                                // Setup resize handler for project modules
+                                window.addEventListener('resize', () => {
+                                    // Refresh modules that need resize handling
+                                    if (window.projectScrollManager) {
+                                        window.projectScrollManager.handleResize();
+                                    }
+                                    
+                                    if (window.fontSizingManager) {
+                                        window.fontSizingManager.adjustFontSize();
+                                    }
+                                });
+                                
+                            } catch (error) {
+                                console.error('Error instantiating project modules:', error);
+                            }
+                            
+                        }).catch((error) => {
+                            console.error('Failed to load project modules:', error);
+                        });
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        setTimeout(waitForModuleLoader, 100);
+                    } else {
+                        console.error('ModuleLoader failed to load after multiple attempts');
+                    }
+                };
+                
+                waitForModuleLoader();
+                
+            } catch (error) {
+                console.error('Failed to initialize project modules:', error);
+            }
+        });
+    </script>
 </head>
 <body class="project-page">
     <!-- Image Center Popup -->
@@ -59,7 +135,22 @@
     <div class="project-page-container">
 
         
-
+        <!-- Header Section - Simple structure for project page -->
+        <div class="page-header">
+            <div class="page-content">
+                <h1 class="name-text" id="project-header">
+                    <a href="index.html" class="name-link">
+                        ISHA KUMAR
+                    </a><span class="slash">/</span>
+                    <a href="#" class="name-link active">
+                        <!-- Project title will be populated by JavaScript -->
+                    </a>
+                    <span class="project-year">
+                        <!-- Project year will be populated by JavaScript -->
+                    </span>
+                </h1>
+            </div>
+        </div>
         
         <!-- PROJECT CONTENT AREA -->
         <section class="project-content-area">

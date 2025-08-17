@@ -8,22 +8,25 @@ class TextSlantManager {
         this.isActive = false;
         this.isInitialized = false;
         
-        // Slant configuration
+        // Slant configuration - match project page requirements
         this.slantConfig = {
-            MOUSE_RADIUS: 200,
-            MAX_WEIGHT_VALUE: 100,
-            MIN_WEIGHT_VALUE: 25,
-            TRANSITION_DURATION: 400
+            MOUSE_RADIUS: 125,           // Distance from mouse where weight effect activates (px)
+            MAX_WEIGHT_VALUE: 900,       // Maximum weight value for Akke variable font
+            MIN_WEIGHT_VALUE: 25,        // Minimum weight value for Akke variable font (ultra-thin)
+            TRANSITION_DURATION: getComputedStyle(document.documentElement).getPropertyValue('--animation-smooth').replace('ms', '') || 300,    // Use CSS variable or fallback
+            CONTENT_DELAY: getComputedStyle(document.documentElement).getPropertyValue('--animation-fast').replace('ms', '') || 100           // Use CSS variable or fallback
         };
         
         this.init();
     }
     
     init() {
-        this.findLetters();
+        // Wait for project content to be ready before initializing
+        document.addEventListener('projectContentReady', () => {
+                    this.findLetters();
         this.setupEventListeners();
         this.isInitialized = true;
-        console.log('TextSlantManager: Initialized');
+    });
     }
     
     findLetters() {

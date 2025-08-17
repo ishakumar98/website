@@ -24,14 +24,12 @@ class LetterAnimationManager {
     init() {
         // Check if we're on homepage
         if (!this.isHomepage()) {
-            console.log('LetterAnimationManager: Not on homepage, skipping initialization');
             return;
         }
         
         this.findElements();
         this.setupEventListeners();
         this.isInitialized = true;
-        console.log('LetterAnimationManager: Initialized');
     }
     
     isHomepage() {
@@ -47,33 +45,26 @@ class LetterAnimationManager {
     findElements() {
         this.letters = document.querySelectorAll('.name-display .letter');
         this.nameDisplay = document.querySelector('.name-display');
-        
-        console.log('LetterAnimationManager: Found letters:', this.letters.length);
-        console.log('LetterAnimationManager: Found nameDisplay:', this.nameDisplay);
     }
     
     setupEventListeners() {
         if (!this.nameDisplay) {
-            console.log('LetterAnimationManager: Missing nameDisplay');
             return;
         }
         
         // Try to use EventManager if available, otherwise fall back to direct listeners
         if (window.EventManager) {
             // Add mouseenter listener for random letter transforms
-            console.log('LetterAnimationManager: Adding mouseenter listener via EventManager');
             window.EventManager.addListener(this.nameDisplay, 'mouseenter', (e) => {
                 this.handleMouseEnter(e);
             });
             
             // Add mouseleave listener to reset letters
-            console.log('LetterAnimationManager: Adding mouseleave listener via EventManager');
             window.EventManager.addListener(this.nameDisplay, 'mouseleave', (e) => {
                 this.handleMouseLeave(e);
             });
         } else {
             // Fallback to direct event listeners
-            console.log('LetterAnimationManager: EventManager not available, using direct listeners');
             this.nameDisplay.addEventListener('mouseenter', (e) => {
                 this.handleMouseEnter(e);
             });
@@ -88,14 +79,11 @@ class LetterAnimationManager {
     }
     
     handleMouseEnter(event) {
-        console.log('LetterAnimationManager: Mouse entered nameDisplay!');
-        
         this.letters.forEach((letter, index) => {
             // Skip space characters (exact same logic as current implementation)
             if (letter.textContent.trim() === '') return;
             
             const randomTransform = this.generateRandomTransform();
-            console.log(`LetterAnimationManager: Setting letter ${index} transform:`, randomTransform);
             
             // Register with AnimationCoordinator to prevent conflicts if available
             if (window.AnimationCoordinator) {
@@ -113,8 +101,6 @@ class LetterAnimationManager {
     }
     
     handleMouseLeave(event) {
-        console.log('LetterAnimationManager: Mouse left nameDisplay!');
-        
         this.letters.forEach((letter, index) => {
             // Unregister animations to prevent conflicts if available
             if (window.AnimationCoordinator) {

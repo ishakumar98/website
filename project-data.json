@@ -9,77 +9,77 @@
       "credits": "Many thanks to Samuel Kang, Amanda Glanz, Timothy Wittig, Ford St. John, Elyse Vest, Parag Shah, Stewart Taylor, and Stuart Lovinggood for their talent and time.",
                   "images": [
                 {
-                    "src": "images/Detail View.png",
+                    "src": "images/calendar/Detail View.png",
                     "alt": "Detail View",
                     "title": "Detail View.png"
                 },
                 {
-                    "src": "images/Scheduling.png",
+                    "src": "images/calendar/Scheduling.png",
                     "alt": "Scheduling",
                     "title": "Scheduling.png"
                 },
                 {
-                    "src": "images/Special Events.png",
+                    "src": "images/calendar/Special Events.png",
                     "alt": "Special Events",
                     "title": "Special Events.png"
                 },
                 {
-                    "src": "images/Focus Mode.png",
+                    "src": "images/calendar/Focus Mode.png",
                     "alt": "Focus Mode",
                     "title": "Focus Mode.png"
                 },
                 {
-                    "src": "images/Out of Office.png",
+                    "src": "images/calendar/Out of Office.png",
                     "alt": "Out of Office",
                     "title": "Out of Office.png"
                 },
                 {
-                    "src": "images/Create Event.png",
+                    "src": "images/calendar/Create Event.png",
                     "alt": "Create Event",
                     "title": "Create Event.png"
                 },
                 {
-                    "src": "images/Project Timelines.png",
+                    "src": "images/calendar/Project Timelines.png",
                     "alt": "Project Timelines",
                     "title": "Project Timelines.png"
                 },
                 {
-                    "src": "images/Project Timelines (1).png",
+                    "src": "images/calendar/Project Timelines (1).png",
                     "alt": "Project Timelines 1",
                     "title": "Project Timelines (1).png"
                 },
                 {
-                    "src": "images/Project Timelines (2).png",
+                    "src": "images/calendar/Project Timelines (2).png",
                     "alt": "Project Timelines 2",
                     "title": "Project Timelines (2).png"
                 },
                 {
-                    "src": "images/To Dos (Hover).png",
+                    "src": "images/calendar/To Dos (Hover).png",
                     "alt": "To Dos Hover",
                     "title": "To Dos (Hover).png"
                 },
                 {
-                    "src": "images/Scheduling Detection.png",
+                    "src": "images/calendar/Scheduling Detection.png",
                     "alt": "Scheduling Detection",
                     "title": "Scheduling Detection.png"
                 },
                 {
-                    "src": "images/Notifications.png",
+                    "src": "images/calendar/Notifications.png",
                     "alt": "Notifications",
                     "title": "Notifications.png"
                 },
                 {
-                    "src": "images/Meeting Unfurl.png",
+                    "src": "images/calendar/Meeting Unfurl.png",
                     "alt": "Meeting Unfurl",
                     "title": "Meeting Unfurl.png"
                 },
                 {
-                    "src": "images/Day View.png",
+                    "src": "images/calendar/Day View.png",
                     "alt": "Day View",
                     "title": "Day View.png"
                 },
                 {
-                    "src": "images/AI Scheduling.png",
+                    "src": "images/calendar/AI Scheduling.png",
                     "alt": "AI Scheduling",
                     "title": "AI Scheduling.png"
                 }

@@ -4,8 +4,6 @@
 
 class HomepageScrollManager {
     constructor() {
-        console.log('📜 HomepageScrollManager constructor called');
-        
         this.workSection = null;
         this.isInitialized = false;
         this.isScrolling = false;
@@ -30,7 +28,6 @@ class HomepageScrollManager {
         try {
             // Check if we're on homepage
             if (!this.isHomepage()) {
-                console.log('HomepageScrollManager: Not on homepage, skipping initialization');
                 return;
             }
             
@@ -39,7 +36,6 @@ class HomepageScrollManager {
             this.startScrollLoop();
             
             this.isInitialized = true;
-            console.log('HomepageScrollManager: Initialized successfully');
             
         } catch (error) {
             console.error('HomepageScrollManager: Initialization error:', error);
@@ -60,7 +56,6 @@ class HomepageScrollManager {
         // Find work section
         this.workSection = document.querySelector(this.config.WORK_SECTION_SELECTOR);
         if (!this.workSection) {
-            console.warn('HomepageScrollManager: Work section not found');
             return;
         }
         
@@ -76,8 +71,6 @@ class HomepageScrollManager {
         // Get current scroll position
         this.currentScroll = window.pageYOffset || document.documentElement.scrollTop;
         this.scrollTarget = this.currentScroll;
-        
-        console.log('HomepageScrollManager: Work section found and initialized');
     }
     
     setInitialWorkSectionPosition() {
@@ -87,8 +80,6 @@ class HomepageScrollManager {
         // The shadow will be visible by default since it extends above the element
         const initialTop = window.innerHeight;
         this.workSection.style.top = initialTop + 'px';
-        
-        console.log(`HomepageScrollManager: Initial position set to ${initialTop}px (top edge at viewport bottom)`);
     }
     
     setupBackgroundTransition() {
@@ -104,10 +95,6 @@ class HomepageScrollManager {
             
             // Ensure the background color can be changed by JavaScript
             this.fireworksContainer.style.setProperty('background-color', this.config.FIREWORKS_BACKGROUND, 'important');
-            
-            console.log('HomepageScrollManager: Fireworks container background initialized');
-        } else {
-            console.warn('HomepageScrollManager: Fireworks container not found, background transition disabled');
         }
     }
     

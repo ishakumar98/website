@@ -171,8 +171,6 @@ class Particle {
 
 class FireworksManager {
     constructor() {
-        console.log('🎆 FireworksManager constructor called');
-        
         this.fireworks = [];
         this.letters = ['C', 'O', 'T', 'T', 'O', 'N'];
         this.lettersCounter = 0;
@@ -214,15 +212,12 @@ class FireworksManager {
     init() {
         // Check if we're on homepage
         if (!this.isHomepage()) {
-            console.log('FireworksManager: Not on homepage, skipping initialization');
             return;
         }
         
-        console.log('FireworksManager: Initializing...');
         this.setupCanvas();
         this.setupCoordination();
         this.isInitialized = true;
-        console.log('FireworksManager: Initialized successfully');
     }
     
     setupCanvas() {
@@ -244,10 +239,8 @@ class FireworksManager {
                 p.strokeWeight(4);
                 p.background(0);
                 
-                // Set the fireworks container background to lavender
-                container.style.backgroundColor = this.config.BACKGROUND_COLOR;
-                console.log('🎆 Canvas setup complete, background set to lavender');
-                console.log('🎆 Gravity vector created:', this.gravity);
+                                             // Set the fireworks container background to lavender
+                             container.style.backgroundColor = this.config.BACKGROUND_COLOR;
             };
             
             p.draw = () => {
@@ -309,13 +302,12 @@ class FireworksManager {
         }
     }
     
-    updateFireworks(p) {
-        // Only create new fireworks if not clicked or scrolled (same as original)
-        if (!this.clicked && p.random(1) < this.config.SPAWN_PROBABILITY) {
-            console.log('🎆 Creating new firework!');
-            this.fireworks.push(new Firework(p.random(p.width), p.height, this.letters[this.lettersCounter], p, this.palette, this.gravity));
-            this.updateCounter();
-        }
+                     updateFireworks(p) {
+                     // Only create new fireworks if not clicked or scrolled (same as original)
+                     if (!this.clicked && p.random(1) < this.config.SPAWN_PROBABILITY) {
+                         this.fireworks.push(new Firework(p.random(p.width), p.height, this.letters[this.lettersCounter], p, this.palette, this.gravity));
+                         this.updateCounter();
+                     }
         
         // Always update existing fireworks
         for (let i = this.fireworks.length - 1; i >= 0; i--) {
@@ -366,29 +358,28 @@ class FireworksManager {
         this.fireworks = [];
     }
     
-    destroy() {
-        this.stopAnimation();
-        this.clearFireworks();
-        
-        // Unregister from coordination systems
-        if (window.ScrollManager) {
-            window.ScrollManager.unregisterScrollHandler('fireworks');
-        }
-        
-        if (window.EventManager) {
-            window.EventManager.unregister('fireworks');
-        }
-        
-        // Note: We don't remove the fireworks-container as it's part of the HTML
-        // Just clean up our canvas
-        if (this.canvas) {
-            this.canvas.remove();
-            this.canvas = null;
-        }
-        
-        this.isInitialized = false;
-        console.log('FireworksManager: Destroyed');
-    }
+                     destroy() {
+                     this.stopAnimation();
+                     this.clearFireworks();
+                     
+                     // Unregister from coordination systems
+                     if (window.ScrollManager) {
+                         window.ScrollManager.unregisterScrollHandler('fireworks');
+                     }
+                     
+                     if (window.EventManager) {
+                         window.EventManager.unregister('fireworks');
+                     }
+                     
+                     // Note: We don't remove the fireworks-container as it's part of the HTML
+                     // Just clean up our canvas
+                     if (this.canvas) {
+                         this.canvas.remove();
+                         this.canvas = null;
+                     }
+                     
+                     this.isInitialized = false;
+                 }
 }
 
 // Export for module system

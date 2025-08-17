@@ -13,11 +13,13 @@ class ImagePopupManager {
     }
     
     init() {
-        this.findPopupElements();
+        // Wait for project content to be ready before initializing
+        document.addEventListener('projectContentReady', () => {
+                    this.findPopupElements();
         this.findProjectImages();
         this.setupEventListeners();
         this.isInitialized = true;
-        console.log('ImagePopupManager: Initialized');
+    });
     }
     
     findPopupElements() {

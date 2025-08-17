@@ -72,14 +72,16 @@ class ModuleLoader {
         const classMap = {
             'flower-manager': 'FlowerManager',
             'image-popup-manager': 'ImagePopupManager',
-            'scroll-manager': 'ProjectScrollManager',
             'text-slant-manager': 'TextSlantManager',
             'font-sizing-manager': 'FontSizingManager',
 
             'letter-animation-manager': 'LetterAnimationManager',
             'fireworks-manager': 'FireworksManager',
             'homepage-scroll-manager': 'HomepageScrollManager',
-            'homepage-interaction-manager': 'HomepageInteractionManager'
+            'homepage-interaction-manager': 'HomepageInteractionManager',
+            
+            'project-content-manager': 'ProjectContentManager',
+            'project-scroll-manager': 'ProjectScrollManager'
         };
         
         const className = classMap[moduleName];
@@ -95,13 +97,14 @@ class ModuleLoader {
         const requiredModules = [
             'flower-manager',
             'image-popup-manager',
-            'scroll-manager',
             'text-slant-manager',
             'font-sizing-manager',
             'letter-animation-manager',
             'fireworks-manager',
             'homepage-scroll-manager',
-            'homepage-interaction-manager'
+            'homepage-interaction-manager',
+            'project-content-manager',
+            'project-scroll-manager'
         ];
         
         try {
@@ -123,13 +126,14 @@ class ModuleLoader {
         const requiredModules = [
             'flower-manager',
             'image-popup-manager',
-            'scroll-manager',
             'text-slant-manager',
             'font-sizing-manager',
             'letter-animation-manager',
             'fireworks-manager',
             'homepage-scroll-manager',
-            'homepage-interaction-manager'
+            'homepage-interaction-manager',
+            'project-content-manager',
+            'project-scroll-manager'
         ];
         
         return requiredModules.every(moduleName => this.loadedModules.has(moduleName));

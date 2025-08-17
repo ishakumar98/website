@@ -4,8 +4,6 @@
 
 class HomepageInteractionManager {
     constructor() {
-        console.log('🖱️ HomepageInteractionManager constructor called');
-        
         this.workItems = [];
         this.folderItems = [];
         this.isInitialized = false;
@@ -23,7 +21,6 @@ class HomepageInteractionManager {
         try {
             // Check if we're on homepage
             if (!this.isHomepage()) {
-                console.log('HomepageInteractionManager: Not on homepage, skipping initialization');
                 return;
             }
             
@@ -31,7 +28,6 @@ class HomepageInteractionManager {
             this.setupEventListeners();
             
             this.isInitialized = true;
-            console.log('HomepageInteractionManager: Initialized successfully');
             
         } catch (error) {
             console.error('HomepageInteractionManager: Initialization error:', error);
@@ -54,8 +50,6 @@ class HomepageInteractionManager {
         
         // Find all folder items (if they exist)
         this.folderItems = document.querySelectorAll('.finder li');
-        
-        console.log(`HomepageInteractionManager: Found ${this.workItems.length} work items and ${this.folderItems.length} folder items`);
     }
     
     setupEventListeners() {
