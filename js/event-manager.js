@@ -6,7 +6,7 @@ class EventManager {
         this.listeners = new Map(); // Track all event listeners by ID
         this.elementListeners = new WeakMap(); // Track listeners per element
         this.globalListeners = new Map(); // Track global listeners (window, document)
-        this.callbackRegistry = new WeakMap(); // Track callback references for deduplication
+        this.callbackRegistry = new Map(); // Track callback references for deduplication (changed from WeakMap)
         
         // Performance optimization
         this.debounceTimers = new Map();
@@ -257,7 +257,7 @@ class EventManager {
         const callbackKey = this.getCallbackKey(element, eventType);
         
         if (!this.callbackRegistry.has(callbackKey)) {
-            this.callbackRegistry.set(callbackKey, new WeakMap());
+            this.callbackRegistry.set(callbackKey, new Map());
         }
         
         const callbackMap = this.callbackRegistry.get(callbackKey);
@@ -316,7 +316,7 @@ class EventManager {
         this.listeners.clear();
         this.elementListeners = new WeakMap();
         this.globalListeners.clear();
-        this.callbackRegistry = new WeakMap();
+        this.callbackRegistry = new Map();
         this.debounceTimers.clear();
         this.throttleTimers.clear();
     }
