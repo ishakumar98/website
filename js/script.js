@@ -134,6 +134,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize random letter animations
     initRandomLetterAnimations();
     
+    // Register CSS letter animations with animation coordinator
+    function registerCSSLetterAnimations() {
+        const letters = document.querySelectorAll('.name-display .letter');
+        
+        if (letters.length === 0 || !window.animationCoordinator) return;
+        
+        letters.forEach((letter, index) => {
+            // Register the CSS transition with animation coordinator
+            window.animationCoordinator.registerCSSAnimation(
+                letter,
+                'transform',
+                `letter-css-${index}`,
+                window.animationCoordinator.priorities.MEDIUM
+            );
+        });
+    }
+    
+    // Register CSS animations after DOM is ready
+    registerCSSLetterAnimations();
+    
     // Interactive name effect cycling
     let currentEffect = 1;
     const nameText = document.querySelector('.name-text');
