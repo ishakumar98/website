@@ -14,18 +14,10 @@ class HomepageInteractionManager {
             folderItems: []
         };
         
-        // Interaction configuration
+        // Interaction configuration - minimal since CSS handles hover effects
         this.config = {
-            // Colors from design system
-            HOVER_BACKGROUND: 'var(--color-background-light)', // Light background for hover states
-            HOVER_OPACITY: 0.06, // Opacity for hover overlay
-            
-            // Transitions from design system
-            HOVER_TRANSITION: 'var(--transition-smooth)',
-            
-            // Spacing from design system
-            HOVER_PADDING: 'var(--space-sm)',
-            HOVER_MARGIN: 'var(--space-sm)'
+            // Transitions from design system (for potential future use)
+            HOVER_TRANSITION: 'var(--transition-smooth)'
         };
         
         this.init();
@@ -229,57 +221,15 @@ class HomepageInteractionManager {
     }
     
     handleWorkItemHover(wrapperImage, titleSpan, isHovering) {
-        try {
-            if (isHovering) {
-                // Apply hover effect using configuration values
-                wrapperImage.style.transition = this.config.HOVER_TRANSITION;
-                wrapperImage.style.backgroundColor = this.config.HOVER_BACKGROUND;
-                wrapperImage.style.opacity = this.config.HOVER_OPACITY;
-                
-                // Animate title span
-                if (titleSpan) {
-                    titleSpan.style.transition = this.config.HOVER_TRANSITION;
-                    titleSpan.style.transform = 'translateY(-2px)';
-                }
-            } else {
-                // Reset to default state
-                wrapperImage.style.backgroundColor = 'transparent';
-                wrapperImage.style.opacity = '1';
-                
-                if (titleSpan) {
-                    titleSpan.style.transform = 'translateY(0)';
-                }
-            }
-        } catch (error) {
-            console.error('HomepageInteractionManager: Error handling work item hover:', error);
-        }
+        // CSS handles all hover effects - no JavaScript needed
+        // This method is kept for potential future use but currently does nothing
+        // to avoid conflicts with CSS hover effects
     }
     
     handleFolderItemHover(wrapperImage, titleSpan, isHovering) {
-        try {
-            if (isHovering) {
-                // Apply hover effect using configuration values
-                wrapperImage.style.transition = this.config.HOVER_TRANSITION;
-                wrapperImage.style.backgroundColor = this.config.HOVER_BACKGROUND;
-                wrapperImage.style.opacity = this.config.HOVER_OPACITY;
-                
-                // Animate title span
-                if (titleSpan) {
-                    titleSpan.style.transition = this.config.HOVER_TRANSITION;
-                    titleSpan.style.transform = 'translateY(-2px)';
-                }
-            } else {
-                // Reset to default state
-                wrapperImage.style.backgroundColor = 'transparent';
-                wrapperImage.style.opacity = '1';
-                
-                if (titleSpan) {
-                    titleSpan.style.transform = 'translateY(0)';
-                }
-            }
-        } catch (error) {
-            console.error('HomepageInteractionManager: Error handling folder item hover:', error);
-        }
+        // CSS handles all hover effects - no JavaScript needed
+        // This method is kept for potential future use but currently does nothing
+        // to avoid conflicts with CSS hover effects
     }
     
     refreshElements() {
@@ -403,14 +353,10 @@ class HomepageInteractionManager {
             },
             usingEventManager: window.eventManager && this.eventListenerIds.workItems.length > 0,
             configuration: {
-                hoverBackground: this.config.HOVER_BACKGROUND,
-                hoverTransition: this.config.HOVER_TRANSITION,
-                hoverOpacity: this.config.HOVER_OPACITY
+                hoverTransition: this.config.HOVER_TRANSITION
             },
             designSystemIntegration: {
-                colors: this.config.HOVER_BACKGROUND.includes('var(--'),
-                transitions: this.config.HOVER_TRANSITION.includes('var(--'),
-                spacing: this.config.HOVER_PADDING.includes('var(--')
+                transitions: this.config.HOVER_TRANSITION.includes('var(--')
             }
         };
     }
