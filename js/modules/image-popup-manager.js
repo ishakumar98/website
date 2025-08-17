@@ -462,17 +462,38 @@ class ImagePopupManager {
                 break;
         }
         
-        // Apply constraints using configuration
-        const minSize = POPUP_CONFIG.minSize;
-        const maxSize = Math.min(
-            window.innerWidth * POPUP_CONFIG.maxSizePercent, 
-            window.innerHeight * POPUP_CONFIG.maxSizePercent
-        );
+        // macOS Preview-style constraints: Content-aware and smooth
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
         
-        newWidth = Math.max(minSize, Math.min(newWidth, maxSize));
-        newHeight = Math.max(minSize, Math.min(newHeight, maxSize));
+        // Basic minimum size to prevent popup from being too small
+        const minWidth = 300; // Minimum width for comfortable viewing
+        const minHeight = 300; // Minimum height for comfortable viewing
         
-        // Apply new dimensions and position
+        // Apply basic minimum size constraints
+        newWidth = Math.max(minWidth, newWidth);
+        newHeight = Math.max(minHeight, newHeight);
+        
+        // macOS Preview approach: Keep popup within viewport bounds
+        // Ensure the popup never goes outside the viewport
+        if (newLeft + newWidth > viewportWidth) {
+            newWidth = viewportWidth - newLeft;
+        }
+        
+        if (newTop + newHeight > viewportHeight) {
+            newHeight = viewportHeight - newTop;
+        }
+        
+        // Handle negative positions (simple clamping like macOS Preview)
+        if (newLeft < 0) {
+            newLeft = 0;
+        }
+        
+        if (newTop < 0) {
+            newTop = 0;
+        }
+        
+        // Apply new dimensions and position (macOS Preview smooth)
         this.popupElements.imagePopup.style.width = newWidth + 'px';
         this.popupElements.imagePopup.style.height = newHeight + 'px';
         this.popupElements.imagePopup.style.left = newLeft + 'px';
