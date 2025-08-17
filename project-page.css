@@ -51,6 +51,7 @@
   --flower-height: 6em;
   --flower-margin-top: 2rem;
   --flower-margin-bottom: 1.5rem;
+  --flower-min-dimension: 10px; /* Minimum valid dimension for flower elements */
   --image-container-border-radius: 48px; /* Border radius for upper corners of main image container */
   --title-padding-vertical: 2px; /* Vertical padding for title container */
   --title-padding-horizontal: 4px; /* Horizontal padding for title container */

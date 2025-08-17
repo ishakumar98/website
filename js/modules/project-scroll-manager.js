@@ -145,21 +145,18 @@ class ProjectScrollManager {
         const flowerBottomMargin = this.convertCSSUnitToPixels(flowerBottomMarginRaw);
         
         // Validate that we got reasonable values
-        if (!flowerHeight || flowerHeight < 10 || !flowerTopMargin || !flowerBottomMargin) {
-            console.error('ProjectScrollManager: Invalid flower dimensions after conversion:', {
-                height: flowerHeight, topMargin: flowerTopMargin, bottomMargin: flowerBottomMargin
-            });
+        const minFlowerDimension = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-min-dimension')) || 10;
+        if (!flowerHeight || flowerHeight < minFlowerDimension || !flowerTopMargin || !flowerBottomMargin) {
+            console.error('ProjectScrollManager: Invalid flower dimensions after conversion');
             return viewportHeight; // Fallback to full viewport height
         }
         
-        // Get container padding (project-images-section has 16px top and bottom padding)
+        // Get container top padding (project-images-section has 16px top padding)
         const containerStyles = getComputedStyle(this.projectImagesSection);
         const containerTopPadding = parseFloat(containerStyles.paddingTop);
-        const containerBottomPadding = parseFloat(containerStyles.paddingBottom);
         
-        // Calculate total space the flower takes up including container padding
+        // Calculate total space the flower takes up including margins
         const flowerTotalHeight = flowerHeight + flowerTopMargin + flowerBottomMargin;
-        const containerPadding = containerTopPadding + containerBottomPadding;
         
         // Calculate where the image container should be positioned
         // We want the bottom of the flower to be visible at the bottom of the viewport
@@ -167,44 +164,18 @@ class ProjectScrollManager {
         // Include top padding to give flower breathing room above it
         const imageContainerTop = viewportHeight - flowerTotalHeight - containerTopPadding;
         
-        // The content area height should be the space from top of viewport to where image container starts
-        const contentAreaHeight = imageContainerTop;
-        
-        // DEBUG: Log the calculation values
-        console.log('ProjectScrollManager - Position Calculation:', {
-            viewportHeight,
-            flowerHeight,
-            flowerTopMargin,
-            flowerBottomMargin,
-            flowerTotalHeight,
-            containerTopPadding,
-            containerBottomPadding,
-            imageContainerTop,
-            contentAreaHeight
-        });
-        
-        // Update the CSS custom property for font sizing manager
-        // This should be the HEIGHT of the content area
-        document.documentElement.style.setProperty('--image-container-top', contentAreaHeight + 'px');
-        
-        // Also update the actual position of the image container to match our calculation
+        // Set the position of the image container
         this.projectImagesSection.style.top = imageContainerTop + 'px';
-        
-        // DEBUG: Log what we're setting
-        console.log('ProjectScrollManager - Setting positions:', {
-            '--image-container-top': contentAreaHeight + 'px',
-            'top': imageContainerTop + 'px'
-        });
         
         // Notify other modules that image container position is ready
         document.dispatchEvent(new CustomEvent('imageContainerPositionReady', {
             detail: {
-                imageContainerTop: contentAreaHeight,
+                imageContainerTop: imageContainerTop,
                 viewportHeight: viewportHeight
             }
         }));
         
-        return contentAreaHeight;
+        return imageContainerTop;
     }
     
     // Setup flower hover effects
@@ -365,13 +336,15 @@ class ProjectScrollManager {
         // If it's in rem, convert to pixels (1rem = 16px)
         if (value.endsWith('rem')) {
             const remValue = parseFloat(value);
-            return remValue * 16;
+            const baseFontSize = 16; // 1rem = 16px
+            return remValue * baseFontSize;
         }
         
         // If it's in em, convert to pixels (1em = 16px for root element)
         if (value.endsWith('em')) {
             const emValue = parseFloat(value);
-            return emValue * 16;
+            const baseFontSize = 16; // 1em = 16px
+            return emValue * baseFontSize;
         }
         
         // If no unit specified, assume pixels
