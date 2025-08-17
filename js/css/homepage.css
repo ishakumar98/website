@@ -255,8 +255,8 @@
     border-top-right-radius: var(--space-md);
     box-shadow: var(--shadow-medium);
     width: 100%;
-    min-height: auto;
-    padding: var(--space-lg);
+    padding: var(--space-xl) var(--space-2xl); /* 32px top/bottom, 48px left/right */
+    min-height: calc(210px + 11px + 12px + (var(--space-xl) * 2)); /* Image height + padding + margin + top/bottom padding */
     overflow-x: visible;
     
     /* Layout properties moved from work-container */
