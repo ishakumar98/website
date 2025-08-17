@@ -9,6 +9,10 @@ class LetterAnimationManager {
         this.isInitialized = false;
         this.initializationAttempts = 0;
         this.maxInitializationAttempts = 3;
+        this.eventListenerIds = {
+            mouseenter: null,
+            mouseleave: null
+        };
         
         // Animation configuration - exact same as current implementation
         this.animationConfig = {
@@ -124,12 +128,12 @@ class LetterAnimationManager {
     setupEventManagerListeners() {
         try {
             // Add mouseenter listener for random letter transforms
-            window.eventManager.addListener(this.nameDisplay, 'mouseenter', (e) => {
+            this.eventListenerIds.mouseenter = window.eventManager.addListener(this.nameDisplay, 'mouseenter', (e) => {
                 this.handleMouseEnter(e);
             });
             
             // Add mouseleave listener to reset letters
-            window.eventManager.addListener(this.nameDisplay, 'mouseleave', (e) => {
+            this.eventListenerIds.mouseleave = window.eventManager.addListener(this.nameDisplay, 'mouseleave', (e) => {
                 this.handleMouseLeave(e);
             });
             
@@ -331,9 +335,13 @@ class LetterAnimationManager {
             if (this.nameDisplay) {
                 if (window.eventManager) {
                     try {
-                        // Remove EventManager listeners
-                        window.eventManager.removeListener(this.nameDisplay, 'mouseenter');
-                        window.eventManager.removeListener(this.nameDisplay, 'mouseleave');
+                        // Remove EventManager listeners using stored IDs
+                        if (this.eventListenerIds.mouseenter) {
+                            window.eventManager.removeListener(this.eventListenerIds.mouseenter);
+                        }
+                        if (this.eventListenerIds.mouseleave) {
+                            window.eventManager.removeListener(this.eventListenerIds.mouseleave);
+                        }
                         console.log('LetterAnimationManager: EventManager listeners removed');
                     } catch (error) {
                         console.warn('LetterAnimationManager: Error removing EventManager listeners:', error);
@@ -368,7 +376,13 @@ class LetterAnimationManager {
             isInitialized: this.isInitialized,
             lettersCount: this.letters.length,
             nameDisplayFound: this.nameDisplay !== null,
-            initializationAttempts: this.initializationAttempts
+            initializationAttempts: this.initializationAttempts,
+            eventManagerAvailable: !!window.eventManager,
+            eventListenersActive: {
+                mouseenter: !!this.eventListenerIds.mouseenter,
+                mouseleave: !!this.eventListenerIds.mouseleave
+            },
+            usingEventManager: window.eventManager && (this.eventListenerIds.mouseenter || this.eventListenerIds.mouseleave)
         };
     }
 }

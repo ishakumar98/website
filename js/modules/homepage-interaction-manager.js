@@ -9,6 +9,10 @@ class HomepageInteractionManager {
         this.isInitialized = false;
         this.initializationAttempts = 0;
         this.maxInitializationAttempts = 3;
+        this.eventListenerIds = {
+            workItems: [],
+            folderItems: []
+        };
         
         // Interaction configuration
         this.config = {
@@ -104,18 +108,19 @@ class HomepageInteractionManager {
     registerWithEventManager() {
         if (window.eventManager) {
             try {
-                window.eventManager.register('homepage-interactions', {
-                    refresh: () => this.refreshElements(),
-                    enable: () => this.enableInteractions(),
-                    disable: () => this.disableInteractions()
-                });
-                console.log('HomepageInteractionManager: Registered with EventManager successfully');
+                // Store listener IDs for proper cleanup
+                this.eventListenerIds = {
+                    workItems: [],
+                    folderItems: []
+                };
+                
+                console.log('HomepageInteractionManager: EventManager available, using centralized event management');
+                
             } catch (error) {
-                console.warn('HomepageInteractionManager: Failed to register with EventManager:', error);
-                // Non-critical error, continue without registration
+                console.warn('HomepageInteractionManager: Failed to initialize EventManager integration:', error);
             }
         } else {
-            console.warn('HomepageInteractionManager: EventManager not available, skipping registration');
+            console.warn('HomepageInteractionManager: EventManager not available, using direct event listeners');
         }
     }
     
@@ -131,14 +136,33 @@ class HomepageInteractionManager {
                 const titleSpan = workItem.querySelector('.title span');
                 
                 if (wrapperImage) {
-                    // Wrapper image hover effects
-                    workItem.addEventListener('mouseenter', () => {
-                        this.handleWorkItemHover(wrapperImage, titleSpan, true);
-                    });
-                    
-                    workItem.addEventListener('mouseleave', () => {
-                        this.handleWorkItemHover(wrapperImage, titleSpan, false);
-                    });
+                    if (window.eventManager) {
+                        // Use EventManager for centralized event handling
+                        const mouseenterId = window.eventManager.addListener(workItem, 'mouseenter', () => {
+                            this.handleWorkItemHover(wrapperImage, titleSpan, true);
+                        });
+                        
+                        const mouseleaveId = window.eventManager.addListener(workItem, 'mouseleave', () => {
+                            this.handleWorkItemHover(wrapperImage, titleSpan, false);
+                        });
+                        
+                        // Store listener IDs for cleanup
+                        this.eventListenerIds.workItems.push({
+                            element: workItem,
+                            mouseenterId,
+                            mouseleaveId
+                        });
+                        
+                    } else {
+                        // Fallback to direct event listeners
+                        workItem.addEventListener('mouseenter', () => {
+                            this.handleWorkItemHover(wrapperImage, titleSpan, true);
+                        });
+                        
+                        workItem.addEventListener('mouseleave', () => {
+                            this.handleWorkItemHover(wrapperImage, titleSpan, false);
+                        });
+                    }
                 } else {
                     console.warn(`HomepageInteractionManager: Work item ${index} missing wrapper-image element`);
                 }
@@ -160,14 +184,33 @@ class HomepageInteractionManager {
                 const titleSpan = folderItem.querySelector('.title span');
                 
                 if (wrapperImage) {
-                    // Folder item hover effects
-                    folderItem.addEventListener('mouseenter', () => {
-                        this.handleFolderItemHover(wrapperImage, titleSpan, true);
-                    });
-                    
-                    folderItem.addEventListener('mouseleave', () => {
-                        this.handleFolderItemHover(wrapperImage, titleSpan, false);
-                    });
+                    if (window.eventManager) {
+                        // Use EventManager for centralized event handling
+                        const mouseenterId = window.eventManager.addListener(folderItem, 'mouseenter', () => {
+                            this.handleFolderItemHover(wrapperImage, titleSpan, true);
+                        });
+                        
+                        const mouseleaveId = window.eventManager.addListener(folderItem, 'mouseleave', () => {
+                            this.handleFolderItemHover(wrapperImage, titleSpan, false);
+                        });
+                        
+                        // Store listener IDs for cleanup
+                        this.eventListenerIds.folderItems.push({
+                            element: folderItem,
+                            mouseenterId,
+                            mouseleaveId
+                        });
+                        
+                    } else {
+                        // Fallback to direct event listeners
+                        folderItem.addEventListener('mouseenter', () => {
+                            this.handleFolderItemHover(wrapperImage, titleSpan, true);
+                        });
+                        
+                        folderItem.addEventListener('mouseleave', () => {
+                            this.handleFolderItemHover(wrapperImage, titleSpan, false);
+                        });
+                    }
                 } else {
                     console.warn(`HomepageInteractionManager: Folder item ${index} missing wrapper-image element`);
                 }
@@ -273,28 +316,59 @@ class HomepageInteractionManager {
     disableInteractions() {
         try {
             console.log('HomepageInteractionManager: Disabling interactions');
-            // Remove all event listeners
-            this.workItems.forEach((workItem, index) => {
-                try {
-                    const wrapperImage = workItem.querySelector('.wrapper-image');
-                    if (wrapperImage) {
-                        wrapperImage.replaceWith(wrapperImage.cloneNode(true));
-                    }
-                } catch (error) {
-                    console.error(`HomepageInteractionManager: Error disabling work item ${index} interactions:`, error);
-                }
-            });
             
-            this.folderItems.forEach((folderItem, index) => {
-                try {
-                    const wrapperImage = folderItem.querySelector('.wrapper-image');
-                    if (wrapperImage) {
-                        wrapperImage.replaceWith(wrapperImage.cloneNode(true));
+            if (window.eventManager && this.eventListenerIds) {
+                // Clean up EventManager listeners
+                this.eventListenerIds.workItems.forEach(({ mouseenterId, mouseleaveId }) => {
+                    try {
+                        if (mouseenterId) window.eventManager.removeListener(mouseenterId);
+                        if (mouseleaveId) window.eventManager.removeListener(mouseleaveId);
+                    } catch (error) {
+                        console.warn('HomepageInteractionManager: Error removing EventManager listener:', error);
                     }
-                } catch (error) {
-                    console.error(`HomepageInteractionManager: Error disabling folder item ${index} interactions:`, error);
-                }
-            });
+                });
+                
+                this.eventListenerIds.folderItems.forEach(({ mouseenterId, mouseleaveId }) => {
+                    try {
+                        if (mouseenterId) window.eventManager.removeListener(mouseenterId);
+                        if (mouseleaveId) window.eventManager.removeListener(mouseleaveId);
+                    } catch (error) {
+                        console.warn('HomepageInteractionManager: Error removing EventManager listener:', error);
+                    }
+                });
+                
+                // Clear stored listener IDs
+                this.eventListenerIds.workItems = [];
+                this.eventListenerIds.folderItems = [];
+                
+                console.log('HomepageInteractionManager: EventManager listeners removed successfully');
+                
+            } else {
+                // Fallback: Remove all event listeners by cloning elements
+                this.workItems.forEach((workItem, index) => {
+                    try {
+                        const wrapperImage = workItem.querySelector('.wrapper-image');
+                        if (wrapperImage) {
+                            wrapperImage.replaceWith(wrapperImage.cloneNode(true));
+                        }
+                    } catch (error) {
+                        console.error(`HomepageInteractionManager: Error disabling work item ${index} interactions:`, error);
+                    }
+                });
+                
+                this.folderItems.forEach((folderItem, index) => {
+                    try {
+                        const wrapperImage = folderItem.querySelector('.wrapper-image');
+                        if (wrapperImage) {
+                            wrapperImage.replaceWith(wrapperImage.cloneNode(true));
+                        }
+                    } catch (error) {
+                        console.error(`HomepageInteractionManager: Error disabling folder item ${index} interactions:`, error);
+                    }
+                });
+                
+                console.log('HomepageInteractionManager: Direct event listeners removed via element cloning');
+            }
             
             console.log('HomepageInteractionManager: Interactions disabled successfully');
         } catch (error) {
@@ -308,15 +382,13 @@ class HomepageInteractionManager {
             // Remove all event listeners
             this.disableInteractions();
             
-            // Unregister from coordination systems
-            if (window.eventManager) {
-                try {
-                    window.eventManager.unregister('homepage-interactions');
-                    console.log('HomepageInteractionManager: Unregistered from EventManager');
-                } catch (error) {
-                    console.warn('HomepageInteractionManager: Error unregistering from EventManager:', error);
-                }
-            }
+            // Clean up stored references
+            this.workItems = [];
+            this.folderItems = [];
+            this.eventListenerIds = {
+                workItems: [],
+                folderItems: []
+            };
             
             this.isInitialized = false;
             console.log('HomepageInteractionManager: Module destroyed successfully');
@@ -331,7 +403,13 @@ class HomepageInteractionManager {
             isInitialized: this.isInitialized,
             workItemsCount: this.workItems.length,
             folderItemsCount: this.folderItems.length,
-            initializationAttempts: this.initializationAttempts
+            initializationAttempts: this.initializationAttempts,
+            eventManagerAvailable: !!window.eventManager,
+            eventListenersCount: {
+                workItems: this.eventListenerIds.workItems.length,
+                folderItems: this.eventListenerIds.folderItems.length
+            },
+            usingEventManager: window.eventManager && this.eventListenerIds.workItems.length > 0
         };
     }
 }
