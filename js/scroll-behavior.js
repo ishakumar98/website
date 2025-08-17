@@ -6,10 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.pathname.includes('index.html') ||
                     window.location.pathname.endsWith('/');
   
-  console.log('Scroll behavior script loaded, isHomePage:', isHomePage);
-  
   if (!isHomePage) {
-    console.log('Not home page, returning');
     return;
   }
   
@@ -38,32 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Reset scroll position to top on page load/reload
   window.scrollTo(0, 0);
   
-  // Set initial position - top edge at bottom of viewport (fully collapsed)
-  workSection.style.position = 'absolute';
-  workSection.style.left = 'auto';
-  workSection.style.width = '100%';
-  workSection.style.zIndex = '10';
-  
-  // Use requestAnimationFrame to ensure proper positioning after render
-  requestAnimationFrame(() => {
-    // Get the work section's natural height after render
-    const workSectionHeight = workSection.offsetHeight;
-    
-    console.log('Positioning work section:', {
-      viewportHeight,
-      workSectionHeight,
-      calculatedTop: viewportHeight - 60
-    });
-    
-    // Position so top edge with full box shadow is visible at viewport bottom
-    // Shadow is 0 0 25px 35px = 60px total, so show that much
-    workSection.style.top = (viewportHeight - 60) + 'px';
-    
-    console.log('Work section positioned, current top:', workSection.style.top);
-    
-    // Store height for scroll calculations
-    window.workSectionHeight = workSectionHeight;
-  });
+  // CSS now handles initial positioning - JavaScript only handles scroll behavior
+  // Get the work section's natural height for scroll calculations
+  const workSectionHeight = workSection.offsetHeight;
+  window.workSectionHeight = workSectionHeight;
   
   // Remove the body height setting that's causing issues
   // document.body.style.height = (viewportHeight + workSectionHeight) + 'px';
@@ -90,13 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Add position smoothing to reduce jitter
-  let lastTop = viewportHeight;
+  let lastTop = viewportHeight - 60; // Start from CSS initial position
   let smoothingFactor = 0.15; // Lower = smoother but less responsive
-  
-  // Initialize lastTop after render to ensure proper starting position
-  requestAnimationFrame(() => {
-    lastTop = viewportHeight - 60;
-  });
   
   // Clean scroll handler with improved throttling
   function handleScroll(scrollY, scrollDelta, isScrolling) {
@@ -122,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Add hard constraint to prevent the container from going beyond bounds
       // This prevents the bouncy behavior when scrolling fast
       const minTop = viewportHeight - maxScroll; // Bottom edge at viewport bottom
-      const maxTop = viewportHeight - 60; // Top edge with full shadow visible at viewport bottom
+      const maxTop = viewportHeight - 60; // Top edge with full shadow visible at viewport bottom (CSS initial position)
       
       newTop = Math.max(minTop, Math.min(maxTop, newTop));
       

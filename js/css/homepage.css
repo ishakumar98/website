@@ -304,6 +304,8 @@ body {
 .work-section {
     position: absolute;
     left: 0;
+    /* Initial position showing 60px of shadow peek at viewport bottom */
+    top: calc(100vh - 60px);
     background-color: rgba(254, 243, 249, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-style: none;
