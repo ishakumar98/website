@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isha's Portfolio</title>
-    <!-- Load CSS modules directly instead of using @import for better reliability -->
-    <link rel="stylesheet" href="js/css/variables.css">
-    <link rel="stylesheet" href="js/css/utilities.css">
-    <link rel="stylesheet" href="js/css/typography.css">
-    <link rel="stylesheet" href="js/css/layout.css">
-    <link rel="stylesheet" href="js/css/components.css">
-    <link rel="stylesheet" href="js/css/homepage.css">
+    <!-- Load CSS through modular system -->
+    <link rel="stylesheet" href="js/css/main.css">
     
     <!-- PWA Manifest -->
 
@@ -25,29 +20,25 @@
         <div class="page-header">
             <div class="page-layout">
                 <div class="page-content">
-                    <div class="column-set">
-                        <div class="column-unit name-column">
-                            <div class="text-left">
-                                <h1 class="name-text" id="main-header">
-                                    <span class="name-display">
-                                        <span class="letter" slant="0">I</span>
-                                        <span class="letter" slant="0">S</span>
-                                        <span class="letter" slant="0">H</span>
-                                        <span class="letter" slant="0">A</span>
-                                        <span class="letter" slant="0">&nbsp;</span>
-                                        <span class="letter" slant="0">K</span>
-                                        <span class="letter" slant="0">U</span>
-                                        <span class="letter" slant="0">M</span>
-                                        <span class="letter" slant="0">A</span>
-                                        <span class="letter" slant="0">R</span>
-                                    </span>
-                                </h1>
-                            </div>
+                    <div class="header-content">
+                        <div class="name-section">
+                            <h1 class="name-text" id="main-header">
+                                <span class="name-display">
+                                    <span class="letter" slant="0">I</span>
+                                    <span class="letter" slant="0">S</span>
+                                    <span class="letter" slant="0">H</span>
+                                    <span class="letter" slant="0">A</span>
+                                    <span class="letter" slant="0">&nbsp;</span>
+                                    <span class="letter" slant="0">K</span>
+                                    <span class="letter" slant="0">U</span>
+                                    <span class="letter" slant="0">M</span>
+                                    <span class="letter" slant="0">A</span>
+                                    <span class="letter" slant="0">R</span>
+                                </span>
+                            </h1>
                         </div>
-                        <div class="column-unit bio-column">
-                            <div class="text-left">
-                                <h1 class="bio-text">I'm a senior designer at <a href="https://slack.com/" target="_blank" class="bio-link"><strong style="font-weight: 500;">Slack</strong></a>, with experience in zero to one, growth, and systems design. Currently, I lead design for <a href="https://www.theverge.com/2021/6/30/22556992/slack-huddles-audio-calls-feature-launch-discord-like" target="_blank" class="bio-link"><strong style="font-weight: 500;">huddles</strong></a> — Slack's most used, and most loved feature. Before that, I studied Computer Science at <a href="https://www.stanford.edu/" target="_blank" class="bio-link"><strong style="font-weight: 500;">Stanford University</strong></a>. I'm good at helping teams build ambitious, well-crafted products at the nexus of strategy and soul.</h1>
-                            </div>
+                        <div class="bio-section">
+                            <h1 class="bio-text">I'm a senior designer at <a href="https://slack.com/" target="_blank" class="bio-link"><strong style="font-weight: 500;">Slack</strong></a>, with experience in zero to one, growth, and systems design. Currently, I lead design for <a href="https://www.theverge.com/2021/6/30/22556992/slack-huddles-audio-calls-feature-launch-discord-like" target="_blank" class="bio-link"><strong style="font-weight: 500;">huddles</strong></a> — Slack's most used, and most loved feature. Before that, I studied Computer Science at <a href="https://www.stanford.edu/" target="_blank" class="bio-link"><strong style="font-weight: 500;">Stanford University</strong></a>. I'm good at helping teams build ambitious, well-crafted products at the nexus of strategy and soul.</h1>
                         </div>
                     </div>
                 </div>
@@ -73,69 +64,57 @@
                 <div class="row">
                     <div class="column col-12">
                         <div class="work-container">
-                            <ul class="work-list">
-                                <li class="work-item">
-                                    <a class="work-link" href="#">
-                                        <div class="wrapper-image">
-                                            <img src="images/folder.svg" alt="folder">
-                                        </div>
-                                        <div class="title">
-                                            <span>Huddles</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="work-item">
-                                    <a class="work-link" href="calendar-project.html">
-                                        <div class="wrapper-image">
-                                            <img src="images/folder.svg" alt="folder">
-                                        </div>
-                                        <div class="title">
-                                            <span>Calendar</span>
-                                        </div>
-                                    </a>
-                                </li>
+                            <div class="work-item">
+                                <a class="work-link" href="#">
+                                    <div class="wrapper-image">
+                                        <img src="images/folder.svg" alt="folder">
+                                    </div>
+                                    <div class="title">
+                                        <span>Huddles</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="work-item">
+                                <a class="work-link" href="calendar-project.html">
+                                    <div class="wrapper-image">
+                                        <img src="images/folder.svg" alt="folder">
+                                    </div>
+                                    <div class="title">
+                                        <span>Calendar</span>
+                                    </div>
+                                </a>
+                            </div>
 
-                                <li class="work-item">
-                                    <a class="work-link" href="#">
-                                        <div class="wrapper-image">
-                                            <img src="images/folder.svg" alt="folder">
-                                        </div>
-                                        <div class="title">
-                                            <span>Client Redesign</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="work-item">
-                                    <a class="work-link" href="#">
-                                        <div class="wrapper-image">
-                                            <img src="images/folder.svg" alt="folder">
-                                        </div>
-                                        <div class="title">
-                                            <span>Onboarding System</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="work-item">
-                                    <a class="work-link" href="#">
-                                        <div class="wrapper-image">
-                                            <img src="images/text-file-icon.png" alt="cv">
-                                        </div>
-                                        <div class="title">
-                                            <span>CV</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="work-item">
-                                    <a class="work-link" href="#">
-                                        <div class="wrapper-image">
-                                            <img src="images/text-file-icon.png" alt="contact">
-                                        </div>
-                                        <div class="title">
-                                            <span>Contact</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
+                            <div class="work-item">
+                                <a class="work-link" href="#">
+                                    <div class="wrapper-image">
+                                        <img src="images/folder.svg" alt="folder">
+                                    </div>
+                                    <div class="title">
+                                        <span>Client Redesign</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="work-item">
+                                <a class="work-link" href="#">
+                                    <div class="wrapper-image">
+                                        <img src="images/folder.svg" alt="folder">
+                                    </div>
+                                    <div class="title">
+                                        <span>Onboarding System</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="work-item">
+                                <a class="work-link" href="#">
+                                    <div class="wrapper-image">
+                                        <img src="images/text-file-icon.png" alt="about">
+                                    </div>
+                                    <div class="title">
+                                        <span>About</span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

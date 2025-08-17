@@ -101,6 +101,10 @@
     /* Container System */
     --container-max-width: 1200px;
     --header-height: 80px;
+    --section-padding: var(--space-md);
+    --work-shadow-blur: 35px; /* From shadow-medium: 0 0 25px 35px */
+    --work-shadow-spread: 25px; /* From shadow-medium: 0 0 25px 35px */
+    --work-shadow-height: calc(var(--work-shadow-blur) + var(--work-shadow-spread)); /* Dynamic calculation: 35px + 25px = 60px */
     
     /* Animation Timing System */
     --animation-fast: 100ms;
@@ -125,10 +129,7 @@
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
     
-    /* Transition Presets */
-    --transition-fast: 100ms;
-    --transition-smooth: 400ms;
-    --transition-slow: 800ms;
+
     
     /* Animation Factors */
     --velocity-damping: 0.95;

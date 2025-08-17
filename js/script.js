@@ -88,8 +88,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Random letter animation system (ISHA-style)
     function initRandomLetterAnimations() {
         const letters = document.querySelectorAll('.name-display .letter');
+        console.log('Found letters:', letters.length);
         
-        if (letters.length === 0) return;
+        if (letters.length === 0) {
+            console.log('No letters found, returning early');
+            return;
+        }
         
         // Generate random transform values for each letter
         function generateRandomTransform() {
@@ -101,13 +105,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Apply random transforms on hover
         const nameDisplay = document.querySelector('.name-display');
+        console.log('Found nameDisplay:', nameDisplay);
+        console.log('EventManager available:', !!window.eventManager);
+        
         if (nameDisplay && window.eventManager) {
+            console.log('Adding mouseenter listener to nameDisplay');
             window.eventManager.addListener(nameDisplay, 'mouseenter', function() {
+                console.log('Mouse entered nameDisplay!');
                 letters.forEach((letter, index) => {
                     // Skip space characters
                     if (letter.textContent.trim() === '') return;
                     
                     const randomTransform = generateRandomTransform();
+                    console.log(`Setting letter ${index} transform:`, randomTransform);
                     
                     // Register with animation coordinator to prevent conflicts
                     if (window.animationCoordinator) {
@@ -123,11 +133,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
             
+            console.log('Adding mouseleave listener to nameDisplay');
             window.eventManager.addListener(nameDisplay, 'mouseleave', function() {
+                console.log('Mouse left nameDisplay!');
                 letters.forEach(letter => {
                     letter.style.transform = 'rotate(0deg) translateY(0px) translateX(0px)';
                 });
             });
+        } else {
+            console.log('Missing nameDisplay or eventManager');
         }
     }
     
@@ -137,10 +151,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Register CSS letter animations with animation coordinator
     function registerCSSLetterAnimations() {
         const letters = document.querySelectorAll('.name-display .letter');
+        console.log('CSS Registration - Found letters:', letters.length);
+        console.log('AnimationCoordinator available:', !!window.animationCoordinator);
         
-        if (letters.length === 0 || !window.animationCoordinator) return;
+        if (letters.length === 0 || !window.animationCoordinator) {
+            console.log('CSS Registration failed - missing letters or animationCoordinator');
+            return;
+        }
         
         letters.forEach((letter, index) => {
+            console.log(`Registering CSS animation for letter ${index}`);
             // Register the CSS transition with animation coordinator
             window.animationCoordinator.registerCSSAnimation(
                 letter,
@@ -149,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.animationCoordinator.priorities.MEDIUM
             );
         });
+        console.log('CSS animations registered successfully');
     }
     
     // Register CSS animations after DOM is ready
@@ -194,6 +215,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add item indices for staggered animation
         const finderItems = finderSection.querySelectorAll('li');
         finderItems.forEach((item, index) => {
+            item.style.setProperty('--item-index', index);
+        });
+    }
+
+    // Observe the work container section
+    const workContainer = document.querySelector('.work-container');
+    if (workContainer) {
+        observer.observe(workContainer);
+        
+        // Add item indices for staggered animation
+        const workItems = workContainer.querySelectorAll('.work-item');
+        workItems.forEach((item, index) => {
             item.style.setProperty('--item-index', index);
         });
     }
@@ -294,6 +327,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (Math.abs(targetWorkTransformY - currentWorkTransformY) > 0.1) {
             requestAnimationFrame(updateWorkContainerLERP);
         }
+    }
+
+    // Initialize ScrollManager if not already done
+    if (!window.scrollManager) {
+        window.scrollManager = new ScrollManager();
     }
 
     // Navigation stack functionality

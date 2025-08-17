@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add smooth CSS transition for the background color
   fireworksContainer.style.transition = 'background-color var(--transition-smooth)';
   
+  // Ensure the background color can be changed by JavaScript
+  fireworksContainer.style.setProperty('background-color', '#FCE8FF', 'important');
+  
   
   
   // Reset scroll position to top on page load/reload
@@ -121,7 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const g = Math.round(initialColor[1] + (finalColor[1] - initialColor[1]) * easedProgress);
       const b = Math.round(initialColor[2] + (finalColor[2] - initialColor[2]) * easedProgress);
       
-      fireworksContainer.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+      // Use setProperty with important to ensure it overrides CSS
+      fireworksContainer.style.setProperty('background-color', `rgb(${r}, ${g}, ${b})`, 'important');
       
       isScrolling = false;
     });
