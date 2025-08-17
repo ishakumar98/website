@@ -3,26 +3,28 @@
 
 class EventManager {
     constructor() {
-        this.listeners = new Map(); // Track all event listeners
+        this.listeners = new Map(); // Track all event listeners by ID
         this.elementListeners = new WeakMap(); // Track listeners per element
         this.globalListeners = new Map(); // Track global listeners (window, document)
+        this.callbackRegistry = new WeakMap(); // Track callback references for deduplication
         
         // Performance optimization
         this.debounceTimers = new Map();
         this.throttleTimers = new Map();
-        
-
     }
     
-    // Add event listener with deduplication
+    // Add event listener with robust deduplication
     addListener(element, eventType, callback, options = {}) {
-        const listenerId = this.generateListenerId(element, eventType, callback);
+        // Check for existing listener with same element, event type, and callback
+        const existingListener = this.findExistingListener(element, eventType, callback);
         
-        // Check if listener already exists
-        if (this.listeners.has(listenerId)) {
-            console.warn(`EventManager: Listener already exists for ${eventType} on element`, element);
-            return listenerId;
+        if (existingListener) {
+            // Return existing listener ID - no duplicate created
+            return existingListener.id;
         }
+        
+        // Generate unique ID for new listener
+        const listenerId = this.generateListenerId(element, eventType);
         
         // Create listener object
         const listener = {
@@ -57,10 +59,12 @@ class EventManager {
             this.elementListeners.get(element).get(eventType).add(listenerId);
         }
         
+        // Register callback reference for future deduplication
+        this.registerCallback(element, eventType, callback);
+        
         // Add actual event listener
         element.addEventListener(eventType, callback, options);
         
-
         return listenerId;
     }
     
@@ -91,7 +95,9 @@ class EventManager {
         // Remove from main tracking
         this.listeners.delete(listenerId);
         
-
+        // Unregister callback reference
+        this.unregisterCallback(listener.element, listener.eventType, listener.callback);
+        
         return true;
     }
     
@@ -114,6 +120,29 @@ class EventManager {
         this.elementListeners.delete(element);
         
 
+        return removedCount;
+    }
+
+    // Remove all listeners for a specific element and event type
+    removeElementEventListeners(element, eventType) {
+        const elementMap = this.elementListeners.get(element);
+        if (!elementMap || !elementMap.has(eventType)) return 0;
+        
+        let removedCount = 0;
+        const listenerIds = elementMap.get(eventType);
+        
+        for (const listenerId of listenerIds) {
+            if (this.removeListener(listenerId)) {
+                removedCount++;
+            }
+        }
+        
+        // Clean up event type tracking
+        elementMap.delete(eventType);
+        if (elementMap.size === 0) {
+            this.elementListeners.delete(element);
+        }
+        
         return removedCount;
     }
     
@@ -196,13 +225,63 @@ class EventManager {
         };
     }
     
-    // Generate unique listener ID
-    generateListenerId(element, eventType, callback) {
+    // Generate unique listener ID (simplified - no callback dependency)
+    generateListenerId(element, eventType) {
         const elementId = element.id || element.className || element.tagName || 'unknown';
-        const callbackName = callback.name || 'anonymous';
-        // Use callback.toString() hash for better deduplication without timestamp
-        const callbackHash = callback.toString().slice(0, 50).replace(/[^a-zA-Z0-9]/g, '');
-        return `${elementId}_${eventType}_${callbackHash}`;
+        const timestamp = Date.now();
+        return `${elementId}_${eventType}_${timestamp}`;
+    }
+    
+    // Find existing listener with same element, event type, and callback
+    findExistingListener(element, eventType, callback) {
+        // Check if we have a callback registry for this element and event type
+        const callbackKey = this.getCallbackKey(element, eventType);
+        const registeredCallbacks = this.callbackRegistry.get(callbackKey);
+        
+        if (!registeredCallbacks) {
+            return null;
+        }
+        
+        // Check if this exact callback is already registered
+        for (const [registeredCallback, listenerId] of registeredCallbacks) {
+            if (registeredCallback === callback) {
+                return this.listeners.get(listenerId);
+            }
+        }
+        
+        return null;
+    }
+    
+    // Register callback reference for deduplication
+    registerCallback(element, eventType, callback) {
+        const callbackKey = this.getCallbackKey(element, eventType);
+        
+        if (!this.callbackRegistry.has(callbackKey)) {
+            this.callbackRegistry.set(callbackKey, new WeakMap());
+        }
+        
+        const callbackMap = this.callbackRegistry.get(callbackKey);
+        callbackMap.set(callback, Date.now()); // Store timestamp for cleanup
+    }
+    
+    // Unregister callback reference
+    unregisterCallback(element, eventType, callback) {
+        const callbackKey = this.getCallbackKey(element, eventType);
+        const callbackMap = this.callbackRegistry.get(callbackKey);
+        
+        if (callbackMap) {
+            callbackMap.delete(callback);
+            
+            // Clean up empty callback maps
+            if (callbackMap.size === 0) {
+                this.callbackRegistry.delete(callbackKey);
+            }
+        }
+    }
+    
+    // Generate callback registry key
+    getCallbackKey(element, eventType) {
+        return `${element === window ? 'window' : element === document ? 'document' : element.id || element.className || element.tagName || 'unknown'}_${eventType}`;
     }
     
     // Get statistics
@@ -211,15 +290,23 @@ class EventManager {
             totalListeners: this.listeners.size,
             elementListeners: this.elementListeners.size,
             globalListeners: this.globalListeners.size,
+            callbackRegistrySize: this.getCallbackRegistrySize(),
             debounceTimers: this.debounceTimers.size,
             throttleTimers: this.throttleTimers.size
         };
     }
     
+    // Get callback registry size for debugging
+    getCallbackRegistrySize() {
+        let size = 0;
+        for (const callbackMap of this.callbackRegistry.values()) {
+            size += callbackMap.size;
+        }
+        return size;
+    }
+    
     // Cleanup all listeners
     cleanup() {
-
-        
         // Remove all listeners
         for (const [listenerId, listener] of this.listeners) {
             listener.element.removeEventListener(listener.eventType, listener.callback, listener.options);
@@ -229,10 +316,9 @@ class EventManager {
         this.listeners.clear();
         this.elementListeners = new WeakMap();
         this.globalListeners.clear();
+        this.callbackRegistry = new WeakMap();
         this.debounceTimers.clear();
         this.throttleTimers.clear();
-        
-
     }
     
     // Destroy the manager
