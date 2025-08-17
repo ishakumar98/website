@@ -186,12 +186,15 @@ class ProjectContentManager {
         
         projectTextBlock.innerHTML = '';
         
-        this.projectData.description.forEach(paragraph => {
-            const p = document.createElement('p');
-            p.className = 'project-description';
-            p.textContent = paragraph;
-            projectTextBlock.appendChild(p);
-        });
+        // Create just one paragraph element for the entire description
+        const p = document.createElement('p');
+        p.className = 'project-description';
+        
+        // Join all description items into one continuous text (in case there are multiple)
+        const fullDescription = this.projectData.description.join(' ');
+        p.textContent = fullDescription;
+        
+        projectTextBlock.appendChild(p);
         
         // Apply ISHA slant system structure after content is populated
         this.applyISHASlantStructure();

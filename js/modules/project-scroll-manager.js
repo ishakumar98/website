@@ -144,11 +144,36 @@ class ProjectScrollManager {
         const flowerTotalHeight = flowerHeight + flowerTopMargin + flowerBottomMargin;
         const containerPadding = containerTopPadding + containerBottomPadding;
         
-        // Position container so flower appears at bottom center of viewport
-        // This means: viewport bottom = flower bottom + flower bottom margin + container bottom padding
-        const initialTop = viewportHeight - flowerTotalHeight - containerBottomPadding;
+        // Get the actual CSS positioning of the image container
+        const cssTopPosition = getComputedStyle(this.projectImagesSection).top;
+        const imageContainerTopPosition = parseFloat(cssTopPosition);
         
-        return initialTop;
+        // The content area height should be the space from top to where image container starts
+        const contentAreaHeight = imageContainerTopPosition;
+        
+        // Update the CSS custom property for font sizing manager
+        // This should be the HEIGHT of the content area
+        document.documentElement.style.setProperty('--image-container-top', contentAreaHeight + 'px');
+        
+        console.log('ProjectScrollManager: Content area height calculation:', {
+            viewportHeight: viewportHeight,
+            cssTopPosition: cssTopPosition,
+            imageContainerTopPosition: imageContainerTopPosition,
+            contentAreaHeight: contentAreaHeight,
+            explanation: 'Content area fills from top to image container start position'
+        });
+        
+        // Notify other modules that image container position is ready
+        document.dispatchEvent(new CustomEvent('imageContainerPositionReady', {
+            detail: {
+                imageContainerTop: contentAreaHeight,
+                viewportHeight: viewportHeight
+            }
+        }));
+        
+        console.log('ProjectScrollManager: Dispatched imageContainerPositionReady event');
+        
+        return contentAreaHeight;
     }
     
     // Setup flower hover effects

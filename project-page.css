@@ -551,7 +551,7 @@ body.project-page {
 /* PROJECT CONTENT AREA - Clear, defined styling */
 .project-content-area {
   margin: 0;
-  padding: 2rem;
+  padding: 2rem; /* Standard 2rem padding on all sides */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -561,8 +561,14 @@ body.project-page {
   left: 0;
   right: 0;
   z-index: 5;
-  /* Height will be set dynamically by JavaScript based on image container */
+  /* Height will be set dynamically by JavaScript based on image container position */
+  height: var(--image-container-top, 100vh);
   overflow: visible; /* No container scrolling - let page handle it */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  
+  /* Debugging - keep this to see container boundaries */
+  border: 2px solid red;
+  background-color: rgba(255, 0, 0, 0.1);
 }
 
 /* Project text block styling */
@@ -570,6 +576,8 @@ body.project-page {
   margin: 0;
   padding: 0;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .project-description {
@@ -578,7 +586,7 @@ body.project-page {
   font-variation-settings: 'wght' 25;
   line-height: 1.5; /* Increased from 0.75 to 1.5 for better readability */
   color: var(--color-text);
-  max-width: none;
+  max-width: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -591,7 +599,14 @@ body.project-page {
   /* Ensure proper word wrapping */
   word-break: normal;
   white-space: normal;
-
+  /* Ensure text respects container boundaries */
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  
+  /* Temporary debugging - remove this after fixing */
+  border: 1px solid blue;
+  background-color: rgba(0, 0, 255, 0.1);
 }
 
 
