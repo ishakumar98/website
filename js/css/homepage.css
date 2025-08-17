@@ -303,7 +303,6 @@ body {
 /* Work Section */
 .work-section {
     position: absolute;
-    bottom: 0;
     left: 0;
     background-color: rgba(254, 243, 249, 0.8);
     backdrop-filter: blur(10px);
