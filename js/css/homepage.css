@@ -279,9 +279,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
-    flex: 1 1 0; /* Grow and shrink equally to fit container */
+    flex: 0 1 auto; /* Don't grow, allow shrinking, maintain natural size */
     height: 250px; /* Fixed height for all items - image height (210px) + padding (11px) + margin (12px) + title height */
-    min-width: 0; /* Allow items to shrink below content size */
 }
 
 .work-item .wrapper-image {
@@ -291,6 +290,8 @@
     position: relative;
     padding: 11px; /* Original padding value */
     box-sizing: border-box;
+    min-width: 0; /* Allow wrapper to shrink below content size */
+    transition: all var(--transition-smooth); /* Smooth resizing transitions */
 }
 
 .work-item .wrapper-image img {
@@ -299,6 +300,8 @@
     object-fit: contain;
     filter: drop-shadow(0 0 var(--space-sm) rgba(0, 0, 0, 0.1)); /* 8px blur - logical spacing */
     max-width: 100%; /* Ensure image doesn't overflow container */
+    min-width: 0; /* Allow images to shrink below their natural size */
+    transition: all var(--transition-smooth); /* Smooth resizing transitions */
 }
 
 .work-item .title {
