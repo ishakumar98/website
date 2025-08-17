@@ -258,13 +258,16 @@
     padding: var(--space-xl) var(--space-2xl); /* 32px top/bottom, 48px left/right */
     overflow-x: hidden;
     
-    /* Layout properties moved from work-container */
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+    /* CSS Grid layout for predictable columns */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-xs);
+    align-items: start;
     
-
+    /* Smooth animations for layout changes */
+    transition: all var(--transition-smooth);
+    /* Enable smooth layout animations */
+    will-change: layout;
 }
 
 
@@ -279,18 +282,22 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
-    flex: 0 1 auto; /* Don't grow, allow shrinking, maintain natural size */
     height: 250px; /* Fixed height for all items - image height (210px) + padding (11px) + margin (12px) + title height */
+    width: 100%; /* Fill the grid cell */
+    /* Smooth animations for wrapping and layout changes */
+    transition: all var(--transition-smooth), transform var(--transition-smooth);
+    /* Enable smooth layout animations */
+    will-change: transform, layout;
+    /* Subtle entrance animation */
+    animation: fadeInUp var(--animation-medium) ease-out;
 }
 
 .work-item .wrapper-image {
     width: 100%;
     height: 210px; /* Original simple value */
-    flex-shrink: 1; /* Allow shrinking */
     position: relative;
     padding: 11px; /* Original padding value */
     box-sizing: border-box;
-    min-width: 0; /* Allow wrapper to shrink below content size */
     transition: all var(--transition-smooth); /* Smooth resizing transitions */
 }
 
@@ -300,8 +307,7 @@
     object-fit: contain;
     filter: drop-shadow(0 0 var(--space-sm) rgba(0, 0, 0, 0.1)); /* 8px blur - logical spacing */
     max-width: 100%; /* Ensure image doesn't overflow container */
-    min-width: 0; /* Allow images to shrink below their natural size */
-    transition: all var(--transition-smooth); /* Smooth resizing transitions */
+    transition: transform var(--transition-smooth), filter var(--transition-smooth); /* Smooth responsive transitions */
 }
 
 .work-item .title {
@@ -339,6 +345,18 @@
     background-color: rgba(29, 28, 29, 0.06); /* Original dark overlay */
     padding: 0 var(--space-sm);
     border-radius: var(--space-xs);
+}
+
+/* Smooth animations for layout changes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(var(--space-md));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Work link styling */
@@ -426,5 +444,19 @@
     
     .work-item {
         padding: var(--space-sm);
+    }
+}
+
+/* Grid responsive adjustments */
+@media (max-width: 768px) {
+    .work-section {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Smaller minimum width on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .work-section {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: var(--space-md); /* Reduce gap on small screens */
     }
 }
