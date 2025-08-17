@@ -60,8 +60,8 @@ class HomepageInteractionManager {
         this.setupFolderItemInteractions();
         
         // Register with EventManager for coordination
-        if (window.EventManager) {
-            window.EventManager.register('homepage-interactions', {
+        if (window.eventManager) {
+            window.eventManager.register('homepage-interactions', {
                 refresh: () => this.refreshElements(),
                 enable: () => this.enableInteractions(),
                 disable: () => this.disableInteractions()
@@ -196,8 +196,8 @@ class HomepageInteractionManager {
         this.disableInteractions();
         
         // Unregister from coordination systems
-        if (window.EventManager) {
-            window.EventManager.unregister('homepage-interactions');
+        if (window.eventManager) {
+            window.eventManager.unregister('homepage-interactions');
         }
         
         this.isInitialized = false;

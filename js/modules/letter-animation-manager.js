@@ -59,14 +59,14 @@ class LetterAnimationManager {
         }
         
         // Try to use EventManager if available, otherwise fall back to direct listeners
-        if (window.EventManager) {
+        if (window.eventManager) {
             // Add mouseenter listener for random letter transforms
-            window.EventManager.addListener(this.nameDisplay, 'mouseenter', (e) => {
+            window.eventManager.addListener(this.nameDisplay, 'mouseenter', (e) => {
                 this.handleMouseEnter(e);
             });
             
             // Add mouseleave listener to reset letters
-            window.EventManager.addListener(this.nameDisplay, 'mouseleave', (e) => {
+            window.eventManager.addListener(this.nameDisplay, 'mouseleave', (e) => {
                 this.handleMouseLeave(e);
             });
         } else {
@@ -93,12 +93,12 @@ class LetterAnimationManager {
             const randomColor = this.getRandomFlowerColor();
             
             // Register with AnimationCoordinator to prevent conflicts if available
-            if (window.AnimationCoordinator) {
-                window.AnimationCoordinator.registerJSAnimation(
+            if (window.animationCoordinator) {
+                window.animationCoordinator.registerJSAnimation(
                     letter, 
                     'transform', 
                     `letter-hover-${index}`, 
-                    window.AnimationCoordinator.priorities.HIGH
+                    window.animationCoordinator.priorities.HIGH
                 );
             }
             
@@ -113,8 +113,8 @@ class LetterAnimationManager {
     handleMouseLeave(event) {
         this.letters.forEach((letter, index) => {
             // Unregister animations to prevent conflicts if available
-            if (window.AnimationCoordinator) {
-                window.AnimationCoordinator.unregisterAnimation(letter, `letter-hover-${index}`);
+            if (window.animationCoordinator) {
+                window.animationCoordinator.unregisterAnimation(letter, `letter-hover-${index}`);
             }
             
             // Reset to normal position (exact same as current implementation)
@@ -141,17 +141,17 @@ class LetterAnimationManager {
     
     // Register CSS animations with AnimationCoordinator - exact same as current implementation
     registerCSSAnimations() {
-        if (this.letters.length === 0 || !window.AnimationCoordinator) {
+        if (this.letters.length === 0 || !window.animationCoordinator) {
             return;
         }
         
         this.letters.forEach((letter, index) => {
             // Register the CSS transition with AnimationCoordinator (exact same as current)
-            window.AnimationCoordinator.registerCSSAnimation(
+            window.animationCoordinator.registerCSSAnimation(
                 letter,
                 'transform',
                 `letter-css-${index}`,
-                window.AnimationCoordinator.priorities.MEDIUM
+                window.animationCoordinator.priorities.MEDIUM
             );
         });
     }
@@ -182,10 +182,10 @@ class LetterAnimationManager {
     destroy() {
         // Clean up event listeners
         if (this.nameDisplay) {
-            if (window.EventManager) {
+            if (window.eventManager) {
                 // Remove EventManager listeners
-                window.EventManager.removeListener(this.nameDisplay, 'mouseenter');
-                window.EventManager.removeListener(this.nameDisplay, 'mouseleave');
+                window.eventManager.removeListener(this.nameDisplay, 'mouseenter');
+                window.eventManager.removeListener(this.nameDisplay, 'mouseleave');
             } else {
                 // Remove direct event listeners
                 this.nameDisplay.removeEventListener('mouseenter', this.handleMouseEnter);

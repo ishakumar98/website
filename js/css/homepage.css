@@ -3,14 +3,17 @@
  * Extracted from styles.css for better organization
  */
 
-/* Global Homepage Styles */
+/* ==========================================================================
+   GLOBAL HOMEPAGE STYLES
+   ========================================================================== */
+
 .index {
     min-height: 100vh;
 }
 
-
-
-
+/* ==========================================================================
+   PAGE HEADER & NAVIGATION
+   ========================================================================== */
 
 /* Page Header Layout */
 .page-header {
@@ -20,12 +23,10 @@
     right: 0;
     z-index: var(--z-header);
     background: transparent;
-    background-color: transparent;
 }
 
 .page-header * {
     background: transparent;
-    background-color: transparent;
 }
 
 .page-layout {
@@ -62,35 +63,31 @@
     align-items: flex-start;
 }
 
+/* ==========================================================================
+   TYPOGRAPHY & TEXT STYLING
+   ========================================================================== */
 
-
-.flower-icon {
-    width: var(--space-sm);
-    height: var(--space-sm);
-}
-
-/* Text Styling */
 .name-text {
     font-family: 'Tumla', sans-serif;
     font-size: var(--font-size-xs);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     line-height: 1.6;
     color: var(--color-text);
     margin: 0;
     text-align: left;
     opacity: 0.8;
     text-transform: uppercase;
-    transition: all var(--transition-smooth); /* Consistent with other transitions */
+    transition: all var(--transition-smooth);
 }
-
-
 
 .letter {
     display: inline-block;
-    transition: transform var(--transition-smooth); /* Consistent with other transitions */
+    transition: transform var(--transition-smooth);
 }
 
-
+/* ==========================================================================
+   HEADER SECTIONS & BACKGROUNDS
+   ========================================================================== */
 
 /* Header Section with Fireworks */
 .header-section {
@@ -112,7 +109,7 @@
     height: 100vh;
     z-index: -1;
     pointer-events: none;
-    background-color: var(--color-background-lighter); /* Lavender background to match JavaScript */
+    background-color: var(--color-background-lighter);
 }
 
 /* Header Text Styling */
@@ -120,15 +117,15 @@
     position: fixed;
     bottom: var(--space-3xl);
     left: var(--space-3xl);
-    max-width: calc(var(--space-3xl) * 9.375); /* 600px: 64px * 9.375 - logical scaling */
+    max-width: calc(var(--space-3xl) * 9.375);
     z-index: var(--z-content);
     pointer-events: none;
-    width: calc(100% - calc(var(--space-3xl) * 1.5625)); /* 100px: 64px * 1.5625 - logical scaling */
+    width: calc(100% - calc(var(--space-3xl) * 1.5625));
 }
 
 .header-text p {
     font-family: 'Tumla', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
     font-size: var(--font-size-lg);
     line-height: 1.6;
     color: var(--color-text);
@@ -140,11 +137,15 @@
     border: var(--space-xs) solid var(--color-primary);
 }
 
+/* ==========================================================================
+   WORK CONTENT & CONTAINERS
+   ========================================================================== */
+
 /* Work Content */
 .work-content {
-    padding: var(--space-3xl) 0 var(--space-3xl) 0;
     position: relative;
     z-index: var(--z-content);
+    padding: var(--space-3xl) 0;
     background: transparent;
     min-height: auto;
 }
@@ -167,6 +168,216 @@
 .svg-container {
     width: 100%;
 }
+
+/* ==========================================================================
+   LAYOUT & GRID SYSTEMS
+   ========================================================================== */
+
+/* Wrapper and Content */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: var(--space-3xl) 0;
+    min-height: 100vh;
+}
+
+.wrapper-content {
+    flex: 1;
+}
+
+.listing-container {
+    max-width: none;
+    margin: 0 auto;
+    padding: var(--space-md) var(--space-3xl) 0 var(--space-3xl);
+}
+
+.row-filters {
+    margin-bottom: var(--space-3xl);
+}
+
+/* Column widths using logical fractions instead of hardcoded percentages */
+.col-12 {
+    width: 100%;
+}
+
+.col-md-10 {
+    width: calc(100% * 10 / 12);
+}
+
+.col-md-2 {
+    width: calc(100% * 2 / 12);
+}
+
+.col-lg-8 {
+    width: calc(100% * 8 / 12);
+}
+
+.col-lg-4 {
+    width: calc(100% * 4 / 12);
+}
+
+/* ==========================================================================
+   WORK SECTION & ITEMS
+   ========================================================================== */
+
+/* Work Section */
+.work-section {
+    position: absolute;
+    top: 100vh;
+    left: 0;
+    right: 0;
+    z-index: var(--z-work-container);
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    gap: var(--space-sm);
+    align-items: start;
+    justify-content: space-between;
+    padding: var(--space-3xl) var(--space-2xl);
+    background-color: rgba(254, 243, 249, 0.8);
+    border-top-left-radius: var(--space-2xl);
+    border-top-right-radius: var(--space-2xl);
+    box-shadow: var(--shadow-medium);
+    backdrop-filter: blur(var(--space-sm));
+    -webkit-backdrop-style: none;
+    overflow-x: hidden;
+    transition: all var(--transition-smooth);
+    will-change: layout;
+}
+
+/* Work Items */
+.work-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    width: 100%;
+    height: calc(var(--space-2xl) * 5.2);
+    min-width: 0;
+    transition: all var(--transition-smooth), transform var(--transition-smooth);
+    will-change: transform, layout;
+    animation: fadeInUp var(--animation-medium) ease-out;
+}
+
+.work-item .wrapper-image {
+    position: relative;
+    width: 100%;
+    height: calc(var(--space-2xl) * 4.375);
+    padding: var(--space-sm) var(--space-sm) var(--space-sm) var(--space-sm);
+    box-sizing: border-box;
+    min-width: 0;
+    transition: all var(--transition-smooth);
+}
+
+.work-item .wrapper-image img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 var(--space-sm) rgba(0, 0, 0, 0.1));
+    transition: transform var(--transition-smooth), filter var(--transition-smooth);
+}
+
+.work-item .title {
+    width: fit-content;
+    margin: var(--space-sm) auto 0 auto;
+}
+
+.work-item .title span {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text);
+    text-align: center;
+    padding: 0 var(--space-sm);
+    border-radius: var(--space-xs);
+}
+
+/* ==========================================================================
+   INTERACTIVE STATES & HOVER EFFECTS
+   ========================================================================== */
+
+/* Hover effects */
+.work-item:hover .wrapper-image {
+    background-color: rgba(29, 28, 29, 0.06);
+    border-radius: var(--space-sm);
+}
+
+.work-item:hover .title span {
+    background-color: rgba(29, 28, 29, 0.06);
+    padding: 0 var(--space-sm);
+    border-radius: var(--space-xs);
+}
+
+/* Text file wrapper - center content and maintain consistent height */
+.work-item .wrapper-image:has(img[src="images/text-file-icon.png"]) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(var(--space-2xl) * 4.375);
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   LINKS & NAVIGATION
+   ========================================================================== */
+
+/* Work link styling */
+.work-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.work-link:hover {
+    /* Hover inherits from base, no need to repeat properties */
+}
+
+/* Inactive work item styling */
+.work-link-inactive {
+    text-decoration: none;
+    color: inherit;
+    cursor: default;
+    opacity: 0.5;
+}
+
+.work-link-inactive:hover .wrapper-image {
+    background-color: transparent;
+}
+
+.work-link-inactive:hover .title span {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Bio text links styling */
+.bio-link {
+    text-decoration: none;
+    color: inherit;
+    font-weight: var(--font-weight-bold);
+    transition: color var(--transition-smooth);
+}
+
+.bio-link:hover {
+    color: var(--color-primary-dark);
+}
+
+/* ==========================================================================
+   UTILITIES & ACCESSIBILITY
+   ========================================================================== */
+
+/* Scrollbar hiding */
+.work-section::-webkit-scrollbar {
+    display: none;
+}
+
+/* Flower icon utility */
+.flower-icon {
+    width: var(--space-sm);
+    height: var(--space-sm);
+}
+
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================================== */
 
 /* Logo Animation */
 @keyframes blink {
@@ -193,164 +404,6 @@
     animation-delay: 1s;
 }
 
-/* Wrapper and Content */
-.wrapper {
-    padding: var(--space-3xl) 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.wrapper-content {
-    flex: 1;
-}
-
-.listing-container {
-    max-width: none;
-    margin: 0 auto;
-    padding: var(--space-md) var(--space-3xl) 0 var(--space-3xl);
-}
-
-
-
-.row-filters {
-    margin-bottom: var(--space-3xl);
-}
-
-
-
-.col-12 {
-    width: 100%;
-}
-
-/* Column widths using logical fractions instead of hardcoded percentages */
-.col-md-10 {
-    width: calc(100% * 10 / 12); /* 10/12 = 83.33% - logical fraction */
-}
-
-.col-md-2 {
-    width: calc(100% * 2 / 12); /* 2/12 = 16.67% - logical fraction */
-}
-
-.col-lg-8 {
-    width: calc(100% * 8 / 12); /* 8/12 = 66.67% - logical fraction */
-}
-
-.col-lg-4 {
-    width: calc(100% * 4 / 12); /* 4/12 = 33.33% - logical fraction */
-}
-
-/* Work Section */
-.work-section {
-    position: absolute;
-    left: 0;
-    right: 0; /* Ensure it extends to the right edge */
-    /* Position top edge at bottom of viewport to show shadow */
-    top: 100vh;
-    background-color: rgba(254, 243, 249, 0.8);
-    backdrop-filter: blur(var(--space-sm)); /* 8px - logical blur amount */
-    -webkit-backdrop-style: none;
-    z-index: var(--z-work-container);
-    border-top-left-radius: 48px;
-    border-top-right-radius: 48px;
-    box-shadow: var(--shadow-medium);
-    /* width: 100%; - Removed to prevent width conflicts with left:0; right:0 */
-    padding: var(--space-3xl) var(--space-2xl); /* 64px top/bottom, 48px left/right */
-    overflow-x: hidden;
-    
-    /* CSS Grid layout for predictable columns */
-    display: grid;
-    grid-template-columns: repeat(6, auto); /* Auto-width columns for content-based sizing */
-    gap: var(--space-sm);
-    align-items: start;
-    justify-content: space-between; /* Left-align first item, right-align last item, distribute middle items */
-    
-    /* Smooth animations for layout changes */
-    transition: all var(--transition-smooth);
-    /* Enable smooth layout animations */
-    will-change: layout;
-}
-
-
-
-
-
-
-
-/* Work Items */
-.work-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-md);
-    height: 250px; /* Fixed height for all items - image height (210px) + padding (11px) + margin (12px) + title height */
-    width: 100%; /* Fill the grid cell */
-    min-width: 0; /* Allow items to shrink below their content size */
-    /* Smooth animations for wrapping and layout changes */
-    transition: all var(--transition-smooth), transform var(--transition-smooth);
-    /* Enable smooth layout animations */
-    will-change: transform, layout;
-    /* Subtle entrance animation */
-    animation: fadeInUp var(--animation-medium) ease-out;
-}
-
-.work-item .wrapper-image {
-    width: 100%;
-    height: 210px; /* Original simple value */
-    position: relative;
-    padding: 11px; /* Original padding value */
-    box-sizing: border-box;
-    min-width: 0; /* Allow container to shrink */
-    transition: all var(--transition-smooth); /* Smooth resizing transitions */
-}
-
-.work-item .wrapper-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 0 var(--space-sm) rgba(0, 0, 0, 0.1)); /* 8px blur - logical spacing */
-    max-width: 100%; /* Ensure image doesn't overflow container */
-    transition: transform var(--transition-smooth), filter var(--transition-smooth); /* Smooth responsive transitions */
-}
-
-.work-item .title {
-    margin-top: 12px; /* Original margin value */
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.work-item .title span {
-    font-size: var(--font-size-lg);
-    color: var(--color-text);
-    font-weight: 400;
-    text-align: center;
-    padding: 0 var(--space-sm);
-    border-radius: var(--space-xs);
-}
-
-/* Hover effects */
-.work-item:hover .wrapper-image {
-    background-color: rgba(29, 28, 29, 0.06); /* Original dark overlay */
-    border-radius: 8px; /* Original 8px border radius */
-}
-
-/* Text file wrapper - center content and maintain consistent height */
-.work-item .wrapper-image:has(img[src="images/text-file-icon.png"]) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 210px; /* Same height as folder images */
-    margin: 0 auto;
-}
-
-.work-item:hover .title span {
-    background-color: rgba(29, 28, 29, 0.06); /* Original dark overlay */
-    padding: 0 var(--space-sm);
-    border-radius: var(--space-xs);
-}
-
 /* Smooth animations for layout changes */
 @keyframes fadeInUp {
     from {
@@ -363,59 +416,12 @@
     }
 }
 
-/* Work link styling */
-.work-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-.work-link:hover {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* Inactive work item styling */
-.work-link-inactive {
-    text-decoration: none;
-    color: inherit;
-    cursor: default;
-    opacity: 0.5;
-}
-
-.work-link-inactive:hover .wrapper-image {
-    background-color: transparent;
-}
-
-.work-link-inactive:hover .title span {
-    background-color: transparent;
-    padding: 0;
-}
-
-/* Scrollbar hiding */
-.work-section::-webkit-scrollbar {
-    display: none;
-}
-
-
-
-
-
-
-
-/* Bio text links styling */
-.bio-link {
-    text-decoration: none;
-    color: inherit;
-    font-weight: bold;
-    transition: color var(--transition-smooth); /* Consistent with other transitions */
-}
-
-.bio-link:hover {
-    color: var(--color-primary-dark);
-}
+/* ==========================================================================
+   RESPONSIVE DESIGN & MEDIA QUERIES
+   ========================================================================== */
 
 /* Responsive adjustments */
-@media (max-width: var(--breakpoint-md)) { /* Use design system breakpoint */
+@media (max-width: var(--breakpoint-md)) {
     .page-header {
         padding: var(--space-2xl) var(--space-lg);
     }
@@ -437,13 +443,13 @@
     }
 }
 
-@media (max-width: var(--breakpoint-sm)) { /* Use design system breakpoint */
+@media (max-width: var(--breakpoint-sm)) {
     .page-header {
         padding: var(--space-xl) var(--space-md);
     }
     
     .work-section {
-        padding: var(--space-lg) var(--space-lg); /* Reduce padding on small screens */
+        padding: var(--space-lg) var(--space-lg);
     }
     
     .work-item {
@@ -454,21 +460,21 @@
 /* Grid responsive adjustments */
 @media (max-width: 1199px) {
     .work-section {
-        grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens - 2 rows */
-        gap: var(--space-md); /* Slightly larger gap for better spacing */
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-md);
     }
 }
 
 @media (max-width: 768px) {
     .work-section {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets - 3 rows */
+        grid-template-columns: repeat(2, 1fr);
         gap: var(--space-md);
     }
 }
 
 @media (max-width: 480px) {
     .work-section {
-        grid-template-columns: 1fr; /* Single column on mobile - 6 rows */
-        gap: var(--space-md); /* Reduce gap on small screens */
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
     }
 }
