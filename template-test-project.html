@@ -48,20 +48,16 @@
                                 // Initialize flower manager for blooming animation
                                 if (window.FlowerManager) {
                                     window.flowerManager = new window.FlowerManager();
-                                    // Trigger the blooming animation
-                                    setTimeout(() => {
-                                        if (window.flowerManager) {
-                                            window.flowerManager.triggerBloom();
-                                        }
-                                    }, 100);
+                                    // Trigger the blooming animation immediately
+                                    if (window.flowerManager) {
+                                        window.flowerManager.triggerBloom();
+                                    }
                                 }
                                 
-                                // Wait a bit for content to be populated, then initialize scroll manager
-                                setTimeout(() => {
-                                    if (window.ProjectScrollManager) {
-                                        window.projectScrollManager = new window.ProjectScrollManager();
-                                    }
-                                }, 100);
+                                // Initialize scroll manager immediately
+                                if (window.ProjectScrollManager) {
+                                    window.projectScrollManager = new window.ProjectScrollManager();
+                                }
                                 
                                 if (window.FontSizingManager) {
                                     window.fontSizingManager = new window.FontSizingManager();
