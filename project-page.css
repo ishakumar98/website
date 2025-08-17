@@ -917,7 +917,7 @@ body.project-page {
   /* Initially hidden - no animation until start-bloom class is added */
   transform: scale(0%, 0%);
   opacity: 0;
-  transition: opacity 0.3s ease-out, transform 2s ease-in-out;
+  /* No base transitions - let hover handle it like bloomtype */
   
   /* Centered positioning */
   margin: var(--flower-margin-top) auto var(--flower-margin-bottom) auto;
@@ -1026,6 +1026,8 @@ body.project-page {
 .flower[logo] {
           /* No scale needed - flower sizes itself naturally */
         /* Hover effects will work with pure rotation */
+        /* Explicitly override any inherited transitions */
+        transition: none !important;
 }
 
 /* Start blooming animation when class is added */
@@ -1061,13 +1063,17 @@ body.project-page {
   100% { transform: translate(50%, -50%); }
 }
 
+/* Bloomtype-style hover rotation keyframe */
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Hover Effects - Pure CSS approach like bloomtype */
 /* Only enable hover effects after the flower has bloomed */
 .flower[logo]:hover {
-          /* Simple rotation - exactly like bloomtype */
-        transform: rotate(360deg);
-        transition: transform 2s ease-in-out;
-        will-change: transform;
+    /* Exact bloomtype implementation - CSS animation instead of transition */
+    animation: rotate 1s;
 }
 
 
@@ -1079,4 +1085,6 @@ body.project-page {
 .flower[logo] .bottom:after {
   /* Keep the final positions from the bloom animations */
   animation-fill-mode: forwards;
+  /* Ensure transform properties are preserved */
+  transform: var(--petal-offset-x, 0) var(--petal-offset-y, 0);
 }
