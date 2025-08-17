@@ -24,28 +24,41 @@ class ProjectScrollManager {
     }
     
     init() {
-        // Wait for project content to be ready before initializing
+        // Try to initialize immediately
+        this.tryInitialize();
+        
+        // Also listen for the event in case it comes later
         document.addEventListener('projectContentReady', () => {
-            this.findElements();
-            this.setupScrollBehavior();
-            this.isInitialized = true;
+            this.tryInitialize();
         });
         
-        // Also try to initialize immediately if content is already there
+        // Fallback: try again after a delay
         setTimeout(() => {
-            if (!this.isInitialized) {
-                this.findElements();
-                this.setupScrollBehavior();
-                this.isInitialized = true;
-            }
+            this.tryInitialize();
         }, 1000);
+    }
+    
+    tryInitialize() {
+        if (this.isInitialized) return;
+        
+        console.log('ProjectScrollManager: Attempting to initialize...');
+        
+        this.findElements();
+        if (this.projectImagesSection) {
+            console.log('ProjectScrollManager: Found project images section, setting up scroll behavior...');
+            this.setupScrollBehavior();
+            this.isInitialized = true;
+            console.log('ProjectScrollManager: Successfully initialized!');
+        } else {
+            console.log('ProjectScrollManager: Project images section not found, will retry...');
+        }
     }
     
     findElements() {
         this.projectImagesSection = document.querySelector('.project-images-section');
         
         if (this.projectImagesSection) {
-            this.flowerElement = this.projectImagesSection.querySelector('.flower-logo');
+            this.flowerElement = this.projectImagesSection.querySelector('.flower');
         } else {
             this.flowerElement = null;
         }
@@ -160,17 +173,7 @@ class ProjectScrollManager {
         // Also update the actual position of the image container to match our calculation
         this.projectImagesSection.style.top = imageContainerStartPosition + 'px';
         
-        console.log('ProjectScrollManager: Image container positioning calculation:', {
-            viewportHeight: viewportHeight,
-            flowerHeight: flowerHeight,
-            flowerTopMargin: flowerTopMargin,
-            flowerBottomMargin: flowerBottomMargin,
-            flowerTotalHeight: flowerTotalHeight,
-            containerBottomPadding: containerBottomPadding,
-            imageContainerStartPosition: imageContainerStartPosition,
-            contentAreaHeight: contentAreaHeight,
-            explanation: 'Content area height = distance from viewport top to image container start'
-        });
+
         
         // Notify other modules that image container position is ready
         document.dispatchEvent(new CustomEvent('imageContainerPositionReady', {
@@ -180,7 +183,7 @@ class ProjectScrollManager {
             }
         }));
         
-        console.log('ProjectScrollManager: Dispatched imageContainerPositionReady event');
+
         
         return contentAreaHeight;
     }
@@ -245,7 +248,9 @@ class ProjectScrollManager {
             const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
             
             // Update flower size based on scroll progress (bloomtype-style)
-            this.updateFlowerSize();
+            if (window.flowerManager && window.flowerManager.isReady()) {
+                window.flowerManager.updateFlowerSize(scrollProgress);
+            }
             
             // Enhanced easing for more dramatic momentum building and deceleration
             let easedProgress = this.calculateEasedProgress(scrollProgress);
@@ -307,49 +312,6 @@ class ProjectScrollManager {
         }
         
         return easedProgress;
-    }
-    
-    // Update flower size based on scroll progress
-    updateFlowerSize() {
-        if (!this.flowerElement) return;
-        
-        // Get the container's position relative to viewport
-        const containerRect = this.projectImagesSection.getBoundingClientRect();
-        const containerTop = containerRect.top;
-        const viewportHeight = window.innerHeight;
-        
-        // Calculate how much of the container has moved past the top of viewport
-        // When container is at bottom: containerTop = viewportHeight (flower = normal size)
-        // When container is at top: containerTop = 0 (flower = minimum size)
-        const progress = Math.max(0, Math.min(1, (viewportHeight - containerTop) / viewportHeight));
-        
-        // Calculate flower scale: 1 (normal) to 0.52 (minimum)
-        const minScale = 0.52;
-        const maxScale = 1;
-        const currentScale = maxScale - (progress * (maxScale - minScale));
-        
-        // Calculate margins proportionally
-        const minTopMargin = 0.5; // 0.5rem
-        const maxTopMargin = 2; // 2rem
-        const currentTopMargin = maxTopMargin - (progress * (maxTopMargin - minTopMargin));
-        
-        const minBottomMargin = 0.25; // 0.25rem
-        const maxBottomMargin = 1.5; // 1.5rem
-        const currentBottomMargin = maxBottomMargin - (progress * (maxBottomMargin - minBottomMargin));
-        
-        // Apply the transform and margins directly with animation coordination
-        if (window.AnimationCoordinator) {
-            window.AnimationCoordinator.registerJSAnimation(
-                this.flowerElement, 
-                'scale', 
-                'flower-scroll-scale', 
-                window.AnimationCoordinator.priorities.CRITICAL
-            );
-        }
-        
-        this.flowerElement.style.transform = `scale(${currentScale}) rotate(0deg)`;
-        this.flowerElement.style.marginTop = `${currentTopMargin}rem`;
-        this.flowerElement.style.marginBottom = `${currentBottomMargin}rem`;
     }
     
     // Handle window resize

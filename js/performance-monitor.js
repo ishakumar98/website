@@ -37,7 +37,7 @@ class PerformanceMonitor {
                 lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
                 this.observers.set('lcp', lcpObserver);
             } catch (e) {
-                console.warn('LCP observer not supported:', e);
+                // LCP observer not supported
             }
 
             // Monitor First Input Delay (FID)
@@ -52,7 +52,7 @@ class PerformanceMonitor {
                 fidObserver.observe({ entryTypes: ['first-input'] });
                 this.observers.set('fid', fidObserver);
             } catch (e) {
-                console.warn('FID observer not supported:', e);
+                // FID observer not supported
             }
 
             // Monitor Cumulative Layout Shift (CLS)
@@ -70,7 +70,7 @@ class PerformanceMonitor {
                 clsObserver.observe({ entryTypes: ['layout-shift'] });
                 this.observers.set('cls', clsObserver);
             } catch (e) {
-                console.warn('CLS observer not supported:', e);
+                // CLS observer not supported
             }
         }
     }
@@ -88,7 +88,7 @@ class PerformanceMonitor {
                 paintObserver.observe({ entryTypes: ['paint'] });
                 this.observers.set('paint', paintObserver);
             } catch (e) {
-                console.warn('Paint observer not supported:', e);
+                // Paint observer not supported
             }
 
             // Monitor long tasks
@@ -97,14 +97,13 @@ class PerformanceMonitor {
                     for (const entry of list.getEntries()) {
                         if (entry.duration > 50) { // Tasks longer than 50ms
                             this.trackMetric('LongTask', entry.duration);
-                            console.warn(`Long task detected: ${entry.duration}ms`, entry);
                         }
                     }
                 });
                 longTaskObserver.observe({ entryTypes: ['longtask'] });
                 this.observers.set('longtask', longTaskObserver);
             } catch (e) {
-                console.warn('Long task observer not supported:', e);
+                // Long task observer not supported
             }
         }
     }
@@ -121,7 +120,7 @@ class PerformanceMonitor {
                 resourceObserver.observe({ entryTypes: ['resource'] });
                 this.observers.set('resource', resourceObserver);
             } catch (e) {
-                console.warn('Resource observer not supported:', e);
+                // Resource observer not supported
             }
         }
 
@@ -175,7 +174,7 @@ class PerformanceMonitor {
                 this.metrics.custom.fps = fps;
                 
                 if (fps < 30) {
-                    console.warn(`Low frame rate detected: ${fps} FPS`);
+                    // Low frame rate detected
                 }
                 
                 frameCount = 0;
@@ -198,10 +197,10 @@ class PerformanceMonitor {
                     limit: memory.jsHeapSizeLimit
                 };
                 
-                // Warn about memory issues
+                // Check memory usage
                 const usagePercent = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
                 if (usagePercent > 80) {
-                    console.warn(`High memory usage: ${usagePercent.toFixed(1)}%`);
+                    // High memory usage detected
                 }
             }, 5000);
         }
@@ -285,7 +284,7 @@ class PerformanceMonitor {
         
         // Track slow resources
         if (duration > 1000) {
-            console.warn(`Slow resource: ${entry.name} took ${duration.toFixed(0)}ms`);
+            // Slow resource detected
         }
     }
 

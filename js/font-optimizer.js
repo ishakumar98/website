@@ -93,7 +93,6 @@ class FontOptimizer {
             this.fonts.get('Akke').status = 'loaded';
 
         } catch (error) {
-            console.warn('Font Loading API failed, falling back to CSS:', error);
             this.loadFontsWithCSS();
         }
     }

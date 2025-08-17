@@ -388,9 +388,9 @@ class AnimationCoordinator {
         // Check for transform conflicts
         if (computedStyle.transform !== 'none') {
             const conflicts = this.detectConflicts(element, 'transform');
-            if (conflicts.length > 0) {
-                console.warn('AnimationCoordinator: New transform conflict detected on', element);
-            }
+                    if (conflicts.length > 0) {
+            // Transform conflict detected
+        }
         }
     }
     

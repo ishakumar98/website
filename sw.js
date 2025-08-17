@@ -62,7 +62,7 @@ self.addEventListener('install', event => {
                 return self.skipWaiting();
             })
             .catch(error => {
-                console.error('❌ Failed to cache static files:', error);
+                // Handle cache error silently
             })
     );
 });
@@ -79,14 +79,12 @@ self.addEventListener('activate', event => {
                         if (cacheName !== STATIC_CACHE && 
                             cacheName !== DYNAMIC_CACHE && 
                             cacheName !== IMAGE_CACHE) {
-                            console.log('🗑️ Deleting old cache:', cacheName);
                             return caches.delete(cacheName);
                         }
                     })
                 );
             })
             .then(() => {
-                console.log('✅ Service Worker activated successfully');
                 return self.clients.claim();
             })
     );
@@ -156,8 +154,6 @@ async function handleImageRequest(request) {
         
         return networkResponse;
     } catch (error) {
-        console.warn('Failed to fetch image:', request.url, error);
-        
         // Return fallback image if available
         const fallbackResponse = await caches.match('/images/placeholder.png');
         if (fallbackResponse) {
@@ -192,7 +188,6 @@ async function handleStaticRequest(request) {
         
         return networkResponse;
     } catch (error) {
-        console.warn('Failed to fetch static asset:', request.url, error);
         return new Response('Asset not available', {
             status: 404,
             statusText: 'Not Found'
@@ -214,8 +209,6 @@ async function handleAPIRequest(request) {
         
         return networkResponse;
     } catch (error) {
-        console.warn('Network failed for API request:', request.url, error);
-        
         // Try cache as fallback
         const cachedResponse = await caches.match(request);
         if (cachedResponse) {
@@ -251,7 +244,6 @@ async function handleDynamicRequest(request) {
         
         return await networkPromise;
     } catch (error) {
-        console.warn('Failed to handle dynamic request:', request.url, error);
         return new Response('Content not available', {
             status: 404,
             statusText: 'Not Found'
@@ -261,8 +253,6 @@ async function handleDynamicRequest(request) {
 
 // Background sync for offline actions
 self.addEventListener('sync', event => {
-    console.log('🔄 Background sync triggered:', event.tag);
-    
     if (event.tag === 'background-sync') {
         event.waitUntil(performBackgroundSync());
     }
@@ -272,21 +262,17 @@ self.addEventListener('sync', event => {
 async function performBackgroundSync() {
     try {
         // Sync any pending data
-        console.log('🔄 Performing background sync...');
         
         // You can add specific sync logic here
         // For example, syncing form submissions, analytics, etc.
         
-        console.log('✅ Background sync completed');
     } catch (error) {
-        console.error('❌ Background sync failed:', error);
+        // Handle background sync error silently
     }
 }
 
 // Push notification handling
 self.addEventListener('push', event => {
-    console.log('📱 Push notification received:', event);
-    
     if (event.data) {
         const data = event.data.json();
         const options = {
@@ -305,8 +291,6 @@ self.addEventListener('push', event => {
 
 // Notification click handling
 self.addEventListener('notificationclick', event => {
-    console.log('👆 Notification clicked:', event);
-    
     event.notification.close();
     
     event.waitUntil(
@@ -316,8 +300,6 @@ self.addEventListener('notificationclick', event => {
 
 // Message handling for communication with main thread
 self.addEventListener('message', event => {
-    console.log('💬 Message received in Service Worker:', event.data);
-    
     if (event.data && event.data.type === 'SKIP_WAITING') {
         self.skipWaiting();
     }
@@ -336,12 +318,10 @@ self.addEventListener('message', event => {
 
 // Error handling
 self.addEventListener('error', event => {
-    console.error('❌ Service Worker error:', event.error);
+    // Handle service worker error silently
 });
 
 // Unhandled rejection handling
 self.addEventListener('unhandledrejection', event => {
-    console.error('❌ Service Worker unhandled rejection:', event.reason);
+    // Handle unhandled rejection silently
 });
-
-console.log('🚀 Service Worker script loaded successfully');

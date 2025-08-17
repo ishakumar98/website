@@ -25,7 +25,6 @@ class FontSizingManager {
         // Also listen for image container position updates to recalculate if needed
         document.addEventListener('imageContainerPositionReady', () => {
             if (this.isInitialized) {
-                console.log('FontSizingManager: Recalculating font size with updated image container position');
                 this.adjustFontSize();
             }
         });
@@ -37,17 +36,11 @@ class FontSizingManager {
         this.contentArea = document.querySelector('.project-content-area');
         this.projectImagesSection = document.querySelector('.project-images-section');
         
-        console.log('FontSizingManager: Found elements:', {
-            textElements: this.textElements.length,
-            creditsElements: this.creditsElements.length,
-            contentArea: !!this.contentArea,
-            projectImagesSection: !!this.projectImagesSection
-        });
+
     }
     
     adjustFontSize() {
         if (this.textElements.length === 0 || !this.contentArea) {
-            console.log('FontSizingManager: Missing elements - textElements:', this.textElements.length, 'contentArea:', !!this.contentArea);
             return;
         }
         
@@ -62,7 +55,7 @@ class FontSizingManager {
             const estimatedContainerPadding = 32; // 2rem = 32px (from CSS padding)
             imageContainerTop = viewportHeight - estimatedFlowerHeight - estimatedContainerPadding;
             
-            console.log('FontSizingManager: Using estimated image container position:', imageContainerTop + 'px');
+
         }
         
         const contentAreaTop = this.contentArea.getBoundingClientRect().top;
@@ -71,13 +64,7 @@ class FontSizingManager {
         // The container should stop at the top of the image container
         const totalAvailableHeight = imageContainerTop;
         
-        console.log('FontSizingManager: Container height calculation:', {
-            imageContainerTop: imageContainerTop,
-            contentAreaTop: contentAreaTop,
-            totalAvailableHeight: totalAvailableHeight,
-            viewportHeight: window.innerHeight,
-            isEstimated: imageContainerTop === 0
-        });
+
         
         // Get the CSS padding from computed styles (2rem = 32px on all sides)
         const computedStyles = getComputedStyle(this.contentArea);
@@ -88,12 +75,7 @@ class FontSizingManager {
         // Available height for content (description + credits) within the padded container
         const contentAvailableHeight = totalAvailableHeight - totalPadding;
         
-        console.log('FontSizingManager: Height calculations:', {
-            topPadding: topPadding,
-            bottomPadding: bottomPadding,
-            totalPadding: totalPadding,
-            contentAvailableHeight: contentAvailableHeight
-        });
+
         
         // First, apply test font size to measure description content
         const testFontSize = 16;
@@ -109,12 +91,7 @@ class FontSizingManager {
         
         const descriptionAvailableHeight = contentAvailableHeight - creditsHeight;
         
-        console.log('FontSizingManager: Credits and description height:', {
-            creditsCount: this.creditsElements.length,
-            creditsHeight: creditsHeight,
-            descriptionAvailableHeight: descriptionAvailableHeight,
-            contentAvailableHeight: contentAvailableHeight
-        });
+
         
         // Instead of counting lines, let's calculate font size based on available height
         // We want the description to fill the exact available height
@@ -135,13 +112,7 @@ class FontSizingManager {
             element.style.fontSize = finalFontSize + 'px';
         });
         
-        console.log('FontSizingManager: Font size calculation:', {
-            testFontSize: testFontSize,
-            currentDescriptionHeight: currentDescriptionHeight,
-            scaleFactor: scaleFactor,
-            optimalFontSize: optimalFontSize,
-            finalFontSize: finalFontSize
-        });
+
         
         // Safety check: if content is still too tall, reduce font size until it fits
         let safetyAttempts = 0;
@@ -159,7 +130,6 @@ class FontSizingManager {
             
             // Check if content fits within the padded container
             if (totalCurrentHeight <= contentAvailableHeight) {
-                console.log('FontSizingManager: Content fits after safety adjustments');
                 break;
             }
             
@@ -179,16 +149,7 @@ class FontSizingManager {
             finalDescriptionHeight += element.offsetHeight;
         });
         
-        console.log('FontSizingManager: Final result:', {
-            finalFontSize: currentFontSize,
-            finalDescriptionHeight: finalDescriptionHeight,
-            totalHeight: finalDescriptionHeight + creditsHeight,
-            targetHeight: contentAvailableHeight,
-            safetyAttempts: safetyAttempts,
-            creditsHeight: creditsHeight
-        });
-        
-        console.log('FontSizingManager: Applied font size to', this.textElements.length, 'description elements');
+
     }
     
 
@@ -202,7 +163,6 @@ class FontSizingManager {
     handleResize() {
         if (this.isInitialized) {
             // Always recalculate font size on resize - use smart fallback if needed
-            console.log('FontSizingManager: Resize detected - recalculating font size');
             this.adjustFontSize();
         }
     }
@@ -233,7 +193,6 @@ class FontSizingManager {
         this.contentArea = null;
         this.projectImagesSection = null;
         this.isInitialized = false;
-        console.log('FontSizingManager: Destroyed');
     }
 }
 

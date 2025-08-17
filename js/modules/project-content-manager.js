@@ -36,7 +36,6 @@ class ProjectContentManager {
             this.projectData = data.projects[this.currentProjectId];
             
             if (!this.projectData) {
-                console.error(`Project data not found for: ${this.currentProjectId}`);
                 // Fallback to hardcoded content for testing
                 this.setFallbackData();
             }
@@ -45,7 +44,6 @@ class ProjectContentManager {
             this.populateProjectContent();
             
         } catch (error) {
-            console.error('Error loading project data:', error);
             // Fallback to hardcoded content for testing
             this.setFallbackData();
             this.populateProjectContent();

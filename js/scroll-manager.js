@@ -96,7 +96,7 @@ class ScrollManager {
                 try {
                     listener.callback(scrollY, scrollDelta, isScrolling, event);
                 } catch (error) {
-                    console.error(`ScrollManager: Error in listener "${listener.id}":`, error);
+                    // Handle scroll listener error silently
                 }
             }
         }

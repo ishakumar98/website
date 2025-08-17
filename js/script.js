@@ -97,10 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Random letter animation system (ISHA-style)
     function initRandomLetterAnimations() {
         const letters = document.querySelectorAll('.name-display .letter');
-        console.log('Found letters:', letters.length);
         
         if (letters.length === 0) {
-            console.log('No letters found, returning early');
             return;
         }
         
@@ -114,19 +112,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Apply random transforms on hover
         const nameDisplay = document.querySelector('.name-display');
-        console.log('Found nameDisplay:', nameDisplay);
-        console.log('EventManager available:', !!window.eventManager);
         
         if (nameDisplay && window.eventManager) {
-            console.log('Adding mouseenter listener to nameDisplay');
             window.eventManager.addListener(nameDisplay, 'mouseenter', function() {
-                console.log('Mouse entered nameDisplay!');
                 letters.forEach((letter, index) => {
                     // Skip space characters
                     if (letter.textContent.trim() === '') return;
                     
                     const randomTransform = generateRandomTransform();
-                    console.log(`Setting letter ${index} transform:`, randomTransform);
                     
                     // Register with animation coordinator to prevent conflicts
                     if (window.animationCoordinator) {
@@ -142,9 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
             
-            console.log('Adding mouseleave listener to nameDisplay');
             window.eventManager.addListener(nameDisplay, 'mouseleave', function() {
-                console.log('Mouse left nameDisplay!');
                 letters.forEach((letter, index) => {
                     // Unregister animations to prevent conflicts
                     if (window.animationCoordinator) {
@@ -153,8 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     letter.style.setProperty('transform', 'rotate(0deg) translateY(0px) translateX(0px)', 'important');
                 });
             });
-        } else {
-            console.log('Missing nameDisplay or eventManager');
         }
     }
     
@@ -164,16 +153,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Register CSS letter animations with animation coordinator
     function registerCSSLetterAnimations() {
         const letters = document.querySelectorAll('.name-display .letter');
-        console.log('CSS Registration - Found letters:', letters.length);
-        console.log('AnimationCoordinator available:', !!window.animationCoordinator);
         
         if (letters.length === 0 || !window.animationCoordinator) {
-            console.log('CSS Registration failed - missing letters or animationCoordinator');
             return;
         }
         
         letters.forEach((letter, index) => {
-            console.log(`Registering CSS animation for letter ${index}`);
             // Register the CSS transition with animation coordinator
             window.animationCoordinator.registerCSSAnimation(
                 letter,
@@ -182,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.animationCoordinator.priorities.MEDIUM
             );
         });
-        console.log('CSS animations registered successfully');
     }
     
     // Register CSS animations after DOM is ready

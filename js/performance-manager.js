@@ -43,7 +43,7 @@ class PerformanceManager {
     
 
         } catch (error) {
-            console.error('Failed to initialize Performance Manager:', error);
+            // Handle initialization error silently
         }
     }
 
@@ -55,7 +55,7 @@ class PerformanceManager {
                 this.optimizers.set('image', imageOptimizer);
         
             } catch (error) {
-                console.warn('Image Optimizer failed to initialize:', error);
+                // Handle image optimizer error silently
             }
         }
 
@@ -66,7 +66,7 @@ class PerformanceManager {
                 this.optimizers.set('font', fontOptimizer);
         
             } catch (error) {
-                console.warn('Font Optimizer failed to initialize:', error);
+                // Handle font optimizer error silently
             }
         }
 
@@ -77,7 +77,7 @@ class PerformanceManager {
                 this.optimizers.set('css', cssOptimizer);
         
             } catch (error) {
-                console.warn('CSS Optimizer failed to initialize:', error);
+                // Handle CSS optimizer error silently
             }
         }
     }
@@ -115,7 +115,7 @@ class PerformanceManager {
                     break;
             }
         } catch (error) {
-            console.warn(`Failed to optimize ${name}:`, error);
+            // Handle optimization error silently
         }
     }
 

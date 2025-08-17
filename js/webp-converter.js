@@ -134,7 +134,6 @@ class WebPConverter {
                 this.showConversionNotification(img, sizeReduction);
             }
         } catch (error) {
-            console.warn('Failed to convert image to WebP:', img.src, error);
             img.dataset.webpConverted = 'false';
         }
     }
@@ -161,13 +160,11 @@ class WebPConverter {
                     const webpDataURL = canvas.toDataURL('image/webp', 0.85); // 85% quality
                     resolve(webpDataURL);
                 } catch (error) {
-                    console.warn('Canvas conversion failed:', error);
                     resolve(null);
                 }
             };
             
             tempImg.onerror = () => {
-                console.warn('Failed to load image for conversion:', img.src);
                 resolve(null);
             };
             
@@ -182,7 +179,6 @@ class WebPConverter {
             const blob = await response.blob();
             return blob.size;
         } catch (error) {
-            console.warn('Failed to get image size:', error);
             return 0;
         }
     }
@@ -278,7 +274,6 @@ class WebPConverter {
             
             return { supported: false, originalURL: imageURL };
         } catch (error) {
-            console.error('Failed to convert image URL:', error);
             return { supported: false, originalURL: imageURL, error: error.message };
         }
     }
@@ -313,7 +308,6 @@ class WebPConverter {
                 await Promise.all(batchPromises);
                 results.push(...batch.map(img => ({ success: true, element: img })));
             } catch (error) {
-                console.error('Batch conversion failed:', error);
                 results.push(...batch.map(img => ({ success: false, element: img, error: error.message })));
             }
         }

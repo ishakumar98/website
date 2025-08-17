@@ -30,7 +30,7 @@ class HomepageInteractionManager {
             this.isInitialized = true;
             
         } catch (error) {
-            console.error('HomepageInteractionManager: Initialization error:', error);
+            // Handle initialization error silently
         }
     }
     
@@ -165,13 +165,11 @@ class HomepageInteractionManager {
         // Re-find elements in case DOM has changed
         this.setupElements();
         this.setupEventListeners();
-        console.log('HomepageInteractionManager: Elements refreshed');
     }
     
     enableInteractions() {
         // Re-enable all interactions
         this.setupEventListeners();
-        console.log('HomepageInteractionManager: Interactions enabled');
     }
     
     disableInteractions() {
@@ -190,7 +188,7 @@ class HomepageInteractionManager {
             }
         });
         
-        console.log('HomepageInteractionManager: Interactions disabled');
+
     }
     
     destroy() {
@@ -203,7 +201,6 @@ class HomepageInteractionManager {
         }
         
         this.isInitialized = false;
-        console.log('HomepageInteractionManager: Destroyed');
     }
 }
 

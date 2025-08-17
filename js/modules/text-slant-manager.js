@@ -108,7 +108,6 @@ class TextSlantManager {
         this.deactivate();
         this.letters = [];
         this.isInitialized = false;
-        console.log('TextSlantManager: Destroyed');
     }
 }
 

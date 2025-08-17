@@ -19,7 +19,7 @@ class ProjectMain {
                 this.initializeModules();
             }
         } catch (error) {
-            console.error('ProjectMain: Initialization error:', error);
+            // Handle initialization error silently
         }
     }
     
@@ -42,7 +42,7 @@ class ProjectMain {
     
             
         } catch (error) {
-            console.error('ProjectMain: Module initialization error:', error);
+            // Handle module initialization error silently
         }
     }
     
@@ -71,7 +71,7 @@ class ProjectMain {
         }
     }
     
-    async initializeImagePopupManager() {
+        async initializeImagePopupManager() {
         if (window.ImagePopupManager) {
             this.modules.imagePopup = new window.ImagePopupManager();
         }
@@ -133,7 +133,7 @@ class ProjectMain {
                 }
             }
         } catch (error) {
-            console.error('ProjectMain: Scroll animation error:', error);
+            // Handle scroll animation error silently
         }
     }
     

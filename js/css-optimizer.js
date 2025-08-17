@@ -38,7 +38,6 @@ class CSSOptimizer {
                 });
             } catch (e) {
                 // Cross-origin stylesheets can't be accessed
-                console.warn('Cannot analyze stylesheet:', e);
             }
         });
         
@@ -66,7 +65,7 @@ class CSSOptimizer {
             'body', 'html', '.header-section', '.main-content',
             '.work-section', '.work-container', '.name', '.bio',
             '.project-page-container', '.project-content-area',
-            '.flower-logo', '.project-text-block'
+            '.flower', '.project-text-block'
         ];
         
         return criticalSelectors.some(critical => selector.includes(critical));
@@ -347,7 +346,7 @@ class CSSOptimizer {
             const rules = Array.from(stylesheet.cssRules || []);
             rules.forEach(rule => this.analyzeRule(rule));
         } catch (e) {
-            console.warn('Cannot optimize stylesheet:', e);
+            // Handle stylesheet optimization error silently
         }
     }
 

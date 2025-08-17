@@ -4,8 +4,6 @@
 
 class LetterAnimationManager {
     constructor() {
-        console.log('🔤 LetterAnimationManager constructor called');
-        
         this.letters = [];
         this.nameDisplay = null;
         this.isInitialized = false;
@@ -123,16 +121,11 @@ class LetterAnimationManager {
     
     // Register CSS animations with AnimationCoordinator - exact same as current implementation
     registerCSSAnimations() {
-        console.log('LetterAnimationManager: CSS Registration - Found letters:', this.letters.length);
-        console.log('LetterAnimationManager: AnimationCoordinator available:', !!window.AnimationCoordinator);
-        
         if (this.letters.length === 0 || !window.AnimationCoordinator) {
-            console.log('LetterAnimationManager: CSS Registration failed - missing letters or AnimationCoordinator');
             return;
         }
         
         this.letters.forEach((letter, index) => {
-            console.log(`LetterAnimationManager: Registering CSS animation for letter ${index}`);
             // Register the CSS transition with AnimationCoordinator (exact same as current)
             window.AnimationCoordinator.registerCSSAnimation(
                 letter,
@@ -141,7 +134,6 @@ class LetterAnimationManager {
                 window.AnimationCoordinator.priorities.MEDIUM
             );
         });
-        console.log('LetterAnimationManager: CSS animations registered successfully');
     }
     
     // Public methods for external access
@@ -185,7 +177,6 @@ class LetterAnimationManager {
         this.letters = [];
         this.nameDisplay = null;
         this.isInitialized = false;
-        console.log('LetterAnimationManager: Destroyed');
     }
 }
 

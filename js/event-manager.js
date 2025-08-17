@@ -72,7 +72,6 @@ class EventManager {
     removeListener(listenerId) {
         const listener = this.listeners.get(listenerId);
         if (!listener) {
-            console.warn(`EventManager: Listener "${listenerId}" not found`);
             return false;
         }
         
@@ -296,7 +295,7 @@ class EventManager {
         };
     }
     
-    // Get callback registry size for debugging
+    // Get callback registry size
     getCallbackRegistrySize() {
         let size = 0;
         for (const callbackMap of this.callbackRegistry.values()) {

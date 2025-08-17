@@ -85,7 +85,7 @@ class ImagePopupManager {
             this.popupElements.imagePopup.classList.add('active');
             
         } catch (error) {
-            console.error('Error opening popup:', error);
+            // Handle popup error silently
         }
     }
     
@@ -134,7 +134,6 @@ class ImagePopupManager {
         this.projectImages = [];
         this.popupElements = {};
         this.isInitialized = false;
-        console.log('ImagePopupManager: Destroyed');
     }
 }
 

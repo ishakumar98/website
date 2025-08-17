@@ -12,7 +12,6 @@ class ServiceWorkerManager {
 
     async init() {
         if (!this.isSupported) {
-            console.warn('Service Worker not supported in this browser');
             return;
         }
 
@@ -22,7 +21,7 @@ class ServiceWorkerManager {
             this.setupCommunication();
     
         } catch (error) {
-            console.error('Failed to initialize Service Worker Manager:', error);
+            // Handle initialization error silently
         }
     }
 
@@ -42,7 +41,6 @@ class ServiceWorkerManager {
 
             return this.registration;
         } catch (error) {
-            console.error('❌ Service Worker registration failed:', error);
             throw error;
         }
     }
@@ -154,7 +152,6 @@ class ServiceWorkerManager {
 
     async updateServiceWorker() {
         if (!this.registration || !this.registration.waiting) {
-            console.warn('No waiting service worker to update');
             return;
         }
 
@@ -169,7 +166,7 @@ class ServiceWorkerManager {
 
     
         } catch (error) {
-            console.error('❌ Failed to update Service Worker:', error);
+            // Handle service worker update error silently
         }
     }
 
@@ -318,7 +315,6 @@ class ServiceWorkerManager {
     
             return true;
         } catch (error) {
-            console.error('❌ Failed to clear caches:', error);
             return false;
         }
     }
@@ -352,7 +348,6 @@ class ServiceWorkerManager {
 
             return performanceData;
         } catch (error) {
-            console.error('Failed to get cache performance:', error);
             return {};
         }
     }

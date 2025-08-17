@@ -1,6 +1,6 @@
 // Flower Manager Module
-// Handles all flower logo animations, scaling, and interactions
-// Extracted from project-script.js for better organization
+// Handles flower logo animations, scaling, and interactions
+// Coordinates with AnimationCoordinator for smooth animations
 
 class FlowerManager {
     constructor() {
@@ -8,31 +8,52 @@ class FlowerManager {
         this.currentScale = 1;
         this.spinDirection = 'clockwise';
         this.isInitialized = false;
-        
+        this.hasBloomed = false;
+        this.scrollScalingPaused = false;
+        this.lastScrollProgress = 0;
         this.init();
     }
     
     init() {
-        // Wait for project content to be ready before initializing
-        document.addEventListener('projectContentReady', () => {
-                    this.findFlowerElement();
-        this.setupEventListeners();
-        this.isInitialized = true;
-    });
+        this.findFlowerElement();
+        if (this.flowerElement) {
+            this.setupEventListeners();
+            this.triggerBloom();
+            this.isInitialized = true;
+        }
     }
     
     findFlowerElement() {
-        const projectImagesSection = document.querySelector('.project-images-section');
-        if (projectImagesSection) {
-            this.flowerElement = projectImagesSection.querySelector('.flower-logo');
+        this.flowerElement = document.querySelector('.flower');
+        if (!this.flowerElement) {
+            console.warn('Flower element not found');
         }
     }
     
     setupEventListeners() {
         if (this.flowerElement && window.eventManager) {
-            // Initialize alternating spin direction for flower hover
             window.eventManager.addListener(this.flowerElement, 'mouseenter', () => {
                 this.toggleSpinDirection();
+                this.pauseScrollScaling();
+                // Register CSS hover animation with AnimationCoordinator
+                if (window.animationCoordinator) {
+                    window.animationCoordinator.registerCSSAnimation(this.flowerElement, 'rotate', 'flower-hover-rotate', window.animationCoordinator.priorities.HIGH);
+                }
+            });
+            
+            window.eventManager.addListener(this.flowerElement, 'mouseleave', () => {
+                // Wait for CSS animation to complete before resuming JS scaling
+                setTimeout(() => {
+                    this.scrollScalingPaused = false;
+                    if (this.hasBloomed && typeof this.lastScrollProgress !== 'undefined') {
+                        this.updateFlowerSize(this.lastScrollProgress);
+                    }
+                }, 1000); // Match the CSS animation duration
+                
+                // Unregister CSS animation when hover ends
+                if (window.animationCoordinator) {
+                    window.animationCoordinator.unregisterAnimation(this.flowerElement, 'flower-hover-rotate');
+                }
             });
         }
     }
@@ -47,51 +68,62 @@ class FlowerManager {
         }
     }
     
+    pauseScrollScaling() {
+        this.scrollScalingPaused = true;
+    }
+    
+    resumeScrollScaling() {
+        // Wait for CSS animation to complete before resuming JS scaling
+        setTimeout(() => {
+            this.scrollScalingPaused = false;
+            if (this.hasBloomed && typeof this.lastScrollProgress !== 'undefined') {
+                this.updateFlowerSize(this.lastScrollProgress);
+            }
+        }, 1000); // Match the CSS animation duration
+    }
+    
     updateFlowerSize(scrollProgress) {
-        if (!this.flowerElement) return;
+        if (!this.flowerElement || !this.hasBloomed || this.scrollScalingPaused) return;
         
-        // Calculate scale based on scroll progress (bloomtype-style)
-        const minScale = 0.8;
-        const maxScale = 1.2;
-        this.currentScale = minScale + (scrollProgress * (maxScale - minScale));
+        this.lastScrollProgress = scrollProgress;
         
-        // Calculate margins for positioning
-        const maxTopMargin = 1.5; // 1.5rem
-        const minTopMargin = 0.5; // 0.5rem
-        const currentTopMargin = maxTopMargin - (scrollProgress * (maxTopMargin - minTopMargin));
+        // Calculate scale based on scroll progress
+        const minScale = 0.3;
+        const maxScale = 1;
+        this.currentScale = maxScale - (scrollProgress * (maxScale - minScale));
         
-        const minBottomMargin = 0.25; // 0.25rem
-        const maxBottomMargin = 1.5; // 1.5rem
-        const currentBottomMargin = maxBottomMargin - (scrollProgress * (maxBottomMargin - minBottomMargin));
+        // Calculate margins based on scale
+        const baseTopMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-top')) || 2;
+        const baseBottomMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-bottom')) || 1.5;
         
-        // Apply the transform and margins with animation coordination
-        if (window.animationCoordinator) {
-            window.animationCoordinator.registerJSAnimation(
-                this.flowerElement, 
-                'scale', 
-                'flower-scroll-scale', 
-                window.animationCoordinator.priorities.CRITICAL
-            );
-        }
+        const currentTopMargin = baseTopMargin * this.currentScale;
+        const currentBottomMargin = baseBottomMargin * this.currentScale;
         
-        this.flowerElement.style.transform = `scale(${this.currentScale}) rotate(0deg)`;
+        // Apply scroll-based scaling - AnimationCoordinator will handle CSS conflicts
+        this.flowerElement.style.transform = `scale(${this.currentScale})`;
         this.flowerElement.style.marginTop = `${currentTopMargin}rem`;
         this.flowerElement.style.marginBottom = `${currentBottomMargin}rem`;
     }
     
-    getFlowerElement() {
-        return this.flowerElement;
-    }
-    
-    isReady() {
-        return this.isInitialized && this.flowerElement !== null;
+    triggerBloom() {
+        if (this.flowerElement && !this.hasBloomed) {
+            this.flowerElement.setAttribute('bloom', '');
+            setTimeout(() => {
+                this.hasBloomed = true;
+                this.flowerElement.removeAttribute('bloom');
+                this.flowerElement.setAttribute('logo', ''); // Enable hover effects
+                this.flowerElement.style.transform = '';
+                this.flowerElement.style.marginTop = 'var(--flower-margin-top)';
+                this.flowerElement.style.marginBottom = 'var(--flower-margin-bottom)';
+            }, 2500);
+        }
     }
     
     destroy() {
         if (this.flowerElement && window.eventManager) {
-            // Clean up event listeners if needed
-            this.flowerElement = null;
+            window.eventManager.removeAllListeners(this.flowerElement);
         }
+        this.flowerElement = null;
         this.isInitialized = false;
     }
 }

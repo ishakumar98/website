@@ -171,24 +171,24 @@
                                         }
                                         
                                     } catch (error) {
-                                        console.error('Error instantiating homepage modules:', error);
+                                        // Handle module instantiation error silently
                                     }
                                     
                                 }).catch((error) => {
-                                    console.error('Failed to load homepage modules:', error);
+                                    // Handle module loading error silently
                                 });
                             } else if (attempts < maxAttempts) {
                                 attempts++;
                                 setTimeout(waitForModuleLoader, 100);
                             } else {
-                                console.error('ModuleLoader failed to load after multiple attempts');
+                                // ModuleLoader failed to load after multiple attempts
                             }
                         };
                         
                         waitForModuleLoader();
                         
                     } catch (error) {
-                        console.error('Failed to initialize homepage modules:', error);
+                        // Handle initialization error silently
                     }
                 });
             </script>

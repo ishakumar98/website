@@ -208,7 +208,6 @@ function setup() {
   const container = document.getElementById('fireworks-container');
   
   if (!container) {
-    console.error('Fireworks container not found!');
     return;
   }
   

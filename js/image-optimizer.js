@@ -113,7 +113,7 @@ class ImageOptimizer {
         // Set fallback image
         img.src = 'images/placeholder.png';
         
-        console.warn(`Failed to load image: ${img.dataset.src || img.src}`);
+        // Handle image load error silently
     }
 
     setupPerformanceMonitoring() {
@@ -129,7 +129,7 @@ class ImageOptimizer {
                 });
                 observer.observe({ entryTypes: ['largest-contentful-paint'] });
             } catch (e) {
-                console.warn('PerformanceObserver not supported:', e);
+                // PerformanceObserver not supported
             }
         }
     }
@@ -150,12 +150,7 @@ class ImageOptimizer {
     logPerformanceMetrics() {
         const avgLoadTime = this.performanceMetrics.loadTimes.reduce((a, b) => a + b, 0) / this.performanceMetrics.loadTimes.length;
         
-        console.log('Image Performance Metrics:', {
-            totalImages: this.performanceMetrics.totalImages,
-            loadedImages: this.performanceMetrics.loadedImages,
-            averageLoadTime: `${avgLoadTime.toFixed(2)}ms`,
-            totalLoadTime: `${this.performanceMetrics.loadTimes.reduce((a, b) => a + b, 0).toFixed(2)}ms`
-        });
+
     }
 
     // Public API for manual optimization

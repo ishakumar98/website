@@ -15,17 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const viewportHeight = window.innerHeight;
   
   if (!workSection) {
-    console.error('Work section not found');
     return;
   }
   
   if (!fireworksContainer) {
-    console.error('Fireworks container not found');
     return;
   }
   
   // Set initial background color to lavender using the system
-  console.log('Setting initial background color');
   if (window.animationCoordinator) {
     window.animationCoordinator.registerJSAnimation(
       fireworksContainer, 'background', 'fireworks-bg', 'MEDIUM'
@@ -33,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   fireworksContainer.style.backgroundColor = '#FCE8FF';
   fireworksContainer.style.transition = 'background-color var(--transition-smooth)';
-  console.log('Initial background set to:', fireworksContainer.style.backgroundColor);
   
   
   
@@ -46,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
   window.workSectionHeight = workSectionHeight;
   
   // CSS handles initial positioning - no JavaScript override needed
-  console.log('CSS handles initial positioning, JavaScript only handles scroll behavior');
   
   // Remove the body height setting that's causing issues
   // document.body.style.height = (viewportHeight + workSectionHeight) + 'px';
@@ -93,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const computedStyle = window.getComputedStyle(workSection);
         lastTop = parseFloat(computedStyle.top);
         isFirstScroll = false;
-        console.log('Initialized lastTop from CSS position:', lastTop);
+
       }
       
       // Calculate scroll progress (0 = fully collapsed, 1 = fully expanded)
@@ -140,10 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const g = Math.round(initialColor[1] + (finalColor[1] - initialColor[1]) * easedProgress);
       const b = Math.round(initialColor[2] + (finalColor[2] - initialColor[2]) * easedProgress);
       
-      // Debug background color changes
-      console.log('Scroll Progress:', scrollProgress, 'Eased Progress:', easedProgress);
-      console.log('Color:', `rgb(${r}, ${g}, ${b})`);
-      console.log('Fireworks Container:', fireworksContainer);
+
       
       // Apply background color change through the system
       if (window.animationCoordinator) {
@@ -159,20 +151,15 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Register with ScrollManager instead of direct event listener
   if (window.scrollManager) {
-    console.log('ScrollManager available, registering scroll listener');
     window.scrollManager.addScrollListener('work-section-scroll', handleScroll, 'normal');
-  } else {
-    console.error('ScrollManager not available');
   }
   
   // Reset work section to initial CSS position
   function resetWorkSectionPosition() {
-    console.log('Resetting work section position to 100vh');
     // Force reset by removing inline styles first, then setting CSS position
     workSection.style.removeProperty('top');
     workSection.style.setProperty('top', '100vh', 'important');
     lastTop = viewportHeight;
-    console.log('Position reset complete, current top:', workSection.style.top);
   }
   
   // Handle window resize

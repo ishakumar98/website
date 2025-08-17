@@ -38,7 +38,7 @@ class HomepageScrollManager {
             this.isInitialized = true;
             
         } catch (error) {
-            console.error('HomepageScrollManager: Initialization error:', error);
+            // Handle initialization error silently
         }
     }
     
@@ -147,7 +147,7 @@ class HomepageScrollManager {
         // Let it maintain its current scroll position and resize naturally
         // The CSS and existing positioning will handle the resize behavior
         
-        console.log('HomepageScrollManager: Resize handled, position maintained');
+
     }
     
     isInWorkSection() {
@@ -237,7 +237,6 @@ class HomepageScrollManager {
         }
         
         this.isInitialized = false;
-        console.log('HomepageScrollManager: Destroyed');
     }
 }
 

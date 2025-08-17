@@ -43,7 +43,7 @@ class AdvancedOptimizationManager {
     
 
         } catch (error) {
-            console.error('❌ Failed to initialize Advanced Optimization Manager:', error);
+            // Handle initialization error silently
         }
     }
 
@@ -53,11 +53,9 @@ class AdvancedOptimizationManager {
                 const serviceWorkerManager = new ServiceWorkerManager();
                 this.modules.set('serviceWorker', serviceWorkerManager);
         
-            } else {
-                console.warn('⚠️ ServiceWorkerManager not available');
             }
         } catch (error) {
-            console.error('❌ Failed to initialize Service Worker Manager:', error);
+            // Handle service worker manager error silently
         }
     }
 
@@ -67,11 +65,9 @@ class AdvancedOptimizationManager {
                 const webpConverter = new WebPConverter();
                 this.modules.set('webpConverter', webpConverter);
         
-            } else {
-                console.warn('⚠️ WebPConverter not available');
             }
         } catch (error) {
-            console.error('❌ Failed to initialize WebP Converter:', error);
+            // Handle WebP converter error silently
         }
     }
 
@@ -82,11 +78,9 @@ class AdvancedOptimizationManager {
                 this.setupPWAInstallation();
                 this.setupPushNotifications();
         
-            } else {
-                console.warn('⚠️ PWA not supported in this browser');
             }
         } catch (error) {
-            console.error('❌ Failed to initialize PWA:', error);
+            // Handle PWA initialization error silently
         }
     }
 
@@ -207,7 +201,7 @@ class AdvancedOptimizationManager {
             this.hideInstallPrompt();
 
         } catch (error) {
-            console.error('PWA installation failed:', error);
+            // Handle PWA installation error silently
         }
     }
 
@@ -231,7 +225,7 @@ class AdvancedOptimizationManager {
         
             }
         } catch (error) {
-            console.error('Failed to request notification permission:', error);
+            // Handle notification permission error silently
         }
     }
 
@@ -249,7 +243,7 @@ class AdvancedOptimizationManager {
             // await this.sendSubscriptionToServer(subscription);
             
         } catch (error) {
-            console.error('Failed to subscribe to push notifications:', error);
+            // Handle push notification subscription error silently
         }
     }
 

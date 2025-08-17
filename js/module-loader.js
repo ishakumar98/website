@@ -116,7 +116,6 @@ class ModuleLoader {
             return modules;
             
         } catch (error) {
-            console.error('ModuleLoader: Failed to load modules:', error);
             throw error;
         }
     }

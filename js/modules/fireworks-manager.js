@@ -27,11 +27,7 @@ class Firework {
             this.firework.applyForce(this.gravity);
             this.firework.update();
             
-            // Debug: log velocity to see if gravity is working
-            console.log('🎆 Firework velocity:', this.firework.vel.y.toFixed(2));
-            
             if (this.firework.vel.y >= 0) {
-                console.log('💥 Firework exploded!');
                 this.exploded = true;
                 this.explode();
             }
@@ -224,7 +220,6 @@ class FireworksManager {
         // Use the existing fireworks-container from HTML
         const container = document.getElementById('fireworks-container');
         if (!container) {
-            console.error('FireworksManager: Fireworks container not found!');
             return;
         }
         
