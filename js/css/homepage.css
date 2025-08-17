@@ -256,15 +256,13 @@
     box-shadow: var(--shadow-medium);
     width: 100%;
     padding: var(--space-xl) var(--space-2xl); /* 32px top/bottom, 48px left/right */
-    min-height: calc(210px + 11px + 12px + (var(--space-xl) * 2)); /* Image height + padding + margin + top/bottom padding */
-    overflow-x: visible;
+    overflow-x: hidden;
     
     /* Layout properties moved from work-container */
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-    row-gap: var(--space-3xl);
     
 
 }
@@ -281,19 +279,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
-    transition: all var(--transition-smooth);
-    flex: 0 0 auto;
-    min-width: 245px; /* Original simple value */
-    max-width: 300px; /* Original simple value */
-    background-color: white; /* Explicit white background to prevent inheritance */
+    flex: 1 1 0; /* Grow and shrink equally to fill available space */
+    height: 250px; /* Fixed height for all items - image height (210px) + padding (11px) + margin (12px) + title height */
 }
 
 .work-item .wrapper-image {
     width: 100%;
     height: 210px; /* Original simple value */
-    flex-shrink: 0;
+    flex-shrink: 1; /* Allow shrinking */
     position: relative;
-    transition: all var(--transition-smooth);
     padding: 11px; /* Original padding value */
     box-sizing: border-box;
 }
@@ -303,7 +297,6 @@
     height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 0 var(--space-sm) rgba(0, 0, 0, 0.1)); /* 8px blur - logical spacing */
-    transition: all var(--transition-smooth); /* Consistent with other transitions */
 }
 
 .work-item .title {
@@ -311,7 +304,6 @@
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    transition: all var(--transition-smooth);
 }
 
 .work-item .title span {
@@ -319,7 +311,6 @@
     color: var(--color-text);
     font-weight: 400;
     text-align: center;
-    transition: all var(--transition-smooth); /* Consistent with other transitions */
     padding: 0 var(--space-sm);
     border-radius: var(--space-xs);
 }
@@ -328,7 +319,6 @@
 .work-item:hover .wrapper-image {
     background-color: rgba(29, 28, 29, 0.06); /* Original dark overlay */
     border-radius: 8px; /* Original 8px border radius */
-    transform: translateY(-2px); /* Original 2px upward movement */
 }
 
 /* Text file hover - background hugs the image content */
@@ -339,12 +329,13 @@
     max-height: 100%;
 }
 
-/* Text file wrapper - center content and limit background width */
+/* Text file wrapper - center content and maintain consistent height */
 .work-item .wrapper-image:has(img[src="images/text-file-icon.png"]) {
     display: flex;
     justify-content: center;
     align-items: center;
     width: fit-content;
+    height: 210px; /* Same height as folder images */
     margin: 0 auto;
 }
 
@@ -354,11 +345,10 @@
     border-radius: var(--space-xs);
 }
 
-/* Work link hover transitions */
+/* Work link styling */
 .work-link {
     text-decoration: none;
     color: inherit;
-    transition: all var(--transition-smooth);
 }
 
 .work-link:hover {
@@ -384,10 +374,6 @@
 }
 
 /* Scrollbar hiding */
-.work-list::-webkit-scrollbar {
-    display: none;
-}
-
 .work-section::-webkit-scrollbar {
     display: none;
 }
@@ -428,14 +414,7 @@
         font-size: var(--font-size-lg);
     }
     
-    .work-list {
-        column-gap: var(--space-lg);
-        row-gap: var(--space-xl);
-    }
-    
     .work-item {
-        min-width: calc(var(--space-3xl) * 1.5625); /* 100px: 64px * 1.5625 */
-        max-width: calc(var(--space-3xl) * 2.34375); /* 150px: 64px * 2.34375 */
         padding: var(--space-md);
     }
 }
@@ -445,19 +424,11 @@
         padding: var(--space-xl) var(--space-md);
     }
     
-    .work-list {
-        column-gap: var(--space-md);
-        row-gap: var(--space-lg);
+    .work-section {
+        padding: var(--space-lg) var(--space-lg); /* Reduce padding on small screens */
     }
     
     .work-item {
-        min-width: calc(var(--space-3xl) * 1.25); /* 80px: 64px * 1.25 */
-        max-width: calc(var(--space-3xl) * 1.875); /* 120px: 64px * 1.875 */
         padding: var(--space-sm);
-    }
-    
-    .work-item .wrapper-image {
-        width: calc(var(--space-3xl) * 0.9375); /* 60px: 64px * 0.9375 */
-        height: calc(var(--space-3xl) * 0.9375); /* 60px: 64px * 0.9375 */
     }
 }
