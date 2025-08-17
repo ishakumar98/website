@@ -913,19 +913,24 @@ body.project-page {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Bloomtype Flower Logo - Exact implementation */
+/* Bloomtype Flower Logo - Complete implementation */
 .flower {
   display: block;
   position: relative;
   width: var(--flower-height);
   height: var(--flower-height);
   cursor: pointer;
-  animation-duration: 1s;
-  animation-fill-mode: both;
-  margin: var(--flower-margin-top) auto var(--flower-margin-bottom) auto;
   text-align: center;
   z-index: 1000;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  
+  /* Initially hidden - no animation until start-bloom class is added */
+  transform: scale(0%, 0%);
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  
+  /* Centered positioning */
+  margin: var(--flower-margin-top) auto var(--flower-margin-bottom) auto;
 }
 
 .flower:after {
@@ -965,7 +970,7 @@ body.project-page {
   animation-fill-mode: both;
 }
 
-/* Set permanent petal positioning variables for hover animations */
+/* Petal positioning - Set permanent variables for hover animations */
 .flower .top:before {
   --petal-offset-x: -50%;
   --petal-offset-y: 50%;
@@ -1019,10 +1024,11 @@ body.project-page {
   background: var(--color-primary);
 }
 
-/* Flower Logo Positioning - Centered approach */
-.flower {
+/* Start blooming animation when class is added */
+.flower.start-bloom {
     animation: scaleUp 1s;
     animation-fill-mode: forwards;
+    opacity: 1;
 }
 
 /* Blooming Animation Keyframes */
@@ -1060,13 +1066,7 @@ body.project-page {
 }
 
 /* Animation coordination support - System pattern */
-.flower.animation-paused {
-  animation-play-state: paused;
-}
-
-.flower.animation-paused:hover {
-  animation: none;
-}
+/* Note: animation-paused functionality removed as it was unused */
 
 /* Petal color changes on hover - keep our color system */
 /* Only enable after blooming */
