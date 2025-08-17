@@ -680,7 +680,7 @@ body.project-page {
 /* Project Images Work Container - Exact copy of home page work container */
 .project-images-section {
   position: absolute;
-  top: calc(100vh - 200px); /* Initial position: flower visible at bottom center */
+  /* top position will be set dynamically by JavaScript based on flower dimensions */
   background-color: rgba(254, 243, 249, 0.8);
   backdrop-filter: blur(6px);
   -webkit-backdrop-style: none;

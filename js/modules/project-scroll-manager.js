@@ -144,23 +144,31 @@ class ProjectScrollManager {
         const flowerTotalHeight = flowerHeight + flowerTopMargin + flowerBottomMargin;
         const containerPadding = containerTopPadding + containerBottomPadding;
         
-        // Get the actual CSS positioning of the image container
-        const cssTopPosition = getComputedStyle(this.projectImagesSection).top;
-        const imageContainerTopPosition = parseFloat(cssTopPosition);
+        // Calculate where the image container should be positioned
+        // We want the bottom of the flower to be visible at the bottom of the viewport
+        // So: viewport bottom = flower bottom + flower bottom margin + container bottom padding
+        const imageContainerStartPosition = viewportHeight - flowerTotalHeight - containerBottomPadding;
         
         // The content area height should be the space from top to where image container starts
-        const contentAreaHeight = imageContainerTopPosition;
+        const contentAreaHeight = imageContainerStartPosition;
         
         // Update the CSS custom property for font sizing manager
         // This should be the HEIGHT of the content area
         document.documentElement.style.setProperty('--image-container-top', contentAreaHeight + 'px');
         
-        console.log('ProjectScrollManager: Content area height calculation:', {
+        // Also update the actual position of the image container to match our calculation
+        this.projectImagesSection.style.top = imageContainerStartPosition + 'px';
+        
+        console.log('ProjectScrollManager: Image container positioning calculation:', {
             viewportHeight: viewportHeight,
-            cssTopPosition: cssTopPosition,
-            imageContainerTopPosition: imageContainerTopPosition,
+            flowerHeight: flowerHeight,
+            flowerTopMargin: flowerTopMargin,
+            flowerBottomMargin: flowerBottomMargin,
+            flowerTotalHeight: flowerTotalHeight,
+            containerBottomPadding: containerBottomPadding,
+            imageContainerStartPosition: imageContainerStartPosition,
             contentAreaHeight: contentAreaHeight,
-            explanation: 'Content area fills from top to image container start position'
+            explanation: 'Container positioned so flower bottom is visible at viewport bottom'
         });
         
         // Notify other modules that image container position is ready
