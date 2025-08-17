@@ -148,18 +148,7 @@ class ProjectContentManager {
         // Update page title
         document.title = `${this.projectData.title} - Project`;
         
-        // Update header
-        const projectHeader = document.querySelector('.name-link.active');
-        if (projectHeader) {
-            projectHeader.textContent = this.projectData.title;
-            projectHeader.href = '#';
-        }
-        
-        // Update project year
-        const projectYear = document.querySelector('.project-year');
-        if (projectYear) {
-            projectYear.textContent = this.projectData.year;
-        }
+
         
         // Update project description
         this.populateProjectDescription();

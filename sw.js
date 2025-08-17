@@ -27,8 +27,8 @@ const STATIC_FILES = [
     '/js/animation-coordinator.js',
     '/js/script.js',
     '/js/scroll-behavior.js',
-    '/js/fireworks.js',
-    '/js/project-script.js',
+            '/js/homepage/fireworks.js',
+    
     '/js/image-optimizer.js',
     '/js/font-optimizer.js',
     '/js/css-optimizer.js',
@@ -229,7 +229,7 @@ async function handleDynamicRequest(request) {
         const cachedResponse = await caches.match(request);
         
         // Fetch from network in background
-        const networkPromise = fetch(request).then(response => {
+        const networkPromise = fetch(request).then(async response => {
             if (response.ok) {
                 const cache = await caches.open(DYNAMIC_CACHE);
                 cache.put(request, response.clone());

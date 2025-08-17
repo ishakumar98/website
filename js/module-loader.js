@@ -44,7 +44,14 @@ class ModuleLoader {
     async loadModuleScript(moduleName) {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = `js/modules/${moduleName}.js`;
+            
+            // Handle homepage-specific modules
+            if (moduleName === 'fireworks-manager') {
+                script.src = `js/homepage/${moduleName}.js`;
+            } else {
+                script.src = `js/modules/${moduleName}.js`;
+            }
+            
             script.async = true;
             
             script.onload = () => {

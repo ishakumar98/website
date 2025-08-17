@@ -112,7 +112,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Wait for the initial scaleUp animation to complete (1 second)
             setTimeout(() => {
-                const flower = document.getElementById('flower-logo');
+                const flower = document.querySelector('.flower');
                 if (flower) {
                     // Add [intro] attribute to trigger petal blooming
                     flower.setAttribute('intro', '');
@@ -162,22 +162,7 @@
     <div class="project-page-container">
 
         
-        <!-- Header Section - Simple structure for project page -->
-        <div class="page-header">
-            <div class="page-content">
-                <h1 class="name-text" id="project-header">
-                    <a href="index.html" class="name-link">
-                        ISHA KUMAR
-                    </a><span class="slash">/</span>
-                    <a href="#" class="name-link active">
-                        <!-- Project title will be populated by JavaScript -->
-                    </a>
-                    <span class="project-year">
-                        <!-- Project year will be populated by JavaScript -->
-                    </span>
-                </h1>
-            </div>
-        </div>
+
         
         <!-- PROJECT CONTENT AREA -->
         <section class="project-content-area">
@@ -194,8 +179,8 @@
         
         <!-- Project Images Work Container -->
         <section class="project-images-section">
-            <!-- Bloomtype Flower Logo at top of container (replaces old flower-logo) -->
-            <a href="index.html" class="flower" id="flower-logo">
+            <!-- Bloomtype Flower Logo at top of container -->
+            <a href="index.html" class="flower">
                 <div class="top"></div>
                 <div class="bottom"></div>
             </a>
