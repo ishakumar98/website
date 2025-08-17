@@ -4,23 +4,28 @@
 
 class HomepageScrollManager {
     constructor() {
+        // Core elements
         this.workSection = null;
         this.fireworksContainer = null;
-        this.isInitialized = false;
+        
+        // Scroll state
         this.isScrolling = false;
-        
-        // Position smoothing properties (LERP)
-        this.lastTop = 100; // Start from CSS initial position (100vh = 100% of viewport)
-        this.smoothingFactor = 0.15; // Lower = smoother but less responsive
-        
-        // Initialize lastTop from CSS position on first scroll
         this.isFirstScroll = true;
+        this.lastTop = 0;
+        this.smoothingFactor = 0.1; // LERP smoothing factor
         
-        // Scroll configuration
+        // Configuration - using design system variables where possible
         this.config = {
-            WORK_SECTION_SELECTOR: '.work-section',
-            FIREWORKS_BACKGROUND: '#FCE8FF',  // Lavender background (fireworks)
-            WORK_BACKGROUND: '#FFF5F8'        // Light pink background (work section)
+            // Colors from design system
+            FIREWORKS_BACKGROUND: 'var(--color-background-lighter)',  // #FCE8FF (lavender)
+            WORK_BACKGROUND: 'var(--color-background)',               // #FFF5F8 (light pink)
+            
+            // Animation timing from design system
+            TRANSITION_DURATION: 'var(--transition-smooth)',
+            
+            // Scroll behavior
+            SMOOTHING_FACTOR: 0.1,
+            SCROLL_MULTIPLIER: 'var(--scroll-multiplier)'
         };
         
         this.init();
@@ -99,7 +104,7 @@ class HomepageScrollManager {
         this.fireworksContainer.style.backgroundColor = this.config.FIREWORKS_BACKGROUND;
         
         // Add smooth CSS transition for the background color
-        this.fireworksContainer.style.transition = 'background-color var(--transition-smooth)';
+        this.fireworksContainer.style.transition = this.config.TRANSITION_DURATION;
         
         console.log('HomepageScrollManager: Background transition setup complete');
     }
@@ -186,14 +191,34 @@ class HomepageScrollManager {
             // Apply the new position directly for smooth scrolling
             this.workSection.style.top = newTop + 'px';
             
-            // Background color transition effect - EXACTLY as in the working version
-            // Transition from #FCE8FF (lavender) to main page background color
-            const initialColor = [252, 232, 255]; // #FCE8FF (lavender)
-            const finalColor = [255, 245, 248]; // #FFF5F8 (main page background)
+            // Background color transition effect - using design system colors
+            // Get colors from CSS custom properties for dynamic access
+            const getComputedColor = (property) => {
+                const computedStyle = getComputedStyle(document.documentElement);
+                const colorValue = computedStyle.getPropertyValue(property).trim();
+                return colorValue;
+            };
             
-            const r = Math.round(initialColor[0] + (finalColor[0] - initialColor[0]) * easedProgress);
-            const g = Math.round(initialColor[1] + (finalColor[1] - initialColor[1]) * easedProgress);
-            const b = Math.round(initialColor[2] + (finalColor[2] - initialColor[2]) * easedProgress);
+            // Use design system colors with fallbacks
+            const initialColor = getComputedColor('--color-background-lighter') || '#FCE8FF';
+            const finalColor = getComputedColor('--color-background') || '#FFF5F8';
+            
+            // Convert hex colors to RGB arrays for interpolation
+            const hexToRgb = (hex) => {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? [
+                    parseInt(result[1], 16),
+                    parseInt(result[2], 16),
+                    parseInt(result[3], 16)
+                ] : [252, 232, 255]; // Fallback to original lavender
+            };
+            
+            const initialRgb = hexToRgb(initialColor);
+            const finalRgb = hexToRgb(finalColor);
+            
+            const r = Math.round(initialRgb[0] + (finalRgb[0] - initialRgb[0]) * easedProgress);
+            const g = Math.round(initialRgb[1] + (finalRgb[1] - initialRgb[1]) * easedProgress);
+            const b = Math.round(initialRgb[2] + (finalRgb[2] - initialRgb[2]) * easedProgress);
             
             // Apply background color change through the AnimationCoordinator system
             if (window.animationCoordinator) {
@@ -207,6 +232,29 @@ class HomepageScrollManager {
             
             this.isScrolling = false;
         });
+    }
+    
+    // Public methods for external access
+    getStatus() {
+        return {
+            isInitialized: this.workSection !== null && this.fireworksContainer !== null,
+            workSectionFound: this.workSection !== null,
+            fireworksContainerFound: this.fireworksContainer !== null,
+            isScrolling: this.isScrolling,
+            isFirstScroll: this.isFirstScroll,
+            lastTop: this.lastTop,
+            configuration: {
+                fireworksBackground: this.config.FIREWORKS_BACKGROUND,
+                workBackground: this.config.WORK_BACKGROUND,
+                transitionDuration: this.config.TRANSITION_DURATION,
+                smoothingFactor: this.config.SMOOTHING_FACTOR
+            },
+            designSystemIntegration: {
+                colors: this.config.FIREWORKS_BACKGROUND.includes('var(--') && this.config.WORK_BACKGROUND.includes('var(--'),
+                transitions: this.config.TRANSITION_DURATION.includes('var(--'),
+                scrollMultiplier: this.config.SCROLL_MULTIPLIER.includes('var(--')
+            }
+        };
     }
     
     destroy() {

@@ -14,16 +14,32 @@ class LetterAnimationManager {
             mouseleave: null
         };
         
-        // Animation configuration - exact same as current implementation
+        // Animation configuration - using design system variables where possible
         this.animationConfig = {
             ROTATION_RANGE: 12,      // -6 to +6 degrees
             TRANSLATE_Y_RANGE: 6,    // -3 to +3 pixels
             TRANSLATE_X_RANGE: 4,    // -2 to +2 pixels
-            TRANSITION_DURATION: 'var(--transition-smooth)' // Uses your CSS variables
+            TRANSITION_DURATION: 'var(--transition-smooth)', // Uses your CSS variables
+            ANIMATION_TIMING: 'var(--animation-smooth)' // From design system
         };
         
-        // Flower color palette from fireworks (enhancement)
+        // Flower color palette - enhanced with design system colors using descriptive names
         this.flowerColors = [
+            // Brand colors with descriptive names
+            'var(--color-primary)',           // Rose pink
+            'var(--color-primary-light)',     // Light rose
+            'var(--color-primary-lighter)',   // Lavender pink
+            'var(--color-primary-dark)',      // Deep magenta
+            
+            // Accent colors with descriptive names
+            'var(--color-accent)',            // Purple
+            'var(--color-accent-light)',      // Light purple
+            
+            // Background colors with descriptive names
+            'var(--color-background-light)',  // Soft rose
+            'var(--color-background-lighter)', // Lavender
+            
+            // Fallback colors (original palette)
             '#537DBD', '#CA683E', '#D3B934', '#AF9E7D', '#D85959', 
             '#956750', '#277325', '#F3B524', '#972723', '#5B388B', 
             '#686B1C', '#142D86', '#A1A329', '#BF1E16', '#3853A5', 
@@ -257,13 +273,55 @@ class LetterAnimationManager {
         }
     }
     
-    // Generate random flower color (enhancement)
+    // Get random flower color with design system integration
     getRandomFlowerColor() {
         try {
+            // First try to get a design system color
+            const designSystemColors = this.getDesignSystemColors();
+            if (designSystemColors.length > 0) {
+                // 70% chance to use design system colors
+                if (Math.random() < 0.7) {
+                    return designSystemColors[Math.floor(Math.random() * designSystemColors.length)];
+                }
+            }
+            
+            // Fallback to original palette
             return this.flowerColors[Math.floor(Math.random() * this.flowerColors.length)];
         } catch (error) {
-            console.error('LetterAnimationManager: Error getting random flower color:', error);
+            console.warn('LetterAnimationManager: Error getting random flower color, using fallback:', error);
             return '#000000'; // Fallback to black
+        }
+    }
+    
+    // Get colors from design system CSS custom properties
+    getDesignSystemColors() {
+        try {
+            const computedStyle = getComputedStyle(document.documentElement);
+            const designSystemColors = [];
+            
+            // Check for available design system colors with descriptive names
+            const colorProperties = [
+                '--color-primary',           // Rose pink
+                '--color-primary-light',     // Light rose  
+                '--color-primary-lighter',   // Lavender pink
+                '--color-primary-dark',      // Deep magenta
+                '--color-accent',            // Purple
+                '--color-accent-light',      // Light purple
+                '--color-background-light',  // Soft rose
+                '--color-background-lighter' // Lavender
+            ];
+            
+            colorProperties.forEach(property => {
+                const color = computedStyle.getPropertyValue(property).trim();
+                if (color && color !== '') {
+                    designSystemColors.push(color);
+                }
+            });
+            
+            return designSystemColors;
+        } catch (error) {
+            console.warn('LetterAnimationManager: Error getting design system colors:', error);
+            return [];
         }
     }
     
@@ -382,7 +440,14 @@ class LetterAnimationManager {
                 mouseenter: !!this.eventListenerIds.mouseenter,
                 mouseleave: !!this.eventListenerIds.mouseleave
             },
-            usingEventManager: window.eventManager && (this.eventListenerIds.mouseenter || this.eventListenerIds.mouseleave)
+            usingEventManager: window.eventManager && (this.eventListenerIds.mouseenter || this.eventListenerIds.mouseleave),
+            colorPalette: {
+                designSystemColors: this.getDesignSystemColors().length,
+                fallbackColors: this.flowerColors.length - this.getDesignSystemColors().length,
+                totalColors: this.flowerColors.length,
+                designSystemColorsAvailable: this.getDesignSystemColors().length > 0
+            },
+            animationConfig: this.animationConfig
         };
     }
 }

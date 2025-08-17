@@ -16,8 +16,16 @@ class HomepageInteractionManager {
         
         // Interaction configuration
         this.config = {
+            // Colors from design system
+            HOVER_BACKGROUND: 'var(--color-background-light)', // Light background for hover states
+            HOVER_OPACITY: 0.06, // Opacity for hover overlay
+            
+            // Transitions from design system
             HOVER_TRANSITION: 'var(--transition-smooth)',
-            HOVER_BACKGROUND: 'rgba(29, 28, 29, 0.06)'
+            
+            // Spacing from design system
+            HOVER_PADDING: 'var(--space-sm)',
+            HOVER_MARGIN: 'var(--space-sm)'
         };
         
         this.init();
@@ -221,33 +229,25 @@ class HomepageInteractionManager {
     }
     
     handleWorkItemHover(wrapperImage, titleSpan, isHovering) {
-        if (!wrapperImage) {
-            console.warn('HomepageInteractionManager: handleWorkItemHover called with null wrapperImage');
-            return;
-        }
-        
         try {
             if (isHovering) {
-                // Apply hover effects - just the grey background with smooth transition
-                wrapperImage.style.backgroundColor = this.config.HOVER_BACKGROUND;
+                // Apply hover effect using configuration values
                 wrapperImage.style.transition = this.config.HOVER_TRANSITION;
+                wrapperImage.style.backgroundColor = this.config.HOVER_BACKGROUND;
+                wrapperImage.style.opacity = this.config.HOVER_OPACITY;
                 
-                // Apply title hover effects if available
+                // Animate title span
                 if (titleSpan) {
-                    titleSpan.style.backgroundColor = this.config.HOVER_BACKGROUND;
-                    titleSpan.style.padding = '0 var(--space-sm)';
-                    titleSpan.style.borderRadius = 'var(--space-xs)';
                     titleSpan.style.transition = this.config.HOVER_TRANSITION;
+                    titleSpan.style.transform = 'translateY(-2px)';
                 }
             } else {
-                // Remove hover effects - just remove the background
+                // Reset to default state
                 wrapperImage.style.backgroundColor = 'transparent';
+                wrapperImage.style.opacity = '1';
                 
-                // Remove title hover effects if available
                 if (titleSpan) {
-                    titleSpan.style.backgroundColor = 'transparent';
-                    titleSpan.style.padding = '';
-                    titleSpan.style.borderRadius = '';
+                    titleSpan.style.transform = 'translateY(0)';
                 }
             }
         } catch (error) {
@@ -256,33 +256,25 @@ class HomepageInteractionManager {
     }
     
     handleFolderItemHover(wrapperImage, titleSpan, isHovering) {
-        if (!wrapperImage) {
-            console.warn('HomepageInteractionManager: handleFolderItemHover called with null wrapperImage');
-            return;
-        }
-        
         try {
             if (isHovering) {
-                // Apply folder hover effects - just the grey background with smooth transition
-                wrapperImage.style.backgroundColor = this.config.HOVER_BACKGROUND;
+                // Apply hover effect using configuration values
                 wrapperImage.style.transition = this.config.HOVER_TRANSITION;
+                wrapperImage.style.backgroundColor = this.config.HOVER_BACKGROUND;
+                wrapperImage.style.opacity = this.config.HOVER_OPACITY;
                 
-                // Apply title hover effects if available
+                // Animate title span
                 if (titleSpan) {
-                    titleSpan.style.backgroundColor = this.config.HOVER_BACKGROUND;
-                    titleSpan.style.padding = '0 var(--space-sm)';
-                    titleSpan.style.borderRadius = 'var(--space-xs)';
                     titleSpan.style.transition = this.config.HOVER_TRANSITION;
+                    titleSpan.style.transform = 'translateY(-2px)';
                 }
             } else {
-                // Remove hover effects - just remove the background
+                // Reset to default state
                 wrapperImage.style.backgroundColor = 'transparent';
+                wrapperImage.style.opacity = '1';
                 
-                // Remove title hover effects if available
                 if (titleSpan) {
-                    titleSpan.style.backgroundColor = 'transparent';
-                    titleSpan.style.padding = '';
-                    titleSpan.style.borderRadius = '';
+                    titleSpan.style.transform = 'translateY(0)';
                 }
             }
         } catch (error) {
@@ -409,7 +401,17 @@ class HomepageInteractionManager {
                 workItems: this.eventListenerIds.workItems.length,
                 folderItems: this.eventListenerIds.folderItems.length
             },
-            usingEventManager: window.eventManager && this.eventListenerIds.workItems.length > 0
+            usingEventManager: window.eventManager && this.eventListenerIds.workItems.length > 0,
+            configuration: {
+                hoverBackground: this.config.HOVER_BACKGROUND,
+                hoverTransition: this.config.HOVER_TRANSITION,
+                hoverOpacity: this.config.HOVER_OPACITY
+            },
+            designSystemIntegration: {
+                colors: this.config.HOVER_BACKGROUND.includes('var(--'),
+                transitions: this.config.HOVER_TRANSITION.includes('var(--'),
+                spacing: this.config.HOVER_PADDING.includes('var(--')
+            }
         };
     }
 }
