@@ -498,18 +498,15 @@ body.project-page {
 
 .image-center-popup .popup-nav {
     background-color: var(--popup-bg-color, #f4f4f4);
-    padding: var(--popup-nav-padding, 15px 30px);
+    padding: var(--space-md) var(--space-xl);
     text-align: center;
     border-top-left-radius: var(--popup-border-radius, 12px);
     border-top-right-radius: var(--popup-border-radius, 12px);
-    cursor: default; /* Remove grab cursor from entire nav */
-    position: relative; /* For positioning the draggable area */
-    /* macOS Preview: Fixed height navigation bar */
-    flex-shrink: 0; /* Never shrink */
-    height: 60px; /* Fixed height */
+    cursor: grab;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .image-center-popup .popup-nav:active {
@@ -519,7 +516,6 @@ body.project-page {
 .image-center-popup .popup-nav .wrapper-actions {
     position: absolute;
     left: var(--popup-button-group-left, 15px);
-    top: var(--popup-button-group-top, 22px);
     overflow: auto;
     width: auto;
     padding: 0;
@@ -540,7 +536,7 @@ body.project-page {
 
 .image-center-popup .popup-nav .popup-actions {
     float: left;
-    border: 1px solid var(--color-text);
+    border: 1px solid #000;
     height: var(--popup-button-size, 16px);
     width: var(--popup-button-size, 16px);
     font-size: 0;
@@ -579,13 +575,13 @@ body.project-page {
     transform: translate(-50%, -50%);
     height: auto;
     width: auto;
-    color: var(--color-text);
+    color: #000;
     font-size: 10px;
     font-weight: bold;
     line-height: 1;
     text-align: center;
     opacity: 0;
-    transition: opacity var(--animation-medium) ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-close:hover:after {
@@ -594,7 +590,7 @@ body.project-page {
 }
 
 .image-center-popup img {
-    margin: 0 var(--space-sm) var(--space-sm);
+    margin: 0 10px 10px;
     max-width: calc(100vw - 60px);
     max-height: calc(100vh - 130px);
     height: auto;
@@ -608,7 +604,7 @@ body.project-page {
 
 /* Show popup when active - Self-contained */
 .image-center-popup.active {
-    display: flex !important; /* Use flexbox for proper layout */
+    display: block;
     animation: popupEnter var(--animation-medium-fast) cubic-bezier(0.34, 1.56, 0.64, 1);
     /* Prevent body scroll without changing body properties */
     /* This creates a scroll lock effect only for the popup */
@@ -738,11 +734,9 @@ body.project-page {
 /* RESIZE HANDLES: Four corner resize areas - positioned relative to popup container */
 .resize-handle {
     position: absolute;
-      width: var(--space-xl);
-  height: var(--space-xl);
-    z-index: 10002; /* Higher than everything else */
-    pointer-events: auto;
-    /* Ensure handles work with flexbox layout */
+    width: 20px;
+    height: 20px;
+    z-index: 10001;
     pointer-events: auto;
 }
 
@@ -1007,8 +1001,12 @@ body.project-page {
   animation-name: bottomRight; 
 }
 
-/* CSS Animation Events - Automatically set [logo] state when petal animations complete */
+/* Pure CSS State Management - Automatically set [logo] state when petal animations complete */
 /* This replaces JavaScript timing with pure CSS-driven state management */
+/* CSS animations will automatically manage state transitions - no JavaScript needed */
+
+/* CSS Animation Events - Use animationend to automatically set logo state */
+/* This is how bloomtype manages state transitions */
 
 /* Logo State - After blooming - Use old logo colors */
 .flower[logo]:after {
@@ -1024,10 +1022,10 @@ body.project-page {
   background: var(--color-primary);
 }
 
-/* Ensure flower is properly scaled after blooming for hover effects */
+/* Ensure flower is ready for hover effects after blooming */
 .flower[logo] {
-  transform: scale(100%, 100%);
-  transition: transform 2s ease-in-out;
+          /* No scale needed - flower sizes itself naturally */
+        /* Hover effects will work with pure rotation */
 }
 
 /* Start blooming animation when class is added */
@@ -1066,10 +1064,10 @@ body.project-page {
 /* Hover Effects - Pure CSS approach like bloomtype */
 /* Only enable hover effects after the flower has bloomed */
 .flower[logo]:hover {
-  /* Simple rotation - the flower is already scaled to 100% */
-  transform: rotate(360deg);
-  transition: transform 2s ease-in-out;
-  will-change: transform;
+          /* Simple rotation - exactly like bloomtype */
+        transform: rotate(360deg);
+        transition: transform 2s ease-in-out;
+        will-change: transform;
 }
 
 
