@@ -114,6 +114,11 @@
     --animation-very-slow-plus: 1000ms;
     --animation-very-slow-plus-plus: 1100ms;
     
+    /* Transition Presets with proper values */
+    --transition-fast: 0.15s var(--ease-out-cubic);
+    --transition-smooth: 0.3s var(--ease-out-cubic);
+    --transition-slow: 0.8s var(--ease-in-out);
+    
     /* Easing Functions */
     --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -137,7 +142,4 @@
     --breakpoint-xl: 1280px;
     --breakpoint-2xl: 1536px;
     
-    /* Additional transition presets */
-    --transition-fast: 0.15s var(--ease-out-cubic);
-    --transition-smooth: 0.3s var(--ease-out-cubic);
 }
