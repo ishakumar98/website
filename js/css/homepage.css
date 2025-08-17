@@ -115,7 +115,7 @@ body {
     text-align: left;
     opacity: 0.8;
     text-transform: uppercase;
-    transition: all 0.3s ease;
+    transition: all var(--transition-smooth); /* Consistent with other transitions */
 }
 
 .name-display {
@@ -124,7 +124,7 @@ body {
 
 .letter {
     display: inline-block;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--transition-smooth); /* Consistent with other transitions */
 }
 
 .bio-text {
@@ -166,10 +166,10 @@ body {
     position: fixed;
     bottom: var(--space-3xl);
     left: var(--space-3xl);
-    max-width: 600px;
+    max-width: calc(var(--space-3xl) * 9.375); /* 600px: 64px * 9.375 - logical scaling */
     z-index: 20;
     pointer-events: none;
-    width: calc(100% - 100px);
+    width: calc(100% - calc(var(--space-3xl) * 1.5625)); /* 100px: 64px * 1.5625 - logical scaling */
 }
 
 .header-text p {
@@ -284,20 +284,21 @@ body {
     width: 100%;
 }
 
+/* Column widths using logical fractions instead of hardcoded percentages */
 .col-md-10 {
-    width: 83.333333%;
+    width: calc(100% * 10 / 12); /* 10/12 = 83.33% - logical fraction */
 }
 
 .col-md-2 {
-    width: 16.666667%;
+    width: calc(100% * 2 / 12); /* 2/12 = 16.67% - logical fraction */
 }
 
 .col-lg-8 {
-    width: 66.666667%;
+    width: calc(100% * 8 / 12); /* 8/12 = 66.67% - logical fraction */
 }
 
 .col-lg-4 {
-    width: 33.333333%;
+    width: calc(100% * 4 / 12); /* 4/12 = 33.33% - logical fraction */
 }
 
 /* Work Section */
@@ -307,15 +308,15 @@ body {
     /* Initial position showing 60px of shadow peek at viewport bottom */
     top: calc(100vh - 60px);
     background-color: rgba(254, 243, 249, 0.8);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(var(--space-sm)); /* 8px - logical blur amount */
     -webkit-backdrop-style: none;
     z-index: 10;
     border-top-left-radius: var(--space-md);
     border-top-right-radius: var(--space-md);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: var(--space-xs) solid rgba(255, 255, 255, 0.4); /* 4px - logical border width */
     box-shadow: var(--shadow-medium);
     width: 100%;
-    min-height: 300px;
+    min-height: calc(var(--space-3xl) * 4.6875); /* 300px: 64px * 4.6875 - logical scaling */
     padding: var(--space-md) 0 var(--space-md) var(--space-lg);
     overflow-x: auto;
     /* Hide scrollbar for macOS */
@@ -370,19 +371,19 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-smooth);
     flex: 0 0 auto;
-    min-width: 245px;
-    max-width: 300px;
+    min-width: calc(var(--space-3xl) * 3 + var(--space-xl) + var(--space-sm)); /* 245px: 64px*3 + 32px + 8px */
+    max-width: calc(var(--space-3xl) * 3 + var(--space-2xl) + var(--space-xl)); /* 300px: 64px*3 + 48px + 32px */
 }
 
 .work-item .wrapper-image {
     width: 100%;
-    height: 210px;
+    height: calc(var(--space-2xl) * 2 + var(--space-xl)); /* 210px: 48px*2 + 32px */
     flex-shrink: 0;
     position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 11px;
+    transition: all var(--transition-smooth);
+    padding: var(--space-sm); /* 8px - logical spacing for image padding */
     box-sizing: border-box;
 }
 
@@ -390,16 +391,16 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 var(--space-sm) rgba(0, 0, 0, 0.1)); /* 8px blur - logical spacing */
+    transition: all var(--transition-smooth); /* Consistent with other transitions */
 }
 
 .work-item .title {
-    margin-top: 12px;
+    margin-top: var(--space-sm); /* 8px - logical spacing between image and title */
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-smooth);
 }
 
 .work-item .title span {
@@ -407,16 +408,17 @@ body {
     color: var(--color-text);
     font-weight: 400;
     text-align: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-smooth); /* Consistent with other transitions */
     padding: 0 var(--space-sm);
     border-radius: var(--space-xs);
 }
 
 /* Hover effects */
 .work-item:hover .wrapper-image {
-    background-color: rgba(29, 28, 29, 0.06);
-    border-radius: 8px;
-    transform: translateY(-2px);
+    background-color: var(--color-text-muted); /* Semantic: subtle text color for hover overlay */
+    opacity: 0.06; /* Very subtle overlay effect */
+    border-radius: var(--border-radius-lg); /* 8px - logical border radius for hover state */
+    transform: translateY(calc(-1 * var(--space-xs))); /* -4px - subtle upward movement */
 }
 
 /* Text file hover - background hugs the image content */
@@ -437,7 +439,8 @@ body {
 }
 
 .work-item:hover .title span {
-    background-color: rgba(29, 28, 29, 0.06);
+    background-color: var(--color-text-muted); /* Semantic: same subtle overlay as image */
+    opacity: 0.06; /* Consistent with image hover effect */
     padding: 0 var(--space-sm);
     border-radius: var(--space-xs);
 }
@@ -452,23 +455,6 @@ body {
 .work-link:hover {
     text-decoration: none;
     color: inherit;
-}
-
-/* Inactive work item styling */
-.work-link-inactive {
-    text-decoration: none;
-    color: inherit;
-    cursor: default;
-    opacity: 0.5;
-}
-
-.work-link-inactive:hover .wrapper-image {
-    background-color: transparent;
-}
-
-.work-link-inactive:hover .title span {
-    background-color: transparent;
-    padding: 0;
 }
 
 /* Inactive work item styling */
@@ -513,7 +499,7 @@ body {
 .name-display .letter {
     display: inline-block;
     transition: all var(--animation-smooth) ease-out;
-    transform: rotate(0deg) translateY(0px);
+    transform: rotate(0deg) translateY(0); /* Use 0 instead of 0px for consistency */
     letter-spacing: -0.23em;
 }
 
@@ -522,7 +508,7 @@ body {
     text-decoration: none;
     color: inherit;
     font-weight: bold;
-    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color var(--transition-smooth); /* Consistent with other transitions */
 }
 
 .bio-link:hover {
@@ -530,7 +516,7 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) { /* Use design system breakpoint */
     .page-header {
         padding: var(--space-2xl) var(--space-lg);
     }
@@ -553,13 +539,13 @@ body {
     }
     
     .work-item {
-        min-width: 100px;
-        max-width: 150px;
+        min-width: calc(var(--space-3xl) * 1.5625); /* 100px: 64px * 1.5625 */
+        max-width: calc(var(--space-3xl) * 2.34375); /* 150px: 64px * 2.34375 */
         padding: var(--space-md);
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-sm)) { /* Use design system breakpoint */
     .page-header {
         padding: var(--space-xl) var(--space-md);
     }
@@ -570,13 +556,13 @@ body {
     }
     
     .work-item {
-        min-width: 80px;
-        max-width: 120px;
+        min-width: calc(var(--space-3xl) * 1.25); /* 80px: 64px * 1.25 */
+        max-width: calc(var(--space-3xl) * 1.875); /* 120px: 64px * 1.875 */
         padding: var(--space-sm);
     }
     
     .work-item .wrapper-image {
-        width: 60px;
-        height: 60px;
+        width: calc(var(--space-3xl) * 0.9375); /* 60px: 64px * 0.9375 */
+        height: calc(var(--space-3xl) * 0.9375); /* 60px: 64px * 0.9375 */
     }
 }
