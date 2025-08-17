@@ -153,18 +153,10 @@
     padding: var(--space-3xl) 0;
 }
 
-/* Container and Layout Styles */
-.container,
+/* Header-specific container overrides */
 .header .container {
     max-width: none;
     margin: 0 auto;
-}
-
-.container {
-    padding: var(--space-md) 0 0 0;
-}
-
-.header .container {
     padding: 0;
 }
 
@@ -220,19 +212,13 @@
     padding: var(--space-md) var(--space-3xl) 0 var(--space-3xl);
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0;
-}
+
 
 .row-filters {
     margin-bottom: var(--space-3xl);
 }
 
-.column {
-    padding: 0;
-}
+
 
 .col-12 {
     width: 100%;
@@ -270,19 +256,18 @@
     box-shadow: var(--shadow-medium);
     width: 100%;
     min-height: auto;
-    padding: var(--space-lg);
+
     overflow-x: visible;
 }
 
 /* Work Container */
 .work-container {
-    padding: var(--space-3xl) 0;
+    padding: var(--space-lg);
     position: relative;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    column-gap: var(--space-xl);
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     row-gap: var(--space-3xl);
     opacity: 0;
     transform: translateY(var(--space-3xl));

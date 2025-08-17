@@ -25,13 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Set initial background color to lavender
-  fireworksContainer.style.backgroundColor = '#FCE8FF';
-  
-  // Add smooth CSS transition for the background color
-  fireworksContainer.style.transition = 'background-color var(--transition-smooth)';
-  
-  // Ensure the background color can be changed by JavaScript
+  if (window.animationCoordinator) {
+    window.animationCoordinator.registerJSAnimation(
+      fireworksContainer, 'background', 'fireworks-bg', 'MEDIUM'
+    );
+  }
   fireworksContainer.style.setProperty('background-color', '#FCE8FF', 'important');
+  fireworksContainer.style.setProperty('transition', 'background-color var(--transition-smooth)', 'important');
   
   
   
@@ -112,8 +112,13 @@ document.addEventListener('DOMContentLoaded', function() {
       // Round the position to reduce jitter (sub-pixel positioning can cause jitter)
       newTop = Math.round(newTop);
       
-      // Apply the new position
-      workSection.style.top = newTop + 'px';
+      // Apply the new position with animation coordination
+      if (window.animationCoordinator) {
+        window.animationCoordinator.registerJSAnimation(
+          workSection, 'position', 'work-scroll', 'HIGH'
+        );
+      }
+      workSection.style.setProperty('top', newTop + 'px', 'important');
       
       // Background color transition effect
       // Transition from #FCE8FF (lavender) to main page background color
@@ -151,7 +156,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const easedProgress = ultraSmoothEase(scrollProgress);
     const newTop = newViewportHeight - (easedProgress * newWorkSectionHeight);
     
-    workSection.style.top = newTop + 'px';
+    if (window.animationCoordinator) {
+      window.animationCoordinator.registerJSAnimation(
+        workSection, 'position', 'work-resize', 'HIGH'
+      );
+    }
+    workSection.style.setProperty('top', newTop + 'px', 'important');
   }
   
   if (window.eventManager) {

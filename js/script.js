@@ -1,5 +1,6 @@
 // HOME PAGE ONLY: General home page functionality
 // This script should only run on the home page
+// Homepage-specific functionality using coordination systems
 document.addEventListener('DOMContentLoaded', function() {
   // Check if we're on the home page
   const isHomePage = window.location.pathname === '/' || 
@@ -15,13 +16,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     folderItems.forEach(item => {
         if (window.eventManager) {
-            window.eventManager.addListener(item, 'mouseenter', function() {
-                this.style.transform = 'translateY(-4px)';
-            });
-            
-            window.eventManager.addListener(item, 'mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
+                    window.eventManager.addListener(item, 'mouseenter', function() {
+            if (window.animationCoordinator) {
+                window.animationCoordinator.registerJSAnimation(
+                    this, 'translate', 'folder-hover', 'HIGH'
+                );
+            }
+            this.style.setProperty('transform', 'translateY(-4px)', 'important');
+        });
+        
+        window.eventManager.addListener(item, 'mouseleave', function() {
+            if (window.animationCoordinator) {
+                window.animationCoordinator.unregisterAnimation(this, 'folder-hover');
+            }
+            this.style.setProperty('transform', 'translateY(0)', 'important');
+        });
             
             // Add click functionality
             window.eventManager.addListener(item, 'click', function() {
@@ -129,15 +138,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         );
                     }
                     
-                    letter.style.transform = randomTransform;
+                    letter.style.setProperty('transform', randomTransform, 'important');
                 });
             });
             
             console.log('Adding mouseleave listener to nameDisplay');
             window.eventManager.addListener(nameDisplay, 'mouseleave', function() {
                 console.log('Mouse left nameDisplay!');
-                letters.forEach(letter => {
-                    letter.style.transform = 'rotate(0deg) translateY(0px) translateX(0px)';
+                letters.forEach((letter, index) => {
+                    // Unregister animations to prevent conflicts
+                    if (window.animationCoordinator) {
+                        window.animationCoordinator.unregisterAnimation(letter, `letter-hover-${index}`);
+                    }
+                    letter.style.setProperty('transform', 'rotate(0deg) translateY(0px) translateX(0px)', 'important');
                 });
             });
         } else {
@@ -255,8 +268,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         );
                     }
                     
-                    finderSection.style.transform = `translateY(${progress * 60}px)`;
-                    finderSection.style.opacity = progress;
+                    if (window.animationCoordinator) {
+                        window.animationCoordinator.registerJSAnimation(
+                            finderSection, 'translate', 'finder-scroll', 'HIGH'
+                        );
+                    }
+                    finderSection.style.setProperty('transform', `translateY(${progress * 60}px)`, 'important');
+                    finderSection.style.setProperty('opacity', progress, 'important');
                 }
             }
         }, 'normal');
@@ -275,6 +293,11 @@ document.addEventListener('DOMContentLoaded', function() {
         window.eventManager.addListener(window, 'scroll', (event) => {
         const workContainer = document.querySelector('.work-container');
         if (workContainer) {
+            // Reset any previous transform conflicts
+            if (window.animationCoordinator) {
+                window.animationCoordinator.unregisterAnimation(workContainer, 'work-container-lerp');
+            }
+            
             // scrollY is now passed as parameter from ScrollManager
             
             // Apply multiplier ONLY to the container movement, not to scroll
@@ -319,13 +342,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 'work-container-lerp', 
                 window.animationCoordinator.priorities.CRITICAL
             );
+            
+            // Let AnimationCoordinator handle the transform properly
+            // This prevents conflicts with CSS flexbox properties
+            requestAnimationFrame(() => {
+                workContainer.style.setProperty('transform', `translateY(${currentWorkTransformY}px)`, 'important');
+            });
         }
-        
-        workContainer.style.transform = `translateY(${currentWorkTransformY}px)`;
         
         // Continue animation if we're still moving
         if (Math.abs(targetWorkTransformY - currentWorkTransformY) > 0.1) {
             requestAnimationFrame(updateWorkContainerLERP);
+        } else {
+            // Animation complete - unregister to prevent conflicts
+            if (window.animationCoordinator) {
+                window.animationCoordinator.unregisterAnimation(workContainer, 'work-container-lerp');
+            }
         }
     }
 

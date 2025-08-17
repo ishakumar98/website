@@ -276,9 +276,17 @@ function mouseMoved(){
 function keyPressed(){
   
   if (key == 'r'){
-    document.body.style.cursor = 'url(cursor.png), auto'
-  } else if (key == 't'){
-    document.body.style.cursor = 'pointer'
+            if (window.animationCoordinator) {
+            window.animationCoordinator.registerJSAnimation(
+                document.body, 'cursor', 'fireworks-cursor', 'LOW'
+            );
+        }
+        document.body.style.setProperty('cursor', 'url(cursor.png), auto', 'important');
+      } else if (key == 't'){
+      if (window.animationCoordinator) {
+        window.animationCoordinator.unregisterAnimation(document.body, 'fireworks-cursor');
+      }
+      document.body.style.setProperty('cursor', 'pointer', 'important');
   }
 }
 
