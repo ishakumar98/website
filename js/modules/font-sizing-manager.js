@@ -28,6 +28,18 @@ class FontSizingManager {
                 this.adjustFontSize();
             }
         });
+        
+        // Add a fallback retry mechanism for smaller viewports
+        // Sometimes the CSS variable isn't set immediately on page load
+        setTimeout(() => {
+            if (this.isInitialized) {
+                const contentAreaHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-area-height')) || 0;
+                if (contentAreaHeight === 0) {
+                    // Retry font sizing with fallback calculation
+                    this.adjustFontSize();
+                }
+            }
+        }, 100); // Small delay to allow ProjectScrollManager to set the variable
     }
     
     findElements() {
@@ -49,11 +61,31 @@ class FontSizingManager {
         
         // If CSS variable isn't set yet, use a smart fallback calculation
         if (contentAreaHeight === 0) {
-            // Estimate the content area height based on viewport height and typical flower positioning
+            // Estimate the content area height based on current viewport and flower dimensions
             const viewportHeight = window.innerHeight;
-            const estimatedFlowerHeight = 96; // 6rem = 96px (from CSS --flower-height)
-            const estimatedContainerPadding = 32; // 2rem = 32px (from CSS padding)
-            contentAreaHeight = viewportHeight - estimatedFlowerHeight - estimatedContainerPadding;
+            
+            // Try to get actual flower dimensions from CSS variables first
+            const flowerHeightRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-height');
+            const flowerTopMarginRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-top');
+            const flowerBottomMarginRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-bottom');
+            
+            let flowerTotalHeight = 0;
+            if (flowerHeightRaw && flowerTopMarginRaw && flowerBottomMarginRaw) {
+                // Convert CSS units to pixels for accurate calculation
+                const flowerHeight = parseFloat(flowerHeightRaw) * 16; // Convert rem to px
+                const flowerTopMargin = parseFloat(flowerTopMarginRaw) * 16;
+                const flowerBottomMargin = parseFloat(flowerBottomMarginRaw) * 16;
+                flowerTotalHeight = flowerHeight + flowerTopMargin + flowerBottomMargin;
+            } else {
+                // Fallback to estimated values
+                flowerTotalHeight = 96 + 32 + 24; // height + top margin + bottom margin
+            }
+            
+            // Get actual container padding if available
+            const containerPadding = this.projectImagesSection ? 
+                parseFloat(getComputedStyle(this.projectImagesSection).paddingTop) : 16;
+            
+            contentAreaHeight = viewportHeight - flowerTotalHeight - containerPadding;
         }
         
         const contentAreaTop = this.contentArea.getBoundingClientRect().top;
@@ -81,13 +113,21 @@ class FontSizingManager {
             element.style.fontSize = testFontSize + 'px';
         });
         
-        // Calculate available height for description (subtract credits height)
-        // Credits text is fixed at 1rem, so calculate its height
+        // Calculate available height for description (subtract credits height + gap)
+        // Credits text is fixed at 1rem, but may wrap on smaller viewports
         const creditsFontSize = 16; // 1rem = 16px
         const creditsLineHeight = creditsFontSize * 1.5; // line-height: 1.5
-        const creditsHeight = this.creditsElements.length * creditsLineHeight;
         
-        const descriptionAvailableHeight = contentAvailableHeight - creditsHeight;
+        // Estimate credits height but be conservative - assume it might wrap
+        const estimatedCreditsHeight = this.creditsElements.length * creditsLineHeight;
+        // Add extra buffer for potential wrapping on smaller viewports
+        const creditsHeightBuffer = Math.max(estimatedCreditsHeight * 0.5, 16); // 50% buffer or 16px minimum
+        const creditsHeight = estimatedCreditsHeight + creditsHeightBuffer;
+        
+        // Account for the gap between description and credits (from CSS variable)
+        const gapBetweenElements = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--space-lg')) * 16 || 24; // Convert rem to px
+        
+        const descriptionAvailableHeight = contentAvailableHeight - creditsHeight - gapBetweenElements;
         
 
         
@@ -124,7 +164,13 @@ class FontSizingManager {
                 currentDescriptionHeight += element.offsetHeight;
             });
             
-            const totalCurrentHeight = currentDescriptionHeight + creditsHeight;
+            // Re-measure actual credits height (it might have wrapped to multiple lines)
+            let actualCreditsHeight = 0;
+            this.creditsElements.forEach(element => {
+                actualCreditsHeight += element.offsetHeight;
+            });
+            
+            const totalCurrentHeight = currentDescriptionHeight + actualCreditsHeight + gapBetweenElements;
             
             // Check if content fits within the padded container
             if (totalCurrentHeight <= contentAvailableHeight) {
@@ -140,13 +186,28 @@ class FontSizingManager {
             safetyAttempts++;
         }
         
-        // Measure final result for logging
+        // Final validation: ensure content actually fits within container
         let finalDescriptionHeight = 0;
-        
         this.textElements.forEach(element => {
             finalDescriptionHeight += element.offsetHeight;
         });
         
+        let finalCreditsHeight = 0;
+        this.creditsElements.forEach(element => {
+            finalCreditsHeight += element.offsetHeight;
+        });
+        
+        const finalTotalHeight = finalDescriptionHeight + finalCreditsHeight + gapBetweenElements;
+        
+        // If still too tall, force a smaller font size
+        if (finalTotalHeight > contentAvailableHeight) {
+            const overflowRatio = contentAvailableHeight / finalTotalHeight;
+            const emergencyFontSize = Math.max(8, Math.floor(currentFontSize * overflowRatio));
+            
+            this.textElements.forEach(element => {
+                element.style.fontSize = emergencyFontSize + 'px';
+            });
+        }
 
     }
     
