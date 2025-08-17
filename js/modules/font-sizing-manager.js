@@ -44,25 +44,23 @@ class FontSizingManager {
             return;
         }
         
-        // Get the image container top position from the CSS variable
-        let imageContainerTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--image-container-top')) || 0;
+        // Get the content area height from our new CSS variable
+        let contentAreaHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-area-height')) || 0;
         
         // If CSS variable isn't set yet, use a smart fallback calculation
-        if (imageContainerTop === 0) {
-            // Estimate the image container position based on viewport height and typical flower positioning
+        if (contentAreaHeight === 0) {
+            // Estimate the content area height based on viewport height and typical flower positioning
             const viewportHeight = window.innerHeight;
             const estimatedFlowerHeight = 96; // 6rem = 96px (from CSS --flower-height)
             const estimatedContainerPadding = 32; // 2rem = 32px (from CSS padding)
-            imageContainerTop = viewportHeight - estimatedFlowerHeight - estimatedContainerPadding;
-            
-
+            contentAreaHeight = viewportHeight - estimatedFlowerHeight - estimatedContainerPadding;
         }
         
         const contentAreaTop = this.contentArea.getBoundingClientRect().top;
         
         // Calculate total available height for the content area
         // The container should stop at the top of the image container
-        const totalAvailableHeight = imageContainerTop;
+        const totalAvailableHeight = contentAreaHeight;
         
 
         

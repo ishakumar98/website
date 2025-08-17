@@ -29,8 +29,6 @@
   --space-2xl: 3rem;      /* 48px */
   --space-3xl: 4rem;      /* 64px */
   
-
-  
   /* Typography */
   --font-size-xs: 0.75rem;    /* 12px */
   --font-size-sm: 0.875rem;   /* 14px */
@@ -44,8 +42,6 @@
   --shadow-medium: 0 0 25px 35px rgba(255, 125, 203, 0.15);
   --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.3);
   --shadow-lightbox: 0 20px 40px rgba(0, 0, 0, 0.3);
-  
-
   
   /* Project Page Specific */
   --flower-height: 6em;
@@ -90,8 +86,6 @@
 
 /* Flower logo styles - Using .flower class with Bloomtype implementation */
 
-
-
 .project-page-container {
     min-height: 100vh;
     background: linear-gradient(to bottom, var(--color-background-light) 0%, var(--color-background) 25%);
@@ -104,16 +98,6 @@ body.project-page {
     width: 100%;
     overflow-x: hidden;
 }
-
-
-
-
-
-
-
-
-
-
 
 .project-name {
     font-family: 'Tumla', sans-serif;
@@ -231,7 +215,7 @@ body.project-page {
   left: 0;
   right: 0;
   z-index: 5;
-  height: var(--image-container-top, 100vh); /* Corrected to use var directly for height */
+  height: var(--content-area-height, 100vh); /* Use calculated height from JavaScript */
   overflow: visible;
   box-sizing: border-box;
 }
@@ -388,139 +372,6 @@ body.project-page {
 
 .project-images-section::-webkit-scrollbar {
   display: none;
-}
-
-/* DEBUG: Visual debugging rectangles for layout analysis */
-.project-images-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 3px solid rgba(255, 0, 0, 0.8); /* Red border for container */
-  pointer-events: none;
-  z-index: 9999;
-}
-
-.project-images-section::after {
-  content: 'CONTAINER';
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background: rgba(255, 0, 0, 0.9);
-  color: white;
-  padding: 2px 6px;
-  font-size: 10px;
-  font-weight: bold;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* DEBUG: Show content area boundaries */
-.project-text-block::before {
-  content: '';
-  position: absolute;
-  top: -16px; /* Account for container top padding */
-  left: -16px; /* Account for container left padding */
-  right: -16px; /* Account for container right padding */
-  bottom: -16px; /* Account for container bottom padding */
-  border: 2px solid rgba(0, 255, 0, 0.8); /* Green border for content area */
-  pointer-events: none;
-  z-index: 9998;
-}
-
-.project-text-block::after {
-  content: 'CONTENT AREA';
-  position: absolute;
-  top: -14px;
-  left: -14px;
-  background: rgba(0, 255, 0, 0.9);
-  color: white;
-  padding: 2px 6px;
-  font-size: 10px;
-  font-weight: bold;
-  pointer-events: none;
-  z-index: 9998;
-}
-
-/* DEBUG: Show description area */
-.project-text-block > div:first-child::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid rgba(0, 0, 255, 0.8); /* Blue border for description */
-  pointer-events: none;
-  z-index: 9997;
-}
-
-.project-text-block > div:first-child::after {
-  content: 'DESCRIPTION';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  background: rgba(0, 0, 255, 0.9);
-  color: white;
-  padding: 2px 6px;
-  font-size: 10px;
-  font-weight: bold;
-  pointer-events: none;
-  z-index: 9997;
-}
-
-/* DEBUG: Show credits area */
-.project-credits::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid rgba(255, 165, 0, 0.8); /* Orange border for credits */
-  pointer-events: none;
-  z-index: 9997;
-}
-
-.project-credits::after {
-  content: 'CREDITS';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  background: rgba(255, 165, 0, 0.9);
-  color: white;
-  padding: 2px 6px;
-  font-size: 10px;
-  font-weight: bold;
-  pointer-events: none;
-  z-index: 9997;
-}
-
-/* DEBUG: Show padding areas */
-.project-images-section > *:first-child::before {
-  content: '';
-  position: absolute;
-  top: -16px;
-  left: -16px;
-  right: -16px;
-  height: 16px;
-  background: rgba(255, 255, 0, 0.3); /* Yellow for top padding */
-  pointer-events: none;
-  z-index: 9996;
-}
-
-.project-images-section > *:last-child::after {
-  content: '';
-  position: absolute;
-  bottom: -16px;
-  left: -16px;
-  right: -16px;
-  height: 16px;
-  background: rgba(255, 255, 0, 0.3); /* Yellow for bottom padding */
-  pointer-events: none;
-  z-index: 9996;
 }
 
 
@@ -1244,4 +1095,3 @@ body.project-page {
     transform: rotate(360deg);
   }
 }
-

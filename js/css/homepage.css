@@ -311,23 +311,7 @@
     transition: var(--transition-smooth);
 }
 
-/* Text file wrapper - center content and maintain consistent height */
-.work-item .wrapper-image:has(img[src="images/text-file-icon.png"]) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(var(--space-2xl) * 4.375);
-    margin: 0 auto;
-}
 
-/* Alternative approach for browsers that don't support :has() */
-.text-file-item .wrapper-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(var(--space-2xl) * 4.375);
-    margin: 0 auto;
-}
 
 /* ==========================================================================
    LINKS & NAVIGATION

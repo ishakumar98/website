@@ -164,14 +164,21 @@ class ProjectScrollManager {
         // Include top padding to give flower breathing room above it
         const imageContainerTop = viewportHeight - flowerTotalHeight - containerTopPadding;
         
+        // Calculate content area height (from top of viewport to top of image container)
+        const contentAreaHeight = imageContainerTop;
+        
         // Set the position of the image container
         this.projectImagesSection.style.top = imageContainerTop + 'px';
+        
+        // Set CSS variable for content area height (one-time setup)
+        document.documentElement.style.setProperty('--content-area-height', contentAreaHeight + 'px');
         
         // Notify other modules that image container position is ready
         document.dispatchEvent(new CustomEvent('imageContainerPositionReady', {
             detail: {
                 imageContainerTop: imageContainerTop,
-                viewportHeight: viewportHeight
+                viewportHeight: viewportHeight,
+                contentAreaHeight: contentAreaHeight
             }
         }));
         

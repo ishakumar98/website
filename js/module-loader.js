@@ -103,7 +103,6 @@ class ModuleLoader {
             'image-popup-manager': 'ImagePopupManager',
             'text-slant-manager': 'TextSlantManager',
             'font-sizing-manager': 'FontSizingManager',
-            'text-file-manager': 'TextFileManager',
 
             'letter-animation-manager': 'LetterAnimationManager',
             'fireworks-manager': 'FireworksManager',
@@ -136,8 +135,7 @@ class ModuleLoader {
                 'letter-animation-manager',
                 'fireworks-manager',
                 'homepage-scroll-manager',
-                'homepage-interaction-manager',
-                'text-file-manager'
+                'homepage-interaction-manager'
             ];
         } else if (isProjectPage) {
             // Project page-specific modules
@@ -186,8 +184,7 @@ class ModuleLoader {
                 'letter-animation-manager',
                 'fireworks-manager',
                 'homepage-scroll-manager',
-                'homepage-interaction-manager',
-                'text-file-manager'
+                'homepage-interaction-manager'
             ];
         } else if (isProjectPage) {
             // Project page-specific modules
