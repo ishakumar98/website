@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Template</title>
+    <link rel="stylesheet" href="js/css/main.css">
+    <link rel="stylesheet" href="project-page.css">
+    
+    <!-- Core Coordination Systems -->
+    <script src="js/event-manager.js"></script>
+    <script src="js/animation-coordinator.js"></script>
+    
+    <!-- Module Loader System -->
+    <script src="js/module-loader.js"></script>
+    
+    <!-- Performance Optimization Modules -->
+    <script src="js/image-optimizer.js"></script>
+    <script src="js/font-optimizer.js"></script>
+    <script src="js/css-optimizer.js"></script>
+    <script src="js/performance-monitor.js"></script>
+    <script src="js/performance-manager.js"></script>
+    
+    <!-- Phase 4: Advanced Optimization Modules -->
+    <script src="js/service-worker-manager.js"></script>
+    <script src="js/webp-converter.js"></script>
+    <script src="js/advanced-optimization-manager.js"></script>
+    
+    <!-- Initialize Project Modules -->
+    <script>
+        // Wait for everything to load, then initialize project modules
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Wait a bit for ModuleLoader to be available
+                let attempts = 0;
+                const maxAttempts = 20;
+                
+                const waitForModuleLoader = () => {
+                    if (window.moduleLoader) {
+                        // Load all modules (project modules will auto-detect and only initialize on project pages)
+                        window.moduleLoader.loadAllModules().then((moduleClasses) => {
+                            try {
+                                // Create instances of project modules in correct order
+                                if (window.ProjectContentManager) {
+                                    window.projectContentManager = new window.ProjectContentManager();
+                                }
+                                
+                                // Initialize flower manager for blooming animation
+                                if (window.FlowerManager) {
+                                    window.flowerManager = new window.FlowerManager();
+                                    // Trigger the blooming animation
+                                    setTimeout(() => {
+                                        if (window.flowerManager) {
+                                            window.flowerManager.triggerBloom();
+                                        }
+                                    }, 100);
+                                }
+                                
+                                // Wait a bit for content to be populated, then initialize scroll manager
+                                setTimeout(() => {
+                                    if (window.ProjectScrollManager) {
+                                        window.projectScrollManager = new window.ProjectScrollManager();
+                                    }
+                                }, 100);
+                                
+                                if (window.FontSizingManager) {
+                                    window.fontSizingManager = new window.FontSizingManager();
+                                }
+                                
+                                if (window.TextSlantManager) {
+                                    window.textSlantManager = new window.TextSlantManager();
+                                }
+                                
+                                if (window.ImagePopupManager) {
+                                    window.imagePopupManager = new window.ImagePopupManager();
+                                }
+                                
+                                // Setup resize handler for project modules
+                                window.addEventListener('resize', () => {
+                                    // Refresh modules that need resize handling
+                                    if (window.projectScrollManager) {
+                                        window.projectScrollManager.handleResize();
+                                    }
+                                    
+                                    if (window.fontSizingManager) {
+                                        window.fontSizingManager.adjustFontSize();
+                                    }
+                                });
+                                
+                            } catch (error) {
+                                // Handle module instantiation error silently
+                            }
+                            
+                        }).catch((error) => {
+                            // Handle module loading error silently
+                        });
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        setTimeout(waitForModuleLoader, 100);
+                    } else {
+                        // ModuleLoader failed to load after multiple attempts
+                    }
+                };
+                
+                waitForModuleLoader();
+                
+            } catch (error) {
+                // Handle initialization error silently
+            }
+        });
+        
+        // Trigger Bloomtype flower blooming on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for the initial scaleUp animation to complete (1 second)
+            setTimeout(() => {
+                const flower = document.querySelector('.flower');
+                if (flower) {
+                    // Add [intro] attribute to trigger petal blooming
+                    flower.setAttribute('intro', '');
+                    
+                    // After petal blooming completes, add [logo] attribute for final state
+                    setTimeout(() => {
+                        flower.setAttribute('logo', '');
+                    }, 2250); // 1s scaleUp + 1.25s delay + 1s petal bloom
+                }
+            }, 1000);
+        });
+    </script>
+</head>
+<body class="project-page">
+    <!-- Image Center Popup -->
+    <div class="image-center-popup" id="image-popup">
+        <!-- DRAG ZONE: Navigation bar (draggable) -->
+        <div class="popup-nav" id="popup-nav">
+            <ul class="wrapper-actions">
+                <li class="popup-actions popup-close" id="popup-close"></li>
+                <li class="popup-actions popup-minimise" id="popup-minimise"></li>
+                <li class="popup-actions popup-expand" id="popup-expand"></li>
+            </ul>
+            <span id="popup-filename"></span>
+            <!-- Draggable area - excludes corners like native macOS -->
+            <div class="draggable-area"></div>
+        </div>
+        
+        <!-- RESIZE ZONE: Image container (resizable from corners) -->
+        <div class="popup-image-container" id="popup-image-container">
+            <picture>
+                <img id="popup-image" src="" alt="">
+            </picture>
+        </div>
+        
+        <!-- RESIZE HANDLES: Four corner resize areas - positioned relative to popup container -->
+        <div class="resize-handle resize-handle-nw" id="resize-nw"></div>
+        <div class="resize-handle resize-handle-ne" id="resize-ne"></div>
+        <div class="resize-handle resize-handle-sw" id="resize-sw"></div>
+        <div class="resize-handle resize-handle-se" id="resize-se"></div>
+        
+        <!-- NAVIGATION ZONES: Left/right image navigation (isolated) -->
+        <div class="popup-nav-left" id="popup-nav-left"></div>
+        <div class="popup-nav-right" id="popup-nav-right"></div>
+    </div>
+
+    <div class="project-page-container">
+        <!-- PROJECT CONTENT AREA -->
+        <section class="project-content-area">
+            <div class="project-text-block">
+                <!-- PROJECT DESCRIPTION: Content will be populated by JavaScript from project-data.json -->
+                <!-- DO NOT MODIFY THIS DIV - it's automatically populated -->
+            </div>
+            
+            <div class="project-credits">
+                <p class="credits-text">
+                    <!-- PROJECT CREDITS: Will be populated by JavaScript from project-data.json -->
+                    <!-- DO NOT MODIFY THIS P - it's automatically populated -->
+                </p>
+            </div>
+        </section>
+        
+        <!-- Project Images Work Container -->
+        <section class="project-images-section">
+            <!-- Bloomtype Flower Logo at top of container -->
+            <a href="index.html" class="flower">
+                <div class="top"></div>
+                <div class="bottom"></div>
+            </a>
+            
+            <ul class="image-list">
+                <!-- PROJECT IMAGES: Will be populated by JavaScript from project-data.json -->
+                <!-- DO NOT MODIFY THIS UL - it's automatically populated -->
+            </ul>
+        </section>
+    </div>
+
+</body>
+</html>

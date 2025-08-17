@@ -98,12 +98,12 @@ class ProjectScrollManager {
         this.initialTop = cssTopValue;
         
         // Register the CSS positioning with AnimationCoordinator to prevent conflicts
-        if (window.AnimationCoordinator) {
-            window.AnimationCoordinator.registerCSSAnimation(
+        if (window.animationCoordinator) {
+            window.animationCoordinator.registerCSSAnimation(
                 this.projectImagesSection,
                 'top',
                 'project-images-initial-position',
-                window.AnimationCoordinator.priorities.MEDIUM
+                window.animationCoordinator.priorities.MEDIUM
             );
         }
         
@@ -120,8 +120,8 @@ class ProjectScrollManager {
         this.scrollTimeout = scrollTimeout;
         
         // Register with ScrollManager for coordination
-        if (window.ScrollManager) {
-            window.ScrollManager.registerScrollHandler('project-images-scroll', this.updateProjectImagesPosition.bind(this));
+        if (window.scrollManager) {
+            window.scrollManager.addScrollListener('project-images-scroll', this.updateProjectImagesPosition.bind(this), 'normal');
         }
         
         // Add scroll event listener to start animation loop when scrolling begins
@@ -134,19 +134,10 @@ class ProjectScrollManager {
     
     // Calculate initial position for flower visibility
     calculateInitialPosition(viewportHeight) {
-        if (!this.flowerElement) {
-            // Fallback: position container so top edge is at bottom of viewport
-            return viewportHeight;
-        }
-        
-        // Get the flower's actual rendered dimensions
-        const flowerRect = this.flowerElement.getBoundingClientRect();
-        const flowerHeight = flowerRect.height;
-        
-        // Get computed styles for margins
-        const flowerStyles = getComputedStyle(this.flowerElement);
-        const flowerTopMargin = parseFloat(flowerStyles.marginTop);
-        const flowerBottomMargin = parseFloat(flowerStyles.marginBottom);
+        // Use CSS variables to calculate flower dimensions immediately - no waiting for flower to render
+        const flowerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-height')) || 96; // 6em * 16px
+        const flowerTopMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-top')) || 32; // 2rem * 16px
+        const flowerBottomMargin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-bottom')) || 24; // 1.5rem * 16px
         
         // Get container padding (project-images-section has 16px top and bottom padding)
         const containerStyles = getComputedStyle(this.projectImagesSection);
@@ -166,6 +157,18 @@ class ProjectScrollManager {
         // This is simply the imageContainerStartPosition since it's measured from the top
         const contentAreaHeight = imageContainerStartPosition;
         
+        // DEBUG: Log the calculation values
+        console.log('ProjectScrollManager - Position Calculation:', {
+            viewportHeight,
+            flowerHeight,
+            flowerTopMargin,
+            flowerBottomMargin,
+            flowerTotalHeight,
+            containerBottomPadding,
+            imageContainerStartPosition,
+            contentAreaHeight
+        });
+        
         // Update the CSS custom property for font sizing manager
         // This should be the HEIGHT of the content area
         document.documentElement.style.setProperty('--image-container-top', contentAreaHeight + 'px');
@@ -173,7 +176,11 @@ class ProjectScrollManager {
         // Also update the actual position of the image container to match our calculation
         this.projectImagesSection.style.top = imageContainerStartPosition + 'px';
         
-
+        // DEBUG: Log what we're setting
+        console.log('ProjectScrollManager - Setting positions:', {
+            '--image-container-top': contentAreaHeight + 'px',
+            'top': imageContainerStartPosition + 'px'
+        });
         
         // Notify other modules that image container position is ready
         document.dispatchEvent(new CustomEvent('imageContainerPositionReady', {
@@ -183,18 +190,16 @@ class ProjectScrollManager {
             }
         }));
         
-
-        
         return contentAreaHeight;
     }
     
     // Setup flower hover effects
     setupFlowerHoverEffects() {
-        if (!this.flowerElement || !window.EventManager) return;
+        if (!this.flowerElement || !window.eventManager) return;
         
         let spinDirection = 'clockwise'; // Start with clockwise
         
-        window.EventManager.addListener(this.flowerElement, 'mouseenter', () => {
+        window.eventManager.addListener(this.flowerElement, 'mouseenter', () => {
             // Toggle spin direction on each hover
             if (spinDirection === 'clockwise') {
                 this.flowerElement.setAttribute('data-spin-direction', 'counter');
@@ -217,8 +222,8 @@ class ProjectScrollManager {
         this.currentTop = parseFloat(currentCSSTop);
         
         // Unregister CSS positioning since JS is now controlling it
-        if (window.AnimationCoordinator) {
-            window.AnimationCoordinator.unregisterAnimation(
+        if (window.animationCoordinator) {
+            window.animationCoordinator.unregisterAnimation(
                 this.projectImagesSection, 
                 'project-images-initial-position'
             );
@@ -276,12 +281,12 @@ class ProjectScrollManager {
             this.currentTop = Math.max(endTop, Math.min(startTop, this.currentTop));
             
             // Apply the calculated position with animation coordination
-            if (window.AnimationCoordinator) {
-                window.AnimationCoordinator.registerJSAnimation(
+            if (window.animationCoordinator) {
+                window.animationCoordinator.registerJSAnimation(
                     this.projectImagesSection, 
                     'top', 
                     'project-images-scroll', 
-                    window.AnimationCoordinator.priorities.CRITICAL
+                    window.animationCoordinator.priorities.CRITICAL
                 );
             }
             
@@ -339,18 +344,18 @@ class ProjectScrollManager {
         this.animationLoopActive = false;
         
         // Re-register CSS positioning for fallback
-        if (window.AnimationCoordinator) {
-            window.AnimationCoordinator.registerCSSAnimation(
+        if (window.animationCoordinator) {
+            window.animationCoordinator.registerCSSAnimation(
                 this.projectImagesSection,
                 'top',
                 'project-images-initial-position',
-                window.AnimationCoordinator.priorities.MEDIUM
+                window.animationCoordinator.priorities.MEDIUM
             );
         }
         
         // Unregister from ScrollManager
-        if (window.ScrollManager) {
-            window.ScrollManager.unregisterScrollHandler('project-images-scroll');
+        if (window.scrollManager) {
+            window.scrollManager.removeScrollListener('project-images-scroll');
         }
     }
 }

@@ -84,6 +84,31 @@
                     "title": "AI Scheduling.png"
                 }
             ]
+    },
+    "template-test": {
+      "title": "Template Test Project",
+      "year": "2024",
+      "description": [
+        "This is a test project to verify that our template system works correctly. It demonstrates that you can create new projects by simply copying the template and updating the project data."
+      ],
+      "credits": "Template system test - no actual credits needed.",
+      "images": [
+        {
+          "src": "images/Calendar.png",
+          "alt": "Calendar Project",
+          "title": "Calendar Project.png"
+        },
+        {
+          "src": "images/Channel timelines.png",
+          "alt": "Channel Timelines",
+          "title": "Channel Timelines.png"
+        },
+        {
+          "src": "images/Timeline details.png",
+          "alt": "Timeline Details",
+          "title": "Timeline Details.png"
+        }
+      ]
     }
   }
 }

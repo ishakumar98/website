@@ -25,8 +25,17 @@ class ModuleLoader {
     
     // Check if current page is a project page
     isProjectPage() {
-        return window.location.pathname.includes('/project-') || 
-               window.location.pathname.includes('/calendar-project.html');
+        const pathname = window.location.pathname;
+        const endsWithProject = pathname.endsWith('-project.html');
+        
+        // DEBUG: Log the project page detection
+        console.log('ModuleLoader - isProjectPage() Debug:', {
+            pathname: pathname,
+            endsWithProject: endsWithProject,
+            result: endsWithProject
+        });
+        
+        return endsWithProject;
     }
     
     // Load a module by name
@@ -141,6 +150,8 @@ class ModuleLoader {
                 'project-scroll-manager'
             ];
         }
+        
+
         
         // No common modules - each page type loads only what it needs
         // requiredModules already contains exactly what's needed for each page type

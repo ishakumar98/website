@@ -24,12 +24,12 @@ class ImagePopupManager {
     
     findPopupElements() {
         this.popupElements = {
-            imagePopup: document.querySelector('.image-popup'),
-            popupImage: document.querySelector('.popup-image'),
-            popupFilename: document.querySelector('.popup-filename'),
-            popupClose: document.querySelector('.popup-close'),
-            popupNavLeft: document.querySelector('.popup-nav-left'),
-            popupNavRight: document.querySelector('.popup-nav-right')
+            imagePopup: document.querySelector('.image-center-popup'),
+            popupImage: document.querySelector('#popup-image'),
+            popupFilename: document.querySelector('#popup-filename'),
+            popupClose: document.querySelector('#popup-close'),
+            popupNavLeft: document.querySelector('#popup-nav-left'),
+            popupNavRight: document.querySelector('#popup-nav-right')
         };
     }
     
