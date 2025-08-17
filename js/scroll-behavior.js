@@ -47,8 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get the work section's natural height after render
     const workSectionHeight = workSection.offsetHeight;
     
-    // Position top edge exactly at viewport bottom
-    workSection.style.top = viewportHeight + 'px';
+    // Position so top edge with box shadow is visible at viewport bottom
+    // Subtract a few pixels to show the shadow
+    workSection.style.top = (viewportHeight - 8) + 'px';
     
     // Store height for scroll calculations
     window.workSectionHeight = workSectionHeight;
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize lastTop after render to ensure proper starting position
   requestAnimationFrame(() => {
-    lastTop = viewportHeight;
+    lastTop = viewportHeight - 8;
   });
   
   // Clean scroll handler with improved throttling
@@ -111,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Add hard constraint to prevent the container from going beyond bounds
       // This prevents the bouncy behavior when scrolling fast
       const minTop = viewportHeight - maxScroll; // Bottom edge at viewport bottom
-      const maxTop = viewportHeight; // Top edge at viewport bottom
+      const maxTop = viewportHeight - 8; // Top edge with shadow visible at viewport bottom
       
       newTop = Math.max(minTop, Math.min(maxTop, newTop));
       
