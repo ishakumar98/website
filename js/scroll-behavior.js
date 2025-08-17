@@ -38,13 +38,21 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Set initial position - top edge at bottom of viewport (fully collapsed)
   workSection.style.position = 'absolute';
-  workSection.style.top = viewportHeight + 'px';
   workSection.style.left = 'auto';
   workSection.style.width = '100%';
   workSection.style.zIndex = '10';
   
-  // Get the work section's natural height
-  const workSectionHeight = workSection.offsetHeight;
+  // Use requestAnimationFrame to ensure proper positioning after render
+  requestAnimationFrame(() => {
+    // Get the work section's natural height after render
+    const workSectionHeight = workSection.offsetHeight;
+    
+    // Position top edge exactly at viewport bottom
+    workSection.style.top = viewportHeight + 'px';
+    
+    // Store height for scroll calculations
+    window.workSectionHeight = workSectionHeight;
+  });
   
   // Remove the body height setting that's causing issues
   // document.body.style.height = (viewportHeight + workSectionHeight) + 'px';
@@ -74,6 +82,11 @@ document.addEventListener('DOMContentLoaded', function() {
   let lastTop = viewportHeight;
   let smoothingFactor = 0.15; // Lower = smoother but less responsive
   
+  // Initialize lastTop after render to ensure proper starting position
+  requestAnimationFrame(() => {
+    lastTop = viewportHeight;
+  });
+  
   // Clean scroll handler with improved throttling
   function handleScroll(scrollY, scrollDelta, isScrolling) {
     if (isScrolling) return;
@@ -84,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const scrollTop = scrollY;
       
       // Calculate scroll progress (0 = fully collapsed, 1 = fully expanded)
-      const maxScroll = workSectionHeight;
+      const maxScroll = window.workSectionHeight || workSection.offsetHeight;
       const scrollProgress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
       
       // Apply easing to the scroll progress
@@ -93,11 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
       // Calculate new top position
       // When scrollProgress = 0: top edge at bottom of viewport (fully collapsed)
       // When scrollProgress = 1: bottom edge at viewport bottom (fully expanded)
-      let newTop = viewportHeight - (easedProgress * workSectionHeight);
+      let newTop = viewportHeight - (easedProgress * maxScroll);
       
       // Add hard constraint to prevent the container from going beyond bounds
       // This prevents the bouncy behavior when scrolling fast
-      const minTop = viewportHeight - workSectionHeight; // Bottom edge at viewport bottom
+      const minTop = viewportHeight - maxScroll; // Bottom edge at viewport bottom
       const maxTop = viewportHeight; // Top edge at viewport bottom
       
       newTop = Math.max(minTop, Math.min(maxTop, newTop));
