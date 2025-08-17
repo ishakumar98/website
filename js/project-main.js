@@ -39,7 +39,7 @@ class ProjectMain {
             this.startScrollAnimation();
             
             this.isInitialized = true;
-            console.log('ProjectMain: All modules initialized successfully');
+    
             
         } catch (error) {
             console.error('ProjectMain: Module initialization error:', error);
@@ -156,7 +156,7 @@ class ProjectMain {
         
         this.modules = {};
         this.isInitialized = false;
-        console.log('ProjectMain: Destroyed');
+
     }
 }
 

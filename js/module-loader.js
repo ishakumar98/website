@@ -13,7 +13,7 @@ class ModuleLoader {
     
     init() {
         this.isInitialized = true;
-        console.log('ModuleLoader: Initialized');
+
     }
     
     // Load a module by name
@@ -100,7 +100,7 @@ class ModuleLoader {
                 requiredModules.map(moduleName => this.loadModule(moduleName))
             );
             
-            console.log('ModuleLoader: All modules loaded successfully');
+    
             return modules;
             
         } catch (error) {
@@ -169,7 +169,7 @@ class ModuleLoader {
         this.loadedModules.clear();
         this.loadingPromises.clear();
         this.isInitialized = false;
-        console.log('ModuleLoader: Destroyed');
+
     }
 }
 

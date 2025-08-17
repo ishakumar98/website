@@ -19,7 +19,7 @@ class AdvancedOptimizationManager {
 
     async init() {
         try {
-            console.log('🚀 Initializing Advanced Optimization Manager...');
+    
 
             // Initialize Service Worker Manager
             if (this.optimizationConfig.enableServiceWorker) {
@@ -40,7 +40,7 @@ class AdvancedOptimizationManager {
             this.setupPerformanceMonitoring();
 
             this.isInitialized = true;
-            console.log('✅ Advanced Optimization Manager initialized successfully');
+    
 
         } catch (error) {
             console.error('❌ Failed to initialize Advanced Optimization Manager:', error);
@@ -52,7 +52,7 @@ class AdvancedOptimizationManager {
             if (typeof ServiceWorkerManager !== 'undefined') {
                 const serviceWorkerManager = new ServiceWorkerManager();
                 this.modules.set('serviceWorker', serviceWorkerManager);
-                console.log('✅ Service Worker Manager initialized');
+        
             } else {
                 console.warn('⚠️ ServiceWorkerManager not available');
             }
@@ -66,7 +66,7 @@ class AdvancedOptimizationManager {
             if (typeof WebPConverter !== 'undefined') {
                 const webpConverter = new WebPConverter();
                 this.modules.set('webpConverter', webpConverter);
-                console.log('✅ WebP Converter initialized');
+        
             } else {
                 console.warn('⚠️ WebPConverter not available');
             }
@@ -81,7 +81,7 @@ class AdvancedOptimizationManager {
             if ('serviceWorker' in navigator && 'PushManager' in window) {
                 this.setupPWAInstallation();
                 this.setupPushNotifications();
-                console.log('✅ PWA capabilities initialized');
+        
             } else {
                 console.warn('⚠️ PWA not supported in this browser');
             }
@@ -93,7 +93,7 @@ class AdvancedOptimizationManager {
     setupPWAInstallation() {
         // Listen for beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('📱 PWA installation prompt available');
+    
             
             // Store the event for later use
             this.deferredPrompt = e;
@@ -104,7 +104,7 @@ class AdvancedOptimizationManager {
 
         // Listen for app installed event
         window.addEventListener('appinstalled', () => {
-            console.log('✅ PWA installed successfully');
+    
             this.hideInstallPrompt();
             
             // Track installation
@@ -188,7 +188,7 @@ class AdvancedOptimizationManager {
 
     async installPWA() {
         if (!this.deferredPrompt) {
-            console.log('No installation prompt available');
+    
             return;
         }
 
@@ -198,7 +198,7 @@ class AdvancedOptimizationManager {
 
             // Wait for the user to respond
             const { outcome } = await this.deferredPrompt.userChoice;
-            console.log(`PWA installation: ${outcome}`);
+    
 
             // Clear the deferred prompt
             this.deferredPrompt = null;
@@ -225,10 +225,10 @@ class AdvancedOptimizationManager {
             const permission = await Notification.requestPermission();
             
             if (permission === 'granted') {
-                console.log('✅ Notification permission granted');
+        
                 this.subscribeToPushNotifications();
             } else {
-                console.log('❌ Notification permission denied');
+        
             }
         } catch (error) {
             console.error('Failed to request notification permission:', error);
@@ -243,7 +243,7 @@ class AdvancedOptimizationManager {
                 applicationServerKey: this.urlBase64ToUint8Array('YOUR_VAPID_PUBLIC_KEY')
             });
 
-            console.log('✅ Push notification subscription created:', subscription);
+    
             
             // Send subscription to server (if you have one)
             // await this.sendSubscriptionToServer(subscription);
@@ -277,7 +277,7 @@ class AdvancedOptimizationManager {
 
     logOptimizationMetrics() {
         const metrics = this.getOptimizationMetrics();
-        console.log('📊 Advanced Optimization Metrics:', metrics);
+
         
         // Send to analytics if available
         if (window.gtag) {
@@ -364,7 +364,7 @@ class AdvancedOptimizationManager {
     // Configuration management
     updateConfig(newConfig) {
         this.optimizationConfig = { ...this.optimizationConfig, ...newConfig };
-        console.log('⚙️ Advanced optimization configuration updated:', this.optimizationConfig);
+
     }
 
     // Cleanup method
@@ -384,7 +384,7 @@ class AdvancedOptimizationManager {
 
         this.modules.clear();
         this.isInitialized = false;
-        console.log('🧹 Advanced Optimization Manager cleaned up');
+
     }
 }
 

@@ -40,7 +40,7 @@ class PerformanceManager {
             this.startOptimization();
 
             this.isInitialized = true;
-            console.log('🚀 Performance Manager initialized successfully');
+    
 
         } catch (error) {
             console.error('Failed to initialize Performance Manager:', error);
@@ -53,7 +53,7 @@ class PerformanceManager {
             try {
                 const imageOptimizer = new ImageOptimizer();
                 this.optimizers.set('image', imageOptimizer);
-                console.log('✅ Image Optimizer initialized');
+        
             } catch (error) {
                 console.warn('Image Optimizer failed to initialize:', error);
             }
@@ -64,7 +64,7 @@ class PerformanceManager {
             try {
                 const fontOptimizer = new FontOptimizer();
                 this.optimizers.set('font', fontOptimizer);
-                console.log('✅ Font Optimizer initialized');
+        
             } catch (error) {
                 console.warn('Font Optimizer failed to initialize:', error);
             }
@@ -75,7 +75,7 @@ class PerformanceManager {
             try {
                 const cssOptimizer = new CSSOptimizer();
                 this.optimizers.set('css', cssOptimizer);
-                console.log('✅ CSS Optimizer initialized');
+        
             } catch (error) {
                 console.warn('CSS Optimizer failed to initialize:', error);
             }
@@ -142,7 +142,7 @@ class PerformanceManager {
         // Just ensure it's working
         if (optimizer.getFontStatus) {
             const status = optimizer.getFontStatus('Tumla');
-            console.log('Font optimization status:', status);
+    
         }
     }
 
@@ -151,7 +151,7 @@ class PerformanceManager {
         // Just ensure it's working
         if (optimizer.getOptimizationMetrics) {
             const metrics = optimizer.getOptimizationMetrics();
-            console.log('CSS optimization metrics:', metrics);
+    
         }
     }
 
@@ -174,10 +174,10 @@ class PerformanceManager {
         const recommendations = this.monitor.getPerformanceRecommendations();
 
         // Log performance status
-        console.log(`📊 Performance Score: ${score}/100`);
+
 
         if (recommendations.length > 0) {
-            console.log('💡 Performance Recommendations:', recommendations);
+    
         }
 
         // Take action if performance is poor
@@ -203,7 +203,7 @@ class PerformanceManager {
     }
 
     triggerPerformanceOptimization() {
-        console.log('🚨 Triggering performance optimization...');
+
 
         // Aggressive image optimization
         const imageOptimizer = this.optimizers.get('image');
@@ -243,7 +243,7 @@ class PerformanceManager {
             await this.init();
         }
 
-        console.log('🔄 Starting manual page optimization...');
+
 
         // Force optimization of all modules
         this.optimizers.forEach((optimizer, name) => {
@@ -290,7 +290,7 @@ class PerformanceManager {
     // Configuration management
     updateConfig(newConfig) {
         this.performanceConfig = { ...this.performanceConfig, ...newConfig };
-        console.log('⚙️ Performance configuration updated:', this.performanceConfig);
+
     }
 
     // Cleanup method
@@ -309,7 +309,7 @@ class PerformanceManager {
 
         this.optimizers.clear();
         this.isInitialized = false;
-        console.log('🧹 Performance Manager cleaned up');
+
     }
 }
 

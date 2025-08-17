@@ -136,7 +136,7 @@ class ImageOptimizer {
 
     trackLCP(entry) {
         const lcp = entry.startTime;
-        console.log(`Largest Contentful Paint: ${lcp}ms`);
+
         
         // Send to analytics if available
         if (window.gtag) {
@@ -150,7 +150,7 @@ class ImageOptimizer {
     logPerformanceMetrics() {
         const avgLoadTime = this.performanceMetrics.loadTimes.reduce((a, b) => a + b, 0) / this.performanceMetrics.loadTimes.length;
         
-        console.log('📊 Image Performance Metrics:', {
+
             totalImages: this.performanceMetrics.totalImages,
             loadedImages: this.performanceMetrics.loadedImages,
             averageLoadTime: `${avgLoadTime.toFixed(2)}ms`,

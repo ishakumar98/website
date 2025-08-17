@@ -17,7 +17,7 @@ class WebPConverter {
     async init() {
         await this.checkWebPSupport();
         this.setupImageConversion();
-        console.log('✅ WebP Converter initialized');
+
     }
 
     async checkWebPSupport() {
@@ -33,13 +33,13 @@ class WebPConverter {
             this.isWebPSupported = false;
         }
 
-        console.log(`🔍 WebP support: ${this.isWebPSupported ? 'Yes' : 'No'}`);
+
         return this.isWebPSupported;
     }
 
     setupImageConversion() {
         if (!this.isWebPSupported) {
-            console.log('⚠️ WebP not supported, using fallback images');
+    
             return;
         }
 
@@ -127,8 +127,8 @@ class WebPConverter {
                 // Apply WebP image
                 img.src = webpDataURL;
                 
-                console.log(`🔄 Image converted to WebP: ${originalSrc}`);
-                console.log(`📊 Size reduction: ${(sizeReduction / 1024).toFixed(2)}KB`);
+        
+        
                 
                 // Show conversion notification
                 this.showConversionNotification(img, sizeReduction);
@@ -298,7 +298,7 @@ class WebPConverter {
 
     async batchConvert(images) {
         if (!this.isWebPSupported) {
-            console.log('⚠️ WebP not supported, skipping batch conversion');
+    
             return [];
         }
 
@@ -357,7 +357,7 @@ class WebPConverter {
         // Clear conversion data
         this.convertedImages.clear();
         
-        console.log('🧹 WebP Converter cleaned up');
+
     }
 }
 

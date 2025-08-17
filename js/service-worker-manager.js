@@ -20,7 +20,7 @@ class ServiceWorkerManager {
             await this.registerServiceWorker();
             this.setupUpdateHandling();
             this.setupCommunication();
-            console.log('✅ Service Worker Manager initialized successfully');
+    
         } catch (error) {
             console.error('Failed to initialize Service Worker Manager:', error);
         }
@@ -32,11 +32,11 @@ class ServiceWorkerManager {
                 scope: '/'
             });
 
-            console.log('🚀 Service Worker registered successfully:', this.registration);
+    
 
             // Handle updates
             this.registration.addEventListener('updatefound', () => {
-                console.log('🔄 Service Worker update found');
+        
                 this.handleUpdateFound();
             });
 
@@ -57,7 +57,7 @@ class ServiceWorkerManager {
 
         // Listen for controller change
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-            console.log('🔄 Service Worker controller changed');
+    
             this.handleControllerChange();
         });
     }
@@ -73,7 +73,7 @@ class ServiceWorkerManager {
                     this.showUpdateNotification();
                 } else {
                     // First time installation
-                    console.log('✅ Service Worker installed for the first time');
+            
                 }
             }
         });
@@ -167,7 +167,7 @@ class ServiceWorkerManager {
                 navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true });
             });
 
-            console.log('✅ Service Worker updated successfully');
+    
         } catch (error) {
             console.error('❌ Failed to update Service Worker:', error);
         }
@@ -187,7 +187,7 @@ class ServiceWorkerManager {
 
         switch (type) {
             case 'CACHE_STATUS':
-                console.log('📦 Cache status:', data);
+        
                 break;
             case 'OFFLINE_MODE':
                 this.handleOfflineMode(data);
@@ -196,19 +196,19 @@ class ServiceWorkerManager {
                 this.handleCacheUpdated(data);
                 break;
             default:
-                console.log('💬 Service Worker message:', event.data);
+        
         }
     }
 
     handleOfflineMode(data) {
-        console.log('📴 Offline mode detected:', data);
+
         
         // Show offline indicator
         this.showOfflineIndicator();
     }
 
     handleCacheUpdated(data) {
-        console.log('🔄 Cache updated:', data);
+
         
         // Show cache update notification
         this.showCacheUpdateNotification(data);
@@ -315,7 +315,7 @@ class ServiceWorkerManager {
             await Promise.all(
                 cacheNames.map(cacheName => caches.delete(cacheName))
             );
-            console.log('✅ All caches cleared successfully');
+    
             return true;
         } catch (error) {
             console.error('❌ Failed to clear caches:', error);
@@ -369,7 +369,7 @@ class ServiceWorkerManager {
         const notifications = document.querySelectorAll('.service-worker-update-notification, .cache-update-notification');
         notifications.forEach(notification => notification.remove());
 
-        console.log('🧹 Service Worker Manager cleaned up');
+
     }
 }
 

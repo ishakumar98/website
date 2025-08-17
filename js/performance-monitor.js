@@ -322,7 +322,7 @@ class PerformanceMonitor {
             optimization: this.getOptimizationMetrics()
         };
         
-        console.log('📊 Performance Report:', report);
+
         
         // Send to analytics if available
         if (window.gtag) {
