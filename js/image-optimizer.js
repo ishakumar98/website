@@ -150,7 +150,7 @@ class ImageOptimizer {
     logPerformanceMetrics() {
         const avgLoadTime = this.performanceMetrics.loadTimes.reduce((a, b) => a + b, 0) / this.performanceMetrics.loadTimes.length;
         
-
+        console.log('Image Performance Metrics:', {
             totalImages: this.performanceMetrics.totalImages,
             loadedImages: this.performanceMetrics.loadedImages,
             averageLoadTime: `${avgLoadTime.toFixed(2)}ms`,
