@@ -28,7 +28,7 @@ class ProjectMain {
             // Initialize all modules
             await this.initializeFontSizingManager();
             await this.initializeTextSlantManager();
-            await this.initializeImagePopupManager();
+            await this.initializePopupManager();
             await this.initializeFlowerManager();
             await this.initializeProjectScrollManager();
             
@@ -71,9 +71,9 @@ class ProjectMain {
         }
     }
     
-        async initializeImagePopupManager() {
-        if (window.ImagePopupManager) {
-            this.modules.imagePopup = new window.ImagePopupManager();
+        async initializePopupManager() {
+        if (window.PopupManager) {
+            this.modules.popup = new window.PopupManager();
         }
     }
     
@@ -127,10 +127,10 @@ class ProjectMain {
             if (this.modules.scroll) {
                 const scrollProgress = this.modules.scroll.getScrollProgress();
                 
-                // Update flower size based on scroll progress
-                if (this.modules.flower) {
-                    this.modules.flower.updateFlowerSize(scrollProgress);
-                }
+                // Flower manager now only handles bloom state - no scroll integration needed
+                // if (this.modules.flower) {
+                //     this.modules.flower.updateFlowerSize(scrollProgress);
+                // }
             }
         } catch (error) {
             // Handle scroll animation error silently

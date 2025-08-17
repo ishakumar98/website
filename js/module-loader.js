@@ -100,7 +100,7 @@ class ModuleLoader {
     getModuleClass(moduleName) {
         const classMap = {
             'flower-manager': 'FlowerManager',
-            'image-popup-manager': 'ImagePopupManager',
+            'popup-manager': 'PopupManager',
             'text-slant-manager': 'TextSlantManager',
             'font-sizing-manager': 'FontSizingManager',
 
@@ -141,7 +141,7 @@ class ModuleLoader {
             // Project page-specific modules
             requiredModules = [
                 'flower-manager',
-                'image-popup-manager',
+                'popup-manager',
                 'text-slant-manager',
                 'font-sizing-manager',
                 'project-content-manager',
@@ -170,6 +170,68 @@ class ModuleLoader {
         }
     }
     
+    // Initialize all loaded modules by creating instances and calling initialize()
+    async initializeAllModules() {
+        const isHomepage = this.isHomepage();
+        const isProjectPage = this.isProjectPage();
+        
+        let requiredModules = [];
+        
+        if (isHomepage) {
+            requiredModules = [
+                'letter-animation-manager',
+                'fireworks-manager',
+                'homepage-scroll-manager',
+                'homepage-interaction-manager'
+            ];
+        } else if (isProjectPage) {
+            requiredModules = [
+                'flower-manager',
+                'popup-manager',
+                'text-slant-manager',
+                'font-sizing-manager',
+                'project-content-manager',
+                'project-scroll-manager'
+            ];
+        }
+        
+        console.log(`ModuleLoader: Initializing ${requiredModules.length} modules for ${isHomepage ? 'homepage' : 'project page'}`);
+        
+        const initializedModules = {};
+        
+        for (const moduleName of requiredModules) {
+            const moduleClass = this.getLoadedModule(moduleName);
+            if (moduleClass) {
+                try {
+                    // Create instance
+                    const instance = new moduleClass();
+                    
+                    // Call initialize() if the method exists
+                    if (typeof instance.initialize === 'function') {
+                        instance.initialize();
+                        console.log(`✅ Initialized ${moduleName}`);
+                    } else if (typeof instance.init === 'function') {
+                        instance.init();
+                        console.log(`✅ Initialized ${moduleName} (using init method)`);
+                    } else {
+                        console.log(`⚠️ ${moduleName} has no initialize or init method`);
+                    }
+                    
+                    // Store instance for later use
+                    initializedModules[moduleName] = instance;
+                    
+                } catch (error) {
+                    console.error(`❌ Failed to initialize ${moduleName}:`, error);
+                }
+            } else {
+                console.warn(`⚠️ Module ${moduleName} not found in loaded modules`);
+            }
+        }
+        
+        console.log(`ModuleLoader: Initialization complete. ${Object.keys(initializedModules).length} modules initialized.`);
+        return initializedModules;
+    }
+    
     // Check if all modules are loaded
     areAllModulesLoaded() {
         // Determine which modules should be loaded based on current page
@@ -190,7 +252,7 @@ class ModuleLoader {
             // Project page-specific modules
             requiredModules = [
                 'flower-manager',
-                'image-popup-manager',
+                'popup-manager',
                 'text-slant-manager',
                 'font-sizing-manager',
                 'project-content-manager',
