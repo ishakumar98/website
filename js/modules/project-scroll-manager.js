@@ -88,6 +88,8 @@ class ProjectScrollManager {
         // Add scroll event listener to start animation loop when scrolling begins
         window.addEventListener('scroll', () => {
             if (!this.animationLoopActive && Math.abs(window.pageYOffset) > 5) {
+                console.log('🚀 Starting animation loop - calling debugState()');
+                this.debugState();
                 this.startAnimationLoop();
             }
         });
@@ -123,8 +125,22 @@ class ProjectScrollManager {
             const adjustedScrollY = scrollY * scrollMultiplier;
             
             // Calculate scroll progress based on viewport height minus container height
-            const maxScroll = window.innerHeight - this.projectImagesSection.offsetHeight;
+            const containerHeight = this.projectImagesSection.offsetHeight;
+            const maxScroll = window.innerHeight - containerHeight;
             const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
+            
+            // Debug logging for scroll calculations
+            console.log('🔍 Project Scroll Debug:', {
+                scrollY,
+                adjustedScrollY,
+                containerHeight,
+                viewportHeight: window.innerHeight,
+                maxScroll,
+                scrollProgress: scrollProgress.toFixed(3),
+                currentTop: this.currentTop.toFixed(2),
+                startTop: startTop.toFixed(2),
+                endTop: endTop.toFixed(2)
+            });
             
             // Enhanced easing for more dramatic momentum building and deceleration
             let easedProgress = this.calculateEasedProgress(scrollProgress);
@@ -148,6 +164,16 @@ class ProjectScrollManager {
             
             // Clamp position to prevent overshooting
             this.currentTop = Math.max(endTop, Math.min(startTop, this.currentTop));
+            
+            // Debug logging for position constraints
+            console.log('📍 Position Debug:', {
+                clampedTop: this.currentTop.toFixed(2),
+                endTop: endTop.toFixed(2),
+                startTop: startTop.toFixed(2),
+                bottomEdge: (this.currentTop + containerHeight).toFixed(2),
+                viewportBottom: window.innerHeight,
+                isOvershooting: (this.currentTop + containerHeight) > window.innerHeight
+            });
             
             // Apply the calculated position
             this.projectImagesSection.style.top = this.currentTop + 'px';
@@ -198,6 +224,17 @@ class ProjectScrollManager {
         // Set the position of the image container
         this.projectImagesSection.style.top = imageContainerTop + 'px';
         
+        // Debug logging for initial positioning
+        console.log('🎯 Initial Position Debug:', {
+            viewportHeight,
+            flowerHeight,
+            flowerTotalHeight,
+            containerTopPadding,
+            imageContainerTop,
+            contentAreaHeight,
+            containerHeight: this.projectImagesSection.offsetHeight
+        });
+        
         // Set CSS variable for content area height (one-time setup)
         document.documentElement.style.setProperty('--content-area-height', contentAreaHeight + 'px');
         
@@ -244,6 +281,37 @@ class ProjectScrollManager {
     // Check if initialized
     isReady() {
         return this.isInitialized;
+    }
+    
+    // Debug function to log current state
+    debugState() {
+        if (!this.projectImagesSection) {
+            console.log('❌ ProjectScrollManager: No project images section found');
+            return;
+        }
+        
+        const rect = this.projectImagesSection.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(this.projectImagesSection);
+        
+        console.log('🔍 ProjectScrollManager Debug State:', {
+            isInitialized: this.isInitialized,
+            position: computedStyle.position,
+            top: computedStyle.top,
+            left: computedStyle.left,
+            right: computedStyle.right,
+            width: rect.width,
+            height: rect.height,
+            viewportHeight: window.innerHeight,
+            scrollY: window.pageYOffset,
+            getBoundingClientRect: {
+                top: rect.top,
+                bottom: rect.bottom,
+                left: rect.left,
+                right: rect.right
+            },
+            containerHeight: this.projectImagesSection.offsetHeight,
+            scrollHeight: this.projectImagesSection.scrollHeight
+        });
     }
     
     // Convert CSS units (em, rem, px) to pixels

@@ -364,6 +364,9 @@ body.project-page {
   /* Disable browser back/forward gestures */
   overscroll-behavior-x: none;
   -webkit-overflow-scrolling: touch;
+  
+  /* Debug: Current position is relative, not absolute like homepage */
+  /* This might be causing the scroll behavior difference */
 }
 
 /* Animation coordination support */
