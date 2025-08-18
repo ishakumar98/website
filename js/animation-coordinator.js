@@ -36,11 +36,17 @@ class AnimationCoordinator {
         // Set up conflict resolution strategies
         this.setupConflictResolutions();
         
-        // Monitor for animation conflicts
-        this.startConflictMonitoring();
-        
-        // Performance monitoring
-        this.startPerformanceMonitoring();
+        // Wait for DOM to be ready before starting monitoring
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.startConflictMonitoring();
+                this.startPerformanceMonitoring();
+            });
+        } else {
+            // DOM is already ready
+            this.startConflictMonitoring();
+            this.startPerformanceMonitoring();
+        }
     }
     
     // Set up conflict resolution strategies for different animation types

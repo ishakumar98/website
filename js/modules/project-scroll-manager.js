@@ -122,8 +122,8 @@ class ProjectScrollManager {
             const scrollMultiplier = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-multiplier')) || 0.25;
             const adjustedScrollY = scrollY * scrollMultiplier;
             
-            // Calculate scroll progress based on images container height
-            const maxScroll = this.projectImagesSection.offsetHeight;
+            // Calculate scroll progress based on viewport height minus container height
+            const maxScroll = window.innerHeight - this.projectImagesSection.offsetHeight;
             const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
             
             // Enhanced easing for more dramatic momentum building and deceleration
