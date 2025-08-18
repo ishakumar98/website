@@ -181,48 +181,35 @@
             <script>
                 // Wait for everything to load, then initialize homepage modules
                 document.addEventListener('DOMContentLoaded', async () => {
-                    console.log('DOMContentLoaded: Starting homepage initialization...');
-                    
                     try {
                         // Wait a bit for ModuleLoader to be available
                         let attempts = 0;
                         const maxAttempts = 20;
                         
                         const waitForModuleLoader = () => {
-                            console.log(`Attempt ${attempts + 1}: Checking for moduleLoader...`);
-                            
                             if (window.moduleLoader) {
-                                console.log('ModuleLoader found! Loading modules...');
-                                
                                 // Load all modules (homepage modules will auto-detect and only initialize on homepage)
                                 window.moduleLoader.loadAllModules().then((moduleClasses) => {
-                                    console.log('Modules loaded successfully:', moduleClasses);
-                                    
                                     try {
                                         // Create instances of homepage modules
                                         if (window.LetterAnimationManager) {
-                                            console.log('Creating LetterAnimationManager...');
                                             new window.LetterAnimationManager();
                                         }
                                         
                                         if (window.FireworksManager) {
-                                            console.log('Creating FireworksManager...');
                                             new window.FireworksManager();
                                         }
                                         
                                         if (window.HomepageScrollManager) {
-                                            console.log('Creating HomepageScrollManager...');
                                             new window.HomepageScrollManager();
                                         }
                                         
                                         if (window.HomepageInteractionManager) {
-                                            console.log('Creating HomepageInteractionManager...');
                                             new window.HomepageInteractionManager();
                                         }
                                         
                                         // Initialize popup functionality for About section
                                         if (window.PopupManager) {
-                                            console.log('Creating PopupManager for homepage...');
                                             const popupManager = new window.PopupManager();
                                             
                                             // Add click handler for About section
@@ -230,31 +217,30 @@
                                             if (aboutTrigger) {
                                                 aboutTrigger.addEventListener('click', (e) => {
                                                     e.preventDefault();
-                                                    console.log('About clicked! Opening text popup...');
                                                     popupManager.openTextPopup('about');
                                                 });
                                             }
                                         }
                                         
                                     } catch (error) {
-                                        console.error('Module instantiation error:', error);
+                                        // Handle module instantiation error silently
                                     }
                                     
                                 }).catch((error) => {
-                                    console.error('Module loading error:', error);
+                                    // Handle module loading error silently
                                 });
                             } else if (attempts < maxAttempts) {
                                 attempts++;
                                 setTimeout(waitForModuleLoader, 100);
                             } else {
-                                console.error('ModuleLoader failed to load after multiple attempts');
+                                // ModuleLoader failed to load after multiple attempts
                             }
                         };
                         
                         waitForModuleLoader();
                         
                     } catch (error) {
-                        console.error('Homepage initialization error:', error);
+                        // Handle homepage initialization error silently
                     }
                 });
             </script>

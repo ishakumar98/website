@@ -76,12 +76,8 @@
     --line-height-loose: 2;
     
     /* Border Radius System */
-    --border-radius-none: 0;
-    --border-radius-sm: 0.125rem;   /* 2px */
-    --border-radius-md: 0.25rem;    /* 4px */
-    --border-radius-lg: 0.5rem;     /* 8px */
-    --border-radius-xl: 0.75rem;    /* 12px */
-    --border-radius-full: 9999px;
+--border-radius-md: 1rem;       /* 16px */
+--border-radius-lg: 3rem;       /* 48px */
     
     /* Shadow System */
     --shadow-light: 0 1px 2px 0 rgba(0, 0, 0, 0.05);

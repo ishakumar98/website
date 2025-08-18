@@ -235,8 +235,8 @@
     justify-content: space-between;
     padding: var(--space-3xl) var(--space-2xl);
     background-color: rgba(254, 243, 249, 0.8);
-    border-top-left-radius: var(--space-2xl);
-    border-top-right-radius: var(--space-2xl);
+    border-top-left-radius: var(--border-radius-lg);
+    border-top-right-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-medium);
     backdrop-filter: blur(var(--space-sm));
     -webkit-backdrop-style: none;
@@ -430,7 +430,7 @@
     min-width: 400px;
     min-height: 300px; /* Ensure minimum height for content visibility */
     padding: 0;
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     -webkit-filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
     filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
     background-color: #f4f4f4;
@@ -517,17 +517,17 @@
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-close:after {
-    content: '';
+    content: '×';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 8px;
-    height: 8px;
-    background: #000;
-    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: 0.2s ease-in-out;
+    line-height: 1;
 }
 
 .image-center-popup .popup-nav .popup-actions.popup-close:hover:after {
@@ -544,7 +544,7 @@
 /* Filename display */
 .image-center-popup .popup-nav #popup-filename {
     font-family: inherit;
-    font-size: 14px;
+    font-size: var(--font-size-base);
     color: #000;
     font-weight: 500;
 }
@@ -573,13 +573,13 @@
     background-color: #ffffff;
     min-height: 200px;
     /* Ensure white background extends to bottom of popup */
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: var(--border-radius-md);
+    border-bottom-right-radius: var(--border-radius-md);
 }
 
 .popup-text-content {
     flex: 1;
-    padding: 32px;
+    padding: var(--space-lg);
     box-sizing: border-box;
     font-family: inherit;
     line-height: 1.6;

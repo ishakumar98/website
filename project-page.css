@@ -48,7 +48,7 @@
   --flower-margin-top: 2rem;
   --flower-margin-bottom: 1.5rem;
   --flower-min-dimension: 10px; /* Minimum valid dimension for flower elements */
-  --image-container-border-radius: 48px; /* Border radius for upper corners of main image container */
+  --image-container-border-radius: var(--border-radius-lg); /* Border radius for upper corners of main image container */
   --title-padding-vertical: 2px; /* Vertical padding for title container */
   --title-padding-horizontal: 4px; /* Horizontal padding for title container */
   --wrapper-image-border-radius: 6px; /* Border radius for image wrapper */
@@ -974,118 +974,166 @@ body.project-page {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Flower Logo - Bloomtype minimal implementation */
+/* Flower Logo - Bloomtype exact implementation */
 .flower {
-  display: inline-block;
-  position: fixed;
-  width: var(--flower-height);
-  height: var(--flower-height);
-  cursor: pointer;
-  z-index: 20;
+    display: inline-block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--flower-height);
+    height: var(--flower-height);
+    cursor: pointer;
+    animation-duration: 1s;
+    transition: 2s ease-in-out transform;
+    animation-fill-mode: both;
 }
 
-.flower:after {
-  content: "";
-  display: inline-block;
-  width: 50%;
-  height: 50%;
-  top: 25%;
-  left: 25%;
-  background: var(--color-background-lighter);
-  position: absolute;
-  border-radius: 100%;
-  pointer-events: none;
-}
-
-.flower .top,
-.flower .bottom {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-}
-
-.flower .top:before,
-.flower .top:after,
-.flower .bottom:before,
-.flower .bottom:after {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: 25%;
-  left: 25%;
-  width: 50%;
-  height: 50%;
-  background: var(--color-primary);
-  border-radius: 100%;
-}
-
-/* Flower logo class - triggers positioning and scaling */
-.flower-logo {
-  top: 0.25em;
-  left: calc(50% - 1.75em);
-}
-
-/* Logo state after blooming */
 .flower[logo]:after {
-  background: var(--color-background-lighter);
+    transition: background 1s;
+    background: var(--color-background-lighter);
 }
 
 .flower[logo] .top:before,
 .flower[logo] .top:after,
 .flower[logo] .bottom:before,
 .flower[logo] .bottom:after {
-  background: var(--color-primary);
+    transition: background 1s;
+    background: var(--color-primary);
 }
 
-/* Intro state for petal animations */
+.flower:after {
+    content: "";
+    display: inline-block;
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+    background: var(--color-primary);
+    position: absolute;
+    border-radius: 100%;
+    pointer-events: none;
+}
+
+.flower .top,
+.flower .bottom {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.flower .top:before,
+.flower .top:after,
+.flower .bottom:before,
+.flower .bottom:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    background: var(--color-primary);
+    border-radius: 100%;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
 .flower[intro] .top:before,
 .flower[intro] .top:after,
 .flower[intro] .bottom:before,
 .flower[intro] .bottom:after {
-  animation-duration: 1s;
-  animation-fill-mode: both;
+    animation-direction: normal;
+    animation-delay: 1.25s;
 }
 
-.flower[intro] .top:before { 
-  animation-name: topLeft; 
-  animation-delay: 0s;
-}
-.flower[intro] .top:after { 
-  animation-name: topRight; 
-  animation-delay: 0.1s;
-}
-.flower[intro] .bottom:before { 
-  animation-name: bottomLeft; 
-  animation-delay: 0.2s;
-}
-.flower[intro] .bottom:after { 
-  animation-name: bottomRight; 
-  animation-delay: 0.3s;
+.flower[intro] .top:before {
+    animation-name: topLeft;
 }
 
-/* Hover effect */
+.flower[intro] .top:after {
+    animation-name: topRight;
+}
+
+.flower[intro] .bottom:before {
+    animation-name: bottomLeft;
+}
+
+.flower[intro] .bottom:after {
+    animation-name: bottomRight;
+}
+
+.flower-logo {
+    top: 0.25em;
+    left: calc(50% - 1.75em);
+    z-index: 20;
+    animation: scaleUp 1s;
+    animation-fill-mode: forwards;
+}
+
+/* Hover effect - bloomtype exact */
 a.logo:hover {
-  border-bottom: none;
+    border-bottom: none;
+    animation: rotate 1s;
 }
 
-/* Keyframes for petal movement */
+/* Keyframes - bloomtype exact */
+@keyframes scaleUp {
+    0% {
+        transform: scale(0%, 0%) rotate(0);
+    }
+
+    100% {
+        transform: scale(100%, 100%) rotate(1turn);
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @keyframes topLeft {
-  0% { transform: translate(0%, 0%) }
-  100% { transform: translate(-50%, 50%) }
+    0% {
+        transform: translate(0%, 0%);
+    }
+
+    100% {
+        transform: translate(-50%, 50%);
+    }
 }
 
 @keyframes bottomLeft {
-  0% { transform: translate(0%, 0%) }
-  100% { transform: translate(-50%, -50%) }
+    0% {
+        transform: translate(0%, 0%);
+    }
+
+    100% {
+        transform: translate(-50%, -50%);
+    }
 }
 
 @keyframes topRight {
-  0% { transform: translate(0%, 0%) }
-  100% { transform: translate(50%, 50%) }
+    0% {
+        transform: translate(0%, 0%);
+    }
+
+    100% {
+        transform: translate(50%, 50%);
+    }
 }
 
 @keyframes bottomRight {
-  0% { transform: translate(0%, 0%) }
-  100% { transform: translate(50%, -50%) }
+    0% {
+        transform: translate(0%, 0%);
+    }
+
+    100% {
+        transform: translate(50%, -50%);
+    }
 }
 

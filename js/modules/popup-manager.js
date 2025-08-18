@@ -171,14 +171,6 @@ class PopupManager {
                 se: document.querySelector('#resize-se')
             }
         };
-        
-        // Debug logging
-        console.log('PopupManager - Found elements:', {
-            popup: !!this.popupElements.popup,
-            popupTextContainer: !!this.popupElements.popupTextContainer,
-            popupTextContent: !!this.popupElements.popupTextContent,
-            popupClose: !!this.popupElements.popupClose
-        });
     }
     
     findProjectImages() {
@@ -315,16 +307,12 @@ class PopupManager {
     // Open text popup (for About section, etc.)
     openTextPopup(templateName) {
         try {
-            console.log('PopupManager - openTextPopup called with:', templateName);
-            console.log('PopupManager - Current popup elements:', this.popupElements);
-            
             // Set popup type
             this.popupType = 'text';
             
             // Get template content
             const template = TEXT_POPUP_TEMPLATES[templateName];
             if (!template) {
-                console.error(`Text popup template '${templateName}' not found`);
                 return;
             }
             
@@ -356,14 +344,10 @@ class PopupManager {
                 
                 // Show popup
                 this.popupElements.popup.classList.add('active');
-                
-                console.log('PopupManager - Popup should now be visible with class "active"');
-            } else {
-                console.error('PopupManager - popup element not found!');
             }
             
         } catch (error) {
-            console.error('Error opening text popup:', error);
+            // Handle error silently
         }
     }
     
@@ -448,7 +432,6 @@ class PopupManager {
         // Add safety timeout to force cleanup if mouseup doesn't fire
         this.dragState.safetyTimeout = setTimeout(() => {
             if (this.dragState.isDragging) {
-                console.log('PopupManager - Safety timeout triggered, forcing drag stop');
                 this.stopDrag({ preventDefault: () => {} });
             }
         }, 10000); // 10 second timeout
@@ -472,9 +455,7 @@ class PopupManager {
     }
     
     stopDrag(e) {
-        console.log('PopupManager - stopDrag called');
         if (!this.dragState.isDragging) {
-            console.log('PopupManager - Not dragging, returning early');
             return;
         }
         
@@ -503,13 +484,11 @@ class PopupManager {
         this.popupUtils.removeDraggingState(this.popupElements.popup);
         
         this.dragState.isDragging = false;
-        console.log('PopupManager - Drag stopped, event listeners removed');
     }
     
     // Resize functionality
     startResize(e) {
         e.preventDefault();
-        console.log('PopupManager - startResize called');
         
         // Get resize handle that was clicked
         this.resizeState.resizeHandle = e.target;
@@ -545,13 +524,11 @@ class PopupManager {
         // Add safety timeout to force cleanup if mouseup doesn't fire
         this.resizeState.safetyTimeout = setTimeout(() => {
             if (this.resizeState.isResizing) {
-                console.log('PopupManager - Safety timeout triggered, forcing resize stop');
                 this.stopResize({ preventDefault: () => {} });
             }
         }, 10000); // 10 second timeout
         
         this.resizeState.isResizing = true;
-        console.log('PopupManager - Resize started, event listeners added');
     }
     
     resize(e) {
@@ -633,9 +610,7 @@ class PopupManager {
     }
     
     stopResize(e) {
-        console.log('PopupManager - stopResize called');
         if (!this.resizeState.isResizing) {
-            console.log('PopupManager - Not resizing, returning early');
             return;
         }
         
@@ -664,7 +639,6 @@ class PopupManager {
         this.popupElements.popup.classList.remove('resizing');
         
         this.resizeState.isResizing = false;
-        console.log('PopupManager - Resize stopped, event listeners removed');
     }
     
     // Calculate minimum popup size needed to display full image with padding
