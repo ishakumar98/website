@@ -192,7 +192,7 @@ This is a **portfolio website** that showcases creative work with a focus on:
 
 ---
 
-## 🎯 **For Future Agents**
+## 🎯 **For Future Developers**
 
 **Remember**: This isn't just a website - it's a **demonstration of creative and technical excellence**. Every line of code, every animation, every design decision should reflect this commitment to quality.
 
@@ -200,6 +200,6 @@ This is a **portfolio website** that showcases creative work with a focus on:
 - **Maintain the vision** while improving the implementation
 - **Preserve the magic** while making it more robust
 - **Extend the system** while keeping it performant
-- **Document everything** so future agents can continue the work
+- **Document everything** so future developers can continue the work
 
 **This portfolio represents the intersection of art and technology - treat it with the respect it deserves.** 🚀

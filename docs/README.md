@@ -1,6 +1,6 @@
 # Portfolio Website - Complete System Documentation
 
-## 🎯 **Welcome, Future Agent!**
+## 🎯 **Welcome, Future Developer!**
 
 This is a sophisticated, enterprise-grade portfolio website with a comprehensive system architecture. **Before making any changes, you MUST read the documentation to understand how everything works together.**
 

@@ -2,7 +2,7 @@
 
 ## 🏗️ **System Architecture Overview**
 
-This document provides a complete understanding of how all systems work together in your portfolio website. It's designed to help future agents understand the architecture without breaking existing functionality.
+This document provides a complete understanding of how all systems work together in your portfolio website. It's designed to help future developers understand the architecture without breaking existing functionality.
 
 ## 📋 **System Components**
 
@@ -83,7 +83,7 @@ CSS Animation ←→ AnimationCoordinator ←→ JavaScript Animation
 - Gradual migration path
 - No breaking changes
 
-## 🚨 **Critical Rules for Future Agents**
+## 🚨 **Critical Rules for Future Developers**
 
 ### **NEVER DO THESE THINGS:**
 
@@ -421,7 +421,7 @@ console.log('Animation priorities:', window.animationCoordinator.priorities);
 
 ---
 
-## 🎯 **Summary for Future Agents**
+## 🎯 **Summary for Future Developers**
 
 **You are working with a sophisticated, enterprise-grade system that includes:**
 
