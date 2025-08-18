@@ -82,6 +82,11 @@
                     "src": "images/calendar/AI Scheduling.png",
                     "alt": "AI Scheduling",
                     "title": "AI Scheduling.png"
+                },
+                {
+                    "src": "images/calendar/Peek View.png",
+                    "alt": "Peek View",
+                    "title": "Peek View.png"
                 }
             ]
     },
@@ -144,19 +149,64 @@
       "credits": "Thank you to my cross-functional team: Amanda Glanz, Timothy Wittig, Elyse Vest, Stewart Taylor, and more.",
       "images": [
         {
-          "src": "images/huddles/huddle-workspace-1.png",
-          "alt": "Huddle Workspace 1",
-          "title": "Huddle Workspace 1.png"
+          "src": "images/huddles/Picture in Picture.png",
+          "alt": "Picture in Picture",
+          "title": "Picture in Picture.png"
         },
         {
-          "src": "images/huddles/huddle-workspace-2.png",
-          "alt": "Huddle Workspace 2",
-          "title": "Huddle Workspace 2.png"
+          "src": "images/huddles/Picture in Picture (1).png",
+          "alt": "Picture in Picture 1",
+          "title": "Picture in Picture (1).png"
         },
         {
-          "src": "images/huddles/huddle-workspace-3.png",
-          "alt": "Huddle Workspace 3",
-          "title": "Huddle Workspace 3.png"
+          "src": "images/huddles/Picture in Picture (2).png",
+          "alt": "Picture in Picture 2",
+          "title": "Picture in Picture (2).png"
+        },
+        {
+          "src": "images/huddles/Picture in Picture (3).png",
+          "alt": "Picture in Picture 3",
+          "title": "Picture in Picture (3).png"
+        },
+        {
+          "src": "images/huddles/Picture in Picture (4).png",
+          "alt": "Picture in Picture 4",
+          "title": "Picture in Picture (4).png"
+        },
+        {
+          "src": "images/huddles/Preview.png",
+          "alt": "Preview",
+          "title": "Preview.png"
+        },
+        {
+          "src": "images/huddles/Expanded Window.png",
+          "alt": "Expanded Window",
+          "title": "Expanded Window.png"
+        },
+        {
+          "src": "images/huddles/Collapsed Bar.png",
+          "alt": "Collapsed Bar",
+          "title": "Collapsed Bar.png"
+        },
+        {
+          "src": "images/huddles/Reactions.png",
+          "alt": "Reactions",
+          "title": "Reactions.png"
+        },
+        {
+          "src": "images/huddles/Waiting Room.png",
+          "alt": "Waiting Room",
+          "title": "Waiting Room.png"
+        },
+        {
+          "src": "images/huddles/Raised Hand.png",
+          "alt": "Raised Hand",
+          "title": "Raised Hand.png"
+        },
+        {
+          "src": "images/huddles/Notifications.png",
+          "alt": "Notifications",
+          "title": "Notifications.png"
         }
       ]
     },
