@@ -170,34 +170,52 @@
             const flower = document.querySelector('.flower-logo');
             if (!flower) return;
             
-            // Initial positioning - center horizontally, start at middle of viewport
-            const initialTop = 50; // Start at 50% of viewport height
+            // Initial positioning - center horizontally, start at top of viewport with padding
+            const initialTop = 0; // Start at 0% of viewport height (top)
+            const topPadding = 16; // Add 16px of padding above the flower (--space-md)
             const initialScale = 1.0; // Start at full size
             
+            // Calculate the final top position
+            const finalTop = initialTop + topPadding;
+            
+            console.log('=== FLOWER POSITIONING DEBUG ===');
+            console.log('initialTop:', initialTop);
+            console.log('topPadding:', topPadding);
+            console.log('finalTop calculated:', finalTop);
+            console.log('Setting flower.style.top to:', finalTop + 'px');
+            
             // Set initial position
-            flower.style.top = initialTop + 'vh';
+            flower.style.top = finalTop + 'px';
             flower.style.left = 'calc(50% - 3vw)'; // Center horizontally like Bloomtype
             flower.style.scale = initialScale;
+            
+            console.log('After setting - flower.style.top:', flower.style.top);
+            console.log('After setting - flower.style.left:', flower.style.left);
+            console.log('After setting - flower.style.scale:', flower.style.scale);
             
             // Scroll-based resizing function
             function updateFlowerOnScroll() {
                 const scrollY = window.scrollY;
                 const viewportHeight = window.innerHeight;
                 
-                // Calculate new top position (flower moves down as you scroll)
+                // Calculate new top position (flower stays at top as you scroll)
                 const maxScroll = document.documentElement.scrollHeight - viewportHeight;
                 const scrollProgress = Math.min(scrollY / maxScroll, 1); // 0 to 1
                 
-                // Flower moves from 50vh to 0vh (top of viewport) as you scroll
-                const newTop = initialTop - (scrollProgress * initialTop);
+                // Flower stays at top with padding as you scroll
+                const newTop = finalTop; // Always stays at top with padding
                 
-                // Scale decreases from 1.0 to 0.3 as flower reaches top of viewport
-                const minScale = 0.3; // Smallest size when at top
+                // Scale decreases from 1.0 to 0.3 as you scroll down
+                const minScale = 0.3; // Smallest size when scrolled down
                 const newScale = initialScale - (scrollProgress * (initialScale - minScale));
                 
+                console.log('Scroll update - newTop:', newTop, 'newScale:', newScale);
+                
                 // Apply the new positioning
-                flower.style.top = newTop + 'vh';
+                flower.style.top = newTop + 'px';
                 flower.style.scale = newScale;
+                
+                console.log('After scroll update - flower.style.top:', flower.style.top);
             }
             
             // Add scroll event listener
