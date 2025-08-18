@@ -139,7 +139,7 @@ This is a **portfolio website** that showcases creative work with a focus on:
 4. **Performance Art**: The website itself is a demonstration of skill
 
 ### **Inspiration Sources**
-- **Bloomtype**: Organic, gooey scroll effects
+- **Custom**: Organic, gooey scroll effects
 - **ISHA**: Dynamic text interactions and font variations
 - **Modern Web**: Latest CSS and JavaScript capabilities
 - **Creative Coding**: Experimental and innovative approaches

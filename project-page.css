@@ -84,7 +84,7 @@
   --scroll-multiplier: 0.25;
 }
 
-/* Flower logo styles - Using .flower class with Bloomtype implementation */
+/* Flower logo styles - Using .flower class with custom implementation */
 
 .project-page-container {
     min-height: 100vh;
