@@ -155,10 +155,9 @@ body.project-page {
     flex-shrink: 0;
     width: 245px; /* Fixed dimensions */
     height: 210px; /* Fixed dimensions */
+    padding: 16px;
     border-radius: var(--wrapper-image-border-radius); /* 6px border radius */
     transition: all var(--transition-fast);
-    border: 1px solid rgba(29, 28, 29, 0.1); /* Light grey border like Good Co */
-    box-sizing: border-box;
 }
 
 .image .wrapper-image img {
@@ -169,6 +168,7 @@ body.project-page {
     filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
     background-color: var(--color-background-lighter);
     transition: all var(--transition-fast);
+    box-sizing: border-box;
 }
 
 /* Hover effects */
@@ -177,6 +177,7 @@ body.project-page {
     border-radius: var(--wrapper-image-border-radius); /* Use our 6px variable */
     transition: all var(--transition-fast);
 }
+
 .image:hover .title span {
     background-color: rgba(29, 28, 29, 0.06); /* Subtle dark overlay */
     border-radius: var(--title-border-radius); /* Use our 4px variable */
@@ -190,6 +191,8 @@ body.project-page {
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 0; /* Ensure no top margin interferes with gap */
+    margin-bottom: 0; /* Ensure no bottom margin interferes with gap */
 }
 
 .image .title span {
@@ -440,8 +443,8 @@ body.project-page {
     transform: scale(1.1);
 }
 
-/* Make images clickable */
-.wrapper-image img {
+/* Make project images clickable - more specific to avoid conflicts */
+.image .wrapper-image img {
     cursor: pointer;
 }
 
