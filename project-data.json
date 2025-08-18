@@ -119,24 +119,64 @@
       "title": "Lists",
       "year": "2024",
       "description": [
-        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I contributed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, using the old system I designed. And, I led design on a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, abstract system while keeping the experience intuitive and consistent across the platform."
+        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I contributed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, which became the most successful in Slack's history. And, I led design on a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, abstract system while keeping the experience intuitive and consistent across the platform."
       ],
       "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Liu, Anna Niess, Samuel Kang, Katie Stiegman, and many other cross-functional folks.",
       "images": [
         {
-          "src": "images/lists/list-interface-1.png",
-          "alt": "List Interface 1",
-          "title": "List Interface 1.png"
+          "src": "images/lists/List view.png",
+          "alt": "List View",
+          "title": "List View.png"
         },
         {
-          "src": "images/lists/list-interface-2.png",
-          "alt": "List Interface 2",
-          "title": "List Interface 2.png"
+          "src": "images/lists/Grouped view.png",
+          "alt": "Grouped View",
+          "title": "Grouped View.png"
         },
         {
-          "src": "images/lists/list-interface-3.png",
-          "alt": "List Interface 3",
-          "title": "List Interface 3.png"
+          "src": "images/lists/Kanban view.png",
+          "alt": "Kanban View",
+          "title": "Kanban View.png"
+        },
+        {
+          "src": "images/lists/Launch (1).png",
+          "alt": "Launch 1",
+          "title": "Launch (1).png"
+        },
+        {
+          "src": "images/lists/Launch (2).png",
+          "alt": "Launch 2",
+          "title": "Launch (2).png"
+        },
+        {
+          "src": "images/lists/Launch (3).png",
+          "alt": "Launch 3",
+          "title": "Launch (3).png"
+        },
+        {
+          "src": "images/lists/Launch (4).png",
+          "alt": "Launch 4",
+          "title": "Launch (4).png"
+        },
+        {
+          "src": "images/lists/To Dos (1).png",
+          "alt": "To Dos 1",
+          "title": "To Dos (1).png"
+        },
+        {
+          "src": "images/lists/To Dos (2).png",
+          "alt": "To Dos 2",
+          "title": "To Dos (2).png"
+        },
+        {
+          "src": "images/lists/To Dos (3).png",
+          "alt": "To Dos 3",
+          "title": "To Dos (3).png"
+        },
+        {
+          "src": "images/lists/Item View.png",
+          "alt": "Item View",
+          "title": "Item View.png"
         }
       ]
     },
@@ -244,19 +284,54 @@
       "credits": "Such a fun one to jam on with Shilpa Ramamurthy, Stuart Lovinggood, James Yi, Skip Hursh, and other cross-functional folks.",
       "images": [
         {
-          "src": "images/onboarding-system/onboarding-step-1.png",
-          "alt": "Onboarding Step 1",
-          "title": "Onboarding Step 1.png"
+          "src": "images/onboarding-system/☎️ Onboarding Cards (1).gif",
+          "alt": "Onboarding Cards 1",
+          "title": "☎️ Onboarding Cards (1).gif"
         },
         {
-          "src": "images/onboarding-system/onboarding-step-2.png",
-          "alt": "Onboarding Step 2",
-          "title": "Onboarding Step 2.png"
+          "src": "images/onboarding-system/☎️ Onboarding Cards (2).gif",
+          "alt": "Onboarding Cards 2",
+          "title": "☎️ Onboarding Cards (2).gif"
         },
         {
-          "src": "images/onboarding-system/onboarding-step-3.png",
-          "alt": "Onboarding Step 3",
-          "title": "Onboarding Step 3.png"
+          "src": "images/onboarding-system/☎️ Tip (1).gif",
+          "alt": "Tip 1",
+          "title": "☎️ Tip (1).gif"
+        },
+        {
+          "src": "images/onboarding-system/☎️ Tip (2).gif",
+          "alt": "Tip 2",
+          "title": "☎️ Tip (2).gif"
+        },
+        {
+          "src": "images/onboarding-system/☎️ Success State.gif",
+          "alt": "Success State",
+          "title": "☎️ Success State.gif"
+        },
+        {
+          "src": "images/onboarding-system/🖥️ Success State.gif",
+          "alt": "Desktop Success State",
+          "title": "🖥️ Success State.gif"
+        },
+        {
+          "src": "images/onboarding-system/🖥️ Pulse.gif",
+          "alt": "Desktop Pulse",
+          "title": "🖥️ Pulse.gif"
+        },
+        {
+          "src": "images/onboarding-system/🖥️ Banner (1).png",
+          "alt": "Desktop Banner 1",
+          "title": "🖥️ Banner (1).png"
+        },
+        {
+          "src": "images/onboarding-system/🖥️ Banner (2).png",
+          "alt": "Desktop Banner 2",
+          "title": "🖥️ Banner (2).png"
+        },
+        {
+          "src": "images/onboarding-system/🖥️ Banner (3).png",
+          "alt": "Desktop Banner 3",
+          "title": "🖥️ Banner (3).png"
         }
       ]
     }
