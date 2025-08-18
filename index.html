@@ -71,7 +71,7 @@
                 </a>
             </div>
             <div class="work-item">
-                <a class="work-link" href="calendar-project.html">
+                <a class="work-link" href="#" onclick="checkCalendarPassword(event)">
                     <div class="wrapper-image">
                         <img src="images/folder.svg" alt="folder">
                     </div>
@@ -243,6 +243,28 @@
                         // Handle homepage initialization error silently
                     }
                 });
+            </script>
+            
+            <!-- Password Protection for Calendar -->
+            <script>
+                function checkCalendarPassword(event) {
+                    event.preventDefault();
+                    
+                    // Set your desired password here
+                    const correctPassword = 'Linear2025';
+                    
+                    // Prompt for password
+                    const userPassword = prompt('Enter password to access Calendar project:');
+                    
+                    if (userPassword === correctPassword) {
+                        // Password correct - redirect to calendar project
+                        window.location.href = 'calendar-project.html';
+                    } else if (userPassword !== null) {
+                        // Password incorrect but user didn't cancel
+                        alert('Incorrect password. Please try again.');
+                    }
+                    // If user clicks Cancel, do nothing
+                }
             </script>
     
 

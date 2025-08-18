@@ -12,9 +12,7 @@ if (!isHomePage) {
   throw new Error('Fireworks script disabled for non-home pages');
 }
 
-// Daniel Shiffman
-// http://codingtra.in
-// https://youtu.be/CKeyIbT3vXI
+// Fireworks animation system
 // const palette = ['#537DBD','#CA683E','#D3B934','#AF9E7D','#D85959','#956750','#277325','#F3B524','#972723','#5B388B','#686B1C','#142D86','#A1A329','#BF1E16','#3853A5','#D7537E','#E99F22','#CE5310','#1C57A7','#613B31']
 const palette = ['#537DBD','#CA683E','#D3B934','#AF9E7D','#D85959','#956750','#277325','#F3B524','#972723','#5B388B','#686B1C','#142D86','#A1A329','#BF1E16','#3853A5','#D7537E','#E99F22','#CE5310','#613B31']
 
@@ -78,9 +76,7 @@ class Firework {
     }
   }
 
-// Daniel Shiffman
-// http://codingtra.in
-// https://youtu.be/CKeyIbT3vXI
+// Particle system for fireworks
 
 
 
@@ -191,10 +187,7 @@ class Particle {
   }
 
 // Daniel Shiffman
-// http://codingtra.in
-// https://youtu.be/CKeyIbT3vXI
-
-// const palette = ['#537DBD','#CA683E','#D3B934','#AF9E7D','#D85959','#956750','#277325','#F3B524','#972723','#5B388B','#686B1C','#142D86','#A1A329','#BF1E16','#3853A5','#D7537E','#E99F22','#CE5310','#1C57A7','#613B31']
+// Fireworks system initialization
 
 const fireworks = [];
 const letters = ['C', 'O', 'T', 'T', 'O', 'N'];
