@@ -29,7 +29,7 @@ const TEXT_POPUP_TEMPLATES = {
     about: {
         title: "About",
         content: {
-            text: "I'm a generalist designer with experience across growth, systems, and zero to one design. I thrive in spaces without playbooks—where creative thinking and fast learning matter most. I'm good at helping teams transform ambiguity into ambition, together. To imagine new solutions, ship things we're proud of, and most importantly—enjoy our time working together.\n\nI've been at Slack for the last four years, and currently lead design for huddles, Slack's most used, and most loved feature. Before that, I got my undergraduate and master's degree in Computer Science, from Stanford University.\n\n01. Email\nhello@isha.work\n\n02. LinkedIn\n<a href='https://www.linkedin.com/in/ishakumar' target='_blank' class='bio-link'><strong style='font-weight: 500;'>@ishakumar</strong></a>\n\n03. More\n<a href='assets/Resume.pdf' target='_blank' class='bio-link'><strong style='font-weight: 500;'>Resume</strong></a>"
+            text: "I'm a generalist designer with experience across growth, systems, and zero to one design. I thrive in spaces without playbooks—where creative thinking and fast learning matter most. I'm good at helping teams transform ambiguity into ambition, together. To imagine new solutions, ship things we're proud of, and most importantly—enjoy our time working together.\n\nI've been at <a href='https://slack.com/' target='_blank' class='bio-link'><strong style='font-weight: 500;'>Slack</strong></a> for the last four years, and currently lead design for <a href='https://www.theverge.com/2021/6/30/22556992/slack-huddles-audio-calls-feature-launch-discord-like' target='_blank' class='bio-link'><strong style='font-weight: 500;'>huddles</strong></a>, Slack's most used, and most loved feature. Before that, I got my undergraduate and master's degree in Computer Science, from <a href='https://www.stanford.edu/' target='_blank' class='bio-link'><strong style='font-weight: 500;'>Stanford University</strong></a>.\n\n01. Email\n<a href='mailto:ishkumar099@gmail.com' class='bio-link'><strong style='font-weight: 500;'>ishkumar099@gmail.com</strong></a>\n\n02. LinkedIn\n<a href='https://www.linkedin.com/in/isha-kumar-29a479125/' target='_blank' class='bio-link'><strong style='font-weight: 500;'>@ishakumar</strong></a>\n\n03. More\n<a href='assets/Resume.pdf' target='_blank' class='bio-link'><strong style='font-weight: 500;'>Resume</strong></a>"
         }
     }
 };
@@ -355,8 +355,10 @@ class PopupManager {
             
             // Populate text content
             if (this.popupElements.popupTextContent) {
+                // Convert \n to <br> tags for proper line breaks
+                const formattedText = template.content.text.replace(/\n/g, '<br>');
                 this.popupElements.popupTextContent.innerHTML = `
-                    <p>${template.content.text}</p>
+                    <p>${formattedText}</p>
                 `;
             }
             
@@ -364,20 +366,14 @@ class PopupManager {
             if (this.popupElements.popup) {
                 this.popupElements.popup.setAttribute('data-popup-type', 'text');
                 
-                // Calculate text popup dimensions
-                const textDimensions = this.calculateTextPopupSize();
+                // Let the popup size itself to hug the content
+                this.popupElements.popup.style.width = 'auto';
+                this.popupElements.popup.style.height = 'auto';
                 
-                // Validate dimensions
-                if (textDimensions && textDimensions.width && textDimensions.height) {
-                    // Set dimensions
-                    this.popupElements.popup.style.width = textDimensions.width + 'px';
-                    this.popupElements.popup.style.height = textDimensions.height + 'px';
-                    
-                    // Show popup
-                    this.popupElements.popup.classList.add('active');
-                } else {
-                    console.warn('PopupManager: Invalid dimensions calculated');
-                }
+                // Show popup immediately
+                this.popupElements.popup.classList.add('active');
+                
+                console.log('PopupManager: Set popup to auto-size (hug content)');
             } else {
                 console.warn('PopupManager: Popup element not found');
             }

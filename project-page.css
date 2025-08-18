@@ -773,10 +773,6 @@ body.project-page {
     display: flex; /* Show text container for text popups */
 }
 
-.image-center-popup[data-popup-type="text"] .popup-text-container {
-    display: none; /* Hide text container by default */
-}
-
 /* Default state: show image container, hide text container */
 .popup-image-container {
     display: flex;
