@@ -832,10 +832,16 @@ class PopupManager {
         const maxReadableWidth = Math.min(viewportWidth * 0.8, config.maxWidth);
         width = Math.max(config.minWidth, Math.min(width, maxReadableWidth));
         
-        // Calculate height based on content (placeholder for now)
-        // In the future, this could calculate based on actual text length
-        const contentHeight = 200; // Placeholder height
-        height = Math.max(config.minHeight, contentHeight + (config.padding * 2));
+        // Calculate height based on actual content
+        const textContent = this.popupElements.popupTextContent;
+        if (textContent) {
+            // Get the actual rendered height of the text content
+            const contentHeight = textContent.scrollHeight;
+            height = Math.max(config.minHeight, contentHeight + (config.padding * 2));
+        } else {
+            // Fallback to minimum height if content element not found
+            height = config.minHeight;
+        }
         
         // Ensure we don't exceed viewport
         if (height > viewportHeight * 0.8) {
