@@ -55,6 +55,11 @@
   --title-border-radius: 4px; /* Border radius for title container */
   --image-title-gap: var(--space-md); /* 16px gap between image and title */
   
+  /* Image dimensions */
+  --image-base-width: 245px;
+  --image-base-height: 210px;
+  --image-padding: var(--space-sm);
+  
   /* Animation Timing System */
   --animation-fast: 100ms;
   --animation-medium: 200ms;
@@ -149,15 +154,19 @@ body.project-page {
     cursor: pointer;
     padding: 0;
     position: relative;
+    /* Container will now properly account for the padded dimensions */
+    width: calc(var(--image-base-width) + (2 * var(--image-padding)));
+    min-height: calc(var(--image-base-height) + (2 * var(--image-padding)));
 }
 
 .image .wrapper-image {
     flex-shrink: 0;
-    width: 245px; /* Fixed dimensions */
-    height: 210px; /* Fixed dimensions */
-    padding: 16px;
+    width: var(--image-base-width);
+    height: var(--image-base-height);
+    padding: var(--image-padding);
     border-radius: var(--wrapper-image-border-radius); /* 6px border radius */
     transition: all var(--transition-fast);
+    box-sizing: border-box;
 }
 
 .image .wrapper-image img {
