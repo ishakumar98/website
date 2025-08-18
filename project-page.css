@@ -156,7 +156,7 @@ body.project-page {
     position: relative;
     /* Container will now properly account for the padded dimensions */
     width: calc(var(--image-base-width) + (2 * var(--image-padding)));
-    min-height: calc(var(--image-base-height) + (2 * var(--image-padding)));
+    height: calc(var(--image-base-height) + (2 * var(--image-padding)) + var(--image-title-gap) + 2rem); /* Fixed height including title space */
 }
 
 .image .wrapper-image {
@@ -202,6 +202,8 @@ body.project-page {
     margin-right: auto;
     margin-top: 0; /* Ensure no top margin interferes with gap */
     margin-bottom: 0; /* Ensure no bottom margin interferes with gap */
+    position: relative; /* Ensure stable positioning */
+    flex-shrink: 0; /* Prevent title from shrinking */
 }
 
 .image .title span {
