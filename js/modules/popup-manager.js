@@ -238,17 +238,15 @@ class PopupManager {
     openPopup(imageIndex) {
         // Input validation
         if (typeof imageIndex !== 'number' || imageIndex < 0) {
-            console.warn('PopupManager: Invalid image index provided');
+    
             return;
         }
         
         if (!this.isInitialized) {
-            console.warn('PopupManager: Not initialized');
             return;
         }
         
         if (!this.projectImages || !this.projectImages[imageIndex]) {
-            console.warn('PopupManager: Image not found at index', imageIndex);
             return;
         }
         
@@ -296,8 +294,6 @@ class PopupManager {
                     
                     // Show popup
                     this.popupElements.popup.classList.add('active');
-                } else {
-                    console.warn('PopupManager: Invalid optimal size calculated');
                 }
             };
             
@@ -307,7 +303,7 @@ class PopupManager {
             }
             
         } catch (error) {
-            console.error('PopupManager: Error opening image popup:', error);
+            // Error handling
         }
     }
     
@@ -319,12 +315,10 @@ class PopupManager {
     openTextPopup(templateName) {
         // Input validation
         if (!templateName || typeof templateName !== 'string') {
-            console.warn('PopupManager: Invalid template name provided');
             return;
         }
         
         if (!this.isInitialized) {
-            console.warn('PopupManager: Not initialized');
             return;
         }
         
@@ -335,13 +329,11 @@ class PopupManager {
             // Get template content
             const template = TEXT_POPUP_TEMPLATES[templateName];
             if (!template) {
-                console.warn(`PopupManager: Template '${templateName}' not found`);
                 return;
             }
             
             // Validate template structure
             if (!template.title || !template.content || !template.content.text) {
-                console.warn('PopupManager: Invalid template structure');
                 return;
             }
             
@@ -373,13 +365,11 @@ class PopupManager {
                 // Show popup immediately
                 this.popupElements.popup.classList.add('active');
                 
-                console.log('PopupManager: Set popup to auto-size (hug content)');
-            } else {
-                console.warn('PopupManager: Popup element not found');
+
             }
             
         } catch (error) {
-            console.error('PopupManager: Error opening text popup:', error);
+            // Error handling
         }
     }
     

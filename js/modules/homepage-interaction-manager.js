@@ -27,7 +27,7 @@ class HomepageInteractionManager {
         try {
             // Check if we're on homepage
             if (!this.isHomepage()) {
-                console.log('HomepageInteractionManager: Not on homepage, skipping initialization');
+        
                 return;
             }
             
@@ -35,7 +35,7 @@ class HomepageInteractionManager {
             this.setupEventListeners();
             
             this.isInitialized = true;
-            console.log('HomepageInteractionManager: Initialized successfully');
+    
             
         } catch (error) {
             this.handleInitializationError(error);
@@ -45,19 +45,14 @@ class HomepageInteractionManager {
     handleInitializationError(error) {
         this.initializationAttempts++;
         
-        console.error('HomepageInteractionManager: Initialization error:', {
-            error: error.message,
-            stack: error.stack,
-            attempt: this.initializationAttempts,
-            maxAttempts: this.maxInitializationAttempts
-        });
+
         
         // Attempt to recover if we haven't exceeded max attempts
         if (this.initializationAttempts < this.maxInitializationAttempts) {
-            console.log(`HomepageInteractionManager: Retrying initialization (attempt ${this.initializationAttempts + 1}/${this.maxInitializationAttempts})`);
+
             setTimeout(() => this.init(), 1000 * this.initializationAttempts); // Exponential backoff
         } else {
-            console.error('HomepageInteractionManager: Max initialization attempts reached, giving up');
+
             // Could implement fallback behavior here
         }
     }
@@ -76,14 +71,14 @@ class HomepageInteractionManager {
         try {
             // Find all work items
             this.workItems = document.querySelectorAll('.work-item');
-            console.log(`HomepageInteractionManager: Found ${this.workItems.length} work items`);
+
             
             // Find all folder items (if they exist)
             this.folderItems = document.querySelectorAll('.finder li');
-            console.log(`HomepageInteractionManager: Found ${this.folderItems.length} folder items`);
+
             
         } catch (error) {
-            console.error('HomepageInteractionManager: Error setting up elements:', error);
+
             throw error; // Re-throw to be caught by init()
         }
     }
@@ -100,7 +95,7 @@ class HomepageInteractionManager {
             this.registerWithEventManager();
             
         } catch (error) {
-            console.error('HomepageInteractionManager: Error setting up event listeners:', error);
+
             throw error; // Re-throw to be caught by init()
         }
     }
@@ -114,19 +109,16 @@ class HomepageInteractionManager {
                     folderItems: []
                 };
                 
-                console.log('HomepageInteractionManager: EventManager available, using centralized event management');
+
                 
             } catch (error) {
-                console.warn('HomepageInteractionManager: Failed to initialize EventManager integration:', error);
+                // Failed to initialize EventManager integration
             }
-        } else {
-            console.warn('HomepageInteractionManager: EventManager not available, using direct event listeners');
         }
     }
     
     setupWorkItemInteractions() {
         if (!this.workItems || this.workItems.length === 0) {
-            console.warn('HomepageInteractionManager: No work items found for interaction setup');
             return;
         }
         
@@ -163,18 +155,15 @@ class HomepageInteractionManager {
                             this.handleWorkItemHover(wrapperImage, titleSpan, false);
                         });
                     }
-                } else {
-                    console.warn(`HomepageInteractionManager: Work item ${index} missing wrapper-image element`);
                 }
             } catch (error) {
-                console.error(`HomepageInteractionManager: Error setting up work item ${index} interactions:`, error);
+                // Error setting up work item interactions
             }
         });
     }
     
     setupFolderItemInteractions() {
         if (!this.folderItems || this.folderItems.length === 0) {
-            console.log('HomepageInteractionManager: No folder items found, skipping folder interactions');
             return;
         }
         
@@ -211,11 +200,9 @@ class HomepageInteractionManager {
                             this.handleFolderItemHover(wrapperImage, titleSpan, false);
                         });
                     }
-                } else {
-                    console.warn(`HomepageInteractionManager: Folder item ${index} missing wrapper-image element`);
                 }
             } catch (error) {
-                console.error(`HomepageInteractionManager: Error setting up folder item ${index} interactions:`, error);
+                // Error setting up folder item interactions
             }
         });
     }
@@ -234,30 +221,25 @@ class HomepageInteractionManager {
     
     refreshElements() {
         try {
-            console.log('HomepageInteractionManager: Refreshing elements');
             // Re-find elements in case DOM has changed
             this.setupElements();
             this.setupEventListeners();
-            console.log('HomepageInteractionManager: Elements refreshed successfully');
         } catch (error) {
-            console.error('HomepageInteractionManager: Error refreshing elements:', error);
+            // Error refreshing elements
         }
     }
     
     enableInteractions() {
         try {
-            console.log('HomepageInteractionManager: Enabling interactions');
             // Re-enable all interactions
             this.setupEventListeners();
-            console.log('HomepageInteractionManager: Interactions enabled successfully');
         } catch (error) {
-            console.error('HomepageInteractionManager: Error enabling interactions:', error);
+            // Error enabling interactions
         }
     }
     
     disableInteractions() {
         try {
-            console.log('HomepageInteractionManager: Disabling interactions');
             
             if (window.eventManager && this.eventListenerIds) {
                 // Clean up EventManager listeners
@@ -266,7 +248,7 @@ class HomepageInteractionManager {
                         if (mouseenterId) window.eventManager.removeListener(mouseenterId);
                         if (mouseleaveId) window.eventManager.removeListener(mouseleaveId);
                     } catch (error) {
-                        console.warn('HomepageInteractionManager: Error removing EventManager listener:', error);
+                        // Error removing EventManager listener
                     }
                 });
                 
@@ -275,7 +257,7 @@ class HomepageInteractionManager {
                         if (mouseenterId) window.eventManager.removeListener(mouseenterId);
                         if (mouseleaveId) window.eventManager.removeListener(mouseleaveId);
                     } catch (error) {
-                        console.warn('HomepageInteractionManager: Error removing EventManager listener:', error);
+                        // Error removing EventManager listener
                     }
                 });
                 
@@ -283,7 +265,7 @@ class HomepageInteractionManager {
                 this.eventListenerIds.workItems = [];
                 this.eventListenerIds.folderItems = [];
                 
-                console.log('HomepageInteractionManager: EventManager listeners removed successfully');
+
                 
             } else {
                 // Fallback: Remove all event listeners by cloning elements
@@ -294,7 +276,7 @@ class HomepageInteractionManager {
                             wrapperImage.replaceWith(wrapperImage.cloneNode(true));
                         }
                     } catch (error) {
-                        console.error(`HomepageInteractionManager: Error disabling work item ${index} interactions:`, error);
+                        // Error disabling work item interactions
                     }
                 });
                 
@@ -305,22 +287,21 @@ class HomepageInteractionManager {
                             wrapperImage.replaceWith(wrapperImage.cloneNode(true));
                         }
                     } catch (error) {
-                        console.error(`HomepageInteractionManager: Error disabling folder item ${index} interactions:`, error);
+                        // Error disabling folder item interactions
                     }
                 });
                 
-                console.log('HomepageInteractionManager: Direct event listeners removed via element cloning');
+
             }
             
-            console.log('HomepageInteractionManager: Interactions disabled successfully');
+
         } catch (error) {
-            console.error('HomepageInteractionManager: Error disabling interactions:', error);
+            // Error disabling interactions
         }
     }
     
     destroy() {
         try {
-            console.log('HomepageInteractionManager: Destroying module');
             // Remove all event listeners
             this.disableInteractions();
             
@@ -333,9 +314,9 @@ class HomepageInteractionManager {
             };
             
             this.isInitialized = false;
-            console.log('HomepageInteractionManager: Module destroyed successfully');
+
         } catch (error) {
-            console.error('HomepageInteractionManager: Error during destruction:', error);
+            // Error during destruction
         }
     }
     

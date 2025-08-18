@@ -38,14 +38,14 @@ class LetterAnimationManager {
         try {
             // Check if we're on homepage
             if (!this.isHomepage()) {
-                console.log('LetterAnimationManager: Not on homepage, skipping initialization');
+        
                 return;
             }
             
             this.findElements();
             this.setupEventListeners();
             this.isInitialized = true;
-            console.log('LetterAnimationManager: Initialized successfully');
+    
             
         } catch (error) {
             this.handleInitializationError(error);
@@ -55,19 +55,14 @@ class LetterAnimationManager {
     handleInitializationError(error) {
         this.initializationAttempts++;
         
-        console.error('LetterAnimationManager: Initialization error:', {
-            error: error.message,
-            stack: error.stack,
-            attempt: this.initializationAttempts,
-            maxAttempts: this.maxInitializationAttempts
-        });
+
         
         // Attempt to recover if we haven't exceeded max attempts
         if (this.initializationAttempts < this.maxInitializationAttempts) {
-            console.log(`LetterAnimationManager: Retrying initialization (attempt ${this.initializationAttempts + 1}/${this.maxInitializationAttempts})`);
+
             setTimeout(() => this.init(), 1000 * this.initializationAttempts); // Exponential backoff
         } else {
-            console.error('LetterAnimationManager: Max initialization attempts reached, giving up');
+
             // Could implement fallback behavior here
         }
     }
@@ -91,21 +86,17 @@ class LetterAnimationManager {
                 throw new Error('Name display element not found');
             }
             
-            if (this.letters.length === 0) {
-                console.warn('LetterAnimationManager: No letter elements found');
-            } else {
-                console.log(`LetterAnimationManager: Found ${this.letters.length} letter elements`);
-            }
+
             
         } catch (error) {
-            console.error('LetterAnimationManager: Error finding elements:', error);
+
             throw error; // Re-throw to be caught by init()
         }
     }
     
     setupEventListeners() {
         if (!this.nameDisplay) {
-            console.error('LetterAnimationManager: Cannot setup event listeners without name display element');
+
             return;
         }
         
@@ -121,7 +112,7 @@ class LetterAnimationManager {
             this.registerCSSAnimations();
             
         } catch (error) {
-            console.error('LetterAnimationManager: Error setting up event listeners:', error);
+
             throw error; // Re-throw to be caught by init()
         }
     }
@@ -138,10 +129,10 @@ class LetterAnimationManager {
                 this.handleMouseLeave(e);
             });
             
-            console.log('LetterAnimationManager: Event listeners registered with EventManager');
+
             
         } catch (error) {
-            console.warn('LetterAnimationManager: Failed to register with EventManager, falling back to direct listeners:', error);
+
             this.setupDirectEventListeners();
         }
     }
@@ -157,17 +148,16 @@ class LetterAnimationManager {
                 this.handleMouseLeave(e);
             });
             
-            console.log('LetterAnimationManager: Direct event listeners registered');
+
             
         } catch (error) {
-            console.error('LetterAnimationManager: Error setting up direct event listeners:', error);
+
             throw error;
         }
     }
     
     handleMouseEnter(event) {
         if (!this.letters || this.letters.length === 0) {
-            console.warn('LetterAnimationManager: No letters available for mouse enter handling');
             return;
         }
         
@@ -190,7 +180,7 @@ class LetterAnimationManager {
                                 window.animationCoordinator.priorities.HIGH
                             );
                         } catch (error) {
-                            console.warn(`LetterAnimationManager: Failed to register animation for letter ${index}:`, error);
+                            // Animation registration failed
                         }
                     }
                     
@@ -201,18 +191,17 @@ class LetterAnimationManager {
                     letter.style.setProperty('color', randomColor, 'important');
                     
                 } catch (error) {
-                    console.error(`LetterAnimationManager: Error handling mouse enter for letter ${index}:`, error);
+                    // Error handling mouse enter for letter
                 }
             });
             
         } catch (error) {
-            console.error('LetterAnimationManager: Error in handleMouseEnter:', error);
+            // Error in handleMouseEnter
         }
     }
     
     handleMouseLeave(event) {
         if (!this.letters || this.letters.length === 0) {
-            console.warn('LetterAnimationManager: No letters available for mouse leave handling');
             return;
         }
         
@@ -224,7 +213,7 @@ class LetterAnimationManager {
                         try {
                             window.animationCoordinator.unregisterAnimation(letter, `letter-hover-${index}`);
                         } catch (error) {
-                            console.warn(`LetterAnimationManager: Failed to unregister animation for letter ${index}:`, error);
+                            // Animation unregistration failed
                         }
                     }
                     
@@ -235,12 +224,12 @@ class LetterAnimationManager {
                     letter.style.removeProperty('color');
                     
                 } catch (error) {
-                    console.error(`LetterAnimationManager: Error handling mouse leave for letter ${index}:`, error);
+                    // Error handling mouse leave for letter
                 }
             });
             
         } catch (error) {
-            console.error('LetterAnimationManager: Error in handleMouseLeave:', error);
+            // Error in handleMouseLeave
         }
     }
     
@@ -253,7 +242,6 @@ class LetterAnimationManager {
             
             return `rotate(${rotation}deg) translateY(${translateY}px) translateX(${translateX}px)`;
         } catch (error) {
-            console.error('LetterAnimationManager: Error generating random transform:', error);
             return 'rotate(0deg) translateY(0px) translateX(0px)'; // Fallback to no transform
         }
     }
@@ -264,7 +252,6 @@ class LetterAnimationManager {
             // Always use the same color palette as the exploded flowers
             return this.flowerColors[Math.floor(Math.random() * this.flowerColors.length)];
         } catch (error) {
-            console.warn('LetterAnimationManager: Error getting random flower color, using fallback:', error);
             return '#000000'; // Fallback to black
         }
     }
@@ -274,9 +261,6 @@ class LetterAnimationManager {
     // Register CSS animations with AnimationCoordinator - exact same as current implementation
     registerCSSAnimations() {
         if (this.letters.length === 0 || !window.animationCoordinator) {
-            if (!window.animationCoordinator) {
-                console.warn('LetterAnimationManager: AnimationCoordinator not available, skipping CSS animation registration');
-            }
             return;
         }
         
@@ -291,14 +275,14 @@ class LetterAnimationManager {
                         window.animationCoordinator.priorities.MEDIUM
                     );
                 } catch (error) {
-                    console.warn(`LetterAnimationManager: Failed to register CSS animation for letter ${index}:`, error);
+                    // CSS animation registration failed
                 }
             });
             
-            console.log('LetterAnimationManager: CSS animations registered successfully');
+
             
         } catch (error) {
-            console.error('LetterAnimationManager: Error registering CSS animations:', error);
+            // Error registering CSS animations
         }
     }
     
@@ -322,18 +306,15 @@ class LetterAnimationManager {
     // Refresh elements (useful if DOM changes)
     refreshElements() {
         try {
-            console.log('LetterAnimationManager: Refreshing elements');
             this.findElements();
             this.setupEventListeners();
-            console.log('LetterAnimationManager: Elements refreshed successfully');
         } catch (error) {
-            console.error('LetterAnimationManager: Error refreshing elements:', error);
+            // Error refreshing elements
         }
     }
     
     destroy() {
         try {
-            console.log('LetterAnimationManager: Destroying module');
             
             // Clean up event listeners
             if (this.nameDisplay) {
@@ -346,18 +327,18 @@ class LetterAnimationManager {
                         if (this.eventListenerIds.mouseleave) {
                             window.eventManager.removeListener(this.eventListenerIds.mouseleave);
                         }
-                        console.log('LetterAnimationManager: EventManager listeners removed');
+
                     } catch (error) {
-                        console.warn('LetterAnimationManager: Error removing EventManager listeners:', error);
+
                     }
                 } else {
                     try {
                         // Remove direct event listeners
                         this.nameDisplay.removeEventListener('mouseenter', this.handleMouseEnter);
                         this.nameDisplay.removeEventListener('mouseleave', this.handleMouseLeave);
-                        console.log('LetterAnimationManager: Direct event listeners removed');
+
                     } catch (error) {
-                        console.warn('LetterAnimationManager: Error removing direct event listeners:', error);
+
                     }
                 }
             }
@@ -367,10 +348,10 @@ class LetterAnimationManager {
             this.nameDisplay = null;
             this.isInitialized = false;
             
-            console.log('LetterAnimationManager: Module destroyed successfully');
+
             
         } catch (error) {
-            console.error('LetterAnimationManager: Error during destruction:', error);
+            // Error during destruction
         }
     }
     

@@ -45,10 +45,10 @@ class HomepageScrollManager {
             this.setupEventListeners();
             
             this.isInitialized = true;
-            console.log('HomepageScrollManager: Initialized successfully');
+    
             
         } catch (error) {
-            console.error('HomepageScrollManager: Initialization error:', error);
+    
         }
     }
     
@@ -66,14 +66,14 @@ class HomepageScrollManager {
         // Find work section
         this.workSection = document.querySelector(this.config.WORK_SECTION_SELECTOR);
         if (!this.workSection) {
-            console.error('HomepageScrollManager: Work section not found');
+
             return;
         }
         
         // Find fireworks container
         this.fireworksContainer = document.getElementById('fireworks-container');
         if (!this.fireworksContainer) {
-            console.error('HomepageScrollManager: Fireworks container not found');
+
             return;
         }
         
@@ -86,7 +86,7 @@ class HomepageScrollManager {
         // Set initial work section position
         this.setInitialWorkSectionPosition();
         
-        console.log('HomepageScrollManager: Elements setup complete');
+
     }
     
     setInitialWorkSectionPosition() {
@@ -109,25 +109,25 @@ class HomepageScrollManager {
         // Add smooth CSS transition for the background color
         this.fireworksContainer.style.transition = this.config.TRANSITION_DURATION;
         
-        console.log('HomepageScrollManager: Background transition setup complete');
+
     }
     
     setupEventListeners() {
         // Register with ScrollManager for coordination
         if (window.scrollManager) {
             window.scrollManager.addScrollListener('work-section-scroll', this.handleScroll.bind(this), 'normal');
-            console.log('HomepageScrollManager: Registered with ScrollManager');
+
         } else {
-            console.error('HomepageScrollManager: ScrollManager not available');
+
         }
         
         // Register with EventManager for coordination
         if (window.eventManager) {
             // Use addListener for scroll events if needed
             this.eventListenerId = window.eventManager.addListener(window, 'scroll', this.handleScroll.bind(this), { passive: true });
-            console.log('HomepageScrollManager: Registered with EventManager');
+
         } else {
-            console.error('HomepageScrollManager: EventManager not available');
+
         }
     }
     
@@ -230,19 +230,7 @@ class HomepageScrollManager {
                 // Apply the new position
                 this.workSection.style.top = Math.round(newTop) + 'px';
                 
-                // Debug logging for small section scroll
-                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                    console.log('Small Section Scroll Debug:', {
-                        scrollTop,
-                        maxScroll,
-                        viewportHeight: window.innerHeight,
-                        newTop,
-                        maxAllowedTop,
-                        bottomEdge: newTop + maxScroll,
-                        scrollProgress,
-                        easedProgress
-                    });
-                }
+
                 
                 // Handle background color transition for small sections
                 this.updateBackgroundColor(easedProgress);
@@ -290,20 +278,7 @@ class HomepageScrollManager {
             // Apply the new position directly for smooth scrolling
             this.workSection.style.top = newTop + 'px';
             
-            // Debug logging for scroll constraints
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                console.log('Scroll Debug:', {
-                    scrollTop,
-                    maxScroll,
-                    viewportHeight: window.innerHeight,
-                    newTop,
-                    minTop,
-                    maxTop,
-                    bottomEdge: newTop + maxScroll,
-                    scrollProgress,
-                    easedProgress
-                });
-            }
+            
             
             // Update background color
             this.updateBackgroundColor(easedProgress);
@@ -354,7 +329,7 @@ class HomepageScrollManager {
         }
         
         this.isInitialized = false;
-        console.log('HomepageScrollManager: Destroyed');
+
     }
 }
 

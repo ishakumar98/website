@@ -28,12 +28,7 @@ class ModuleLoader {
         const pathname = window.location.pathname;
         const endsWithProject = pathname.endsWith('-project.html');
         
-        // DEBUG: Log the project page detection
-        console.log('ModuleLoader - isProjectPage() Debug:', {
-            pathname: pathname,
-            endsWithProject: endsWithProject,
-            result: endsWithProject
-        });
+
         
         return endsWithProject;
     }
@@ -156,17 +151,16 @@ class ModuleLoader {
         // requiredModules already contains exactly what's needed for each page type
         
         try {
-            console.log(`ModuleLoader: Loading ${requiredModules.length} modules for ${isHomepage ? 'homepage' : 'project page'}:`, requiredModules);
+    
             
             const modules = await Promise.all(
                 requiredModules.map(moduleName => this.loadModule(moduleName))
             );
             
-            console.log(`ModuleLoader: Successfully loaded ${modules.length} modules:`, modules.map(m => m.constructor.name));
+
             return modules;
             
         } catch (error) {
-            console.error('ModuleLoader: Error loading modules:', error);
             throw error;
         }
     }
@@ -196,7 +190,7 @@ class ModuleLoader {
             ];
         }
         
-        console.log(`ModuleLoader: Initializing ${requiredModules.length} modules for ${isHomepage ? 'homepage' : 'project page'}`);
+
         
         const initializedModules = {};
         
@@ -210,26 +204,26 @@ class ModuleLoader {
                     // Call initialize() if the method exists
                     if (typeof instance.initialize === 'function') {
                         instance.initialize();
-                        console.log(`✅ Initialized ${moduleName}`);
+        
                     } else if (typeof instance.init === 'function') {
                         instance.init();
-                        console.log(`✅ Initialized ${moduleName} (using init method)`);
+
                     } else {
-                        console.log(`⚠️ ${moduleName} has no initialize or init method`);
+
                     }
                     
                     // Store instance for later use
                     initializedModules[moduleName] = instance;
                     
-                } catch (error) {
-                    console.error(`❌ Failed to initialize ${moduleName}:`, error);
-                }
+                            } catch (error) {
+                // Failed to initialize module
+            }
             } else {
-                console.warn(`⚠️ Module ${moduleName} not found in loaded modules`);
+
             }
         }
         
-        console.log(`ModuleLoader: Initialization complete. ${Object.keys(initializedModules).length} modules initialized.`);
+
         return initializedModules;
     }
     
@@ -317,9 +311,9 @@ class ModuleLoader {
 }
 
 // Create global instance
-console.log('ModuleLoader: Creating global instance...');
+
 window.moduleLoader = new ModuleLoader();
-console.log('ModuleLoader: Global instance created:', window.moduleLoader);
+
 
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
