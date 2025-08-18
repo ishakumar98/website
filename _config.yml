@@ -1,0 +1,48 @@
+# Jekyll configuration for GitHub Pages
+# This ensures proper domain handling and clean URLs
+
+# Site settings
+title: "Isha Kumar"
+description: "Senior Product Designer at Slack"
+url: "https://ishakumar.work"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /:collection/:name/
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude from processing
+exclude:
+  - .git/
+  - .github/
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - README.md
+  - docs/
+  - Milletype-Foundry-EULA.rtf
+
+# Include files
+include:
+  - _config.yml
+  - CNAME
+  - index.html
+  - *.html
+  - *.css
+  - *.js
+  - images/
+  - fonts/
+  - assets/
+  - sw.js
