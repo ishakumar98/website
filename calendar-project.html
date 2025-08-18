@@ -178,27 +178,17 @@
             // Calculate the final top position
             const finalTop = initialTop + topPadding;
             
-            console.log('=== FLOWER POSITIONING DEBUG ===');
-            console.log('initialTop:', initialTop);
-            console.log('topPadding:', topPadding);
-            console.log('finalTop calculated:', finalTop);
-            console.log('Setting flower.style.top to:', finalTop + 'px');
-            
             // Set initial position
             flower.style.top = finalTop + 'px';
             flower.style.left = 'calc(50% - 3vw)'; // Center horizontally like Bloomtype
             flower.style.scale = initialScale;
-            
-            console.log('After setting - flower.style.top:', flower.style.top);
-            console.log('After setting - flower.style.left:', flower.style.left);
-            console.log('After setting - flower.style.scale:', flower.style.scale);
             
             // Scroll-based resizing function
             function updateFlowerOnScroll() {
                 const scrollY = window.scrollY;
                 const viewportHeight = window.innerHeight;
                 
-                // Calculate new top position (flower stays at top as you scroll)
+                // Calculate new top position (flower stays at top with padding as you scroll)
                 const maxScroll = document.documentElement.scrollHeight - viewportHeight;
                 const scrollProgress = Math.min(scrollY / maxScroll, 1); // 0 to 1
                 
@@ -209,13 +199,9 @@
                 const minScale = 0.3; // Smallest size when scrolled down
                 const newScale = initialScale - (scrollProgress * (initialScale - minScale));
                 
-                console.log('Scroll update - newTop:', newTop, 'newScale:', newScale);
-                
                 // Apply the new positioning
                 flower.style.top = newTop + 'px';
                 flower.style.scale = newScale;
-                
-                console.log('After scroll update - flower.style.top:', flower.style.top);
             }
             
             // Add scroll event listener
