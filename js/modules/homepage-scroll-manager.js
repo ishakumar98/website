@@ -213,9 +213,15 @@ class HomepageScrollManager {
                 const scrollProgress = Math.min(Math.max(scrollTop / window.innerHeight, 0), 1);
                 const easedProgress = this.ultraSmoothEase(scrollProgress);
                 
-                // Position the section to always stay within viewport bounds
+                // For small sections, ensure the bottom edge never goes above viewport bottom
+                // Calculate the maximum allowed top position to keep bottom edge at viewport bottom
+                const maxAllowedTop = window.innerHeight - maxScroll;
+                
+                // Position the section with strict bounds
                 let newTop = window.innerHeight - (easedProgress * maxScroll);
-                newTop = Math.max(0, Math.min(window.innerHeight, newTop));
+                
+                // Apply strict constraints: never above 0, never below maxAllowedTop
+                newTop = Math.max(0, Math.min(maxAllowedTop, newTop));
                 
                 // Apply position smoothing
                 newTop = this.lastTop + (this.smoothingFactor * (newTop - this.lastTop));
@@ -223,6 +229,20 @@ class HomepageScrollManager {
                 
                 // Apply the new position
                 this.workSection.style.top = Math.round(newTop) + 'px';
+                
+                // Debug logging for small section scroll
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    console.log('Small Section Scroll Debug:', {
+                        scrollTop,
+                        maxScroll,
+                        viewportHeight: window.innerHeight,
+                        newTop,
+                        maxAllowedTop,
+                        bottomEdge: newTop + maxScroll,
+                        scrollProgress,
+                        easedProgress
+                    });
+                }
                 
                 // Handle background color transition for small sections
                 this.updateBackgroundColor(easedProgress);
@@ -244,7 +264,15 @@ class HomepageScrollManager {
             const minTop = Math.max(0, window.innerHeight - maxScroll); // Bottom edge at viewport bottom, never above 0
             const maxTop = window.innerHeight; // Top edge at viewport bottom (CSS initial position)
             
+            // Apply strict constraints with additional safety checks
             newTop = Math.max(minTop, Math.min(maxTop, newTop));
+            
+            // Additional safety: ensure the bottom edge never goes above viewport bottom
+            const currentBottomEdge = newTop + maxScroll;
+            if (currentBottomEdge > window.innerHeight) {
+                newTop = window.innerHeight - maxScroll;
+                newTop = Math.max(0, newTop); // Never go above 0
+            }
             
             // Apply position smoothing for ultra-smooth movement (LERP)
             if (scrollProgress === 0 || scrollProgress === 1) {
@@ -261,6 +289,21 @@ class HomepageScrollManager {
             
             // Apply the new position directly for smooth scrolling
             this.workSection.style.top = newTop + 'px';
+            
+            // Debug logging for scroll constraints
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log('Scroll Debug:', {
+                    scrollTop,
+                    maxScroll,
+                    viewportHeight: window.innerHeight,
+                    newTop,
+                    minTop,
+                    maxTop,
+                    bottomEdge: newTop + maxScroll,
+                    scrollProgress,
+                    easedProgress
+                });
+            }
             
             // Update background color
             this.updateBackgroundColor(easedProgress);
