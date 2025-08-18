@@ -4,7 +4,7 @@
 
 // Popup Configuration - Centralized settings
 const POPUP_CONFIG = {
-    // Dimensions
+    // Image popup dimensions
     minSize: 200,
     maxSizePercent: 0.95,
     
@@ -18,7 +18,30 @@ const POPUP_CONFIG = {
     
     // Navigation area dimensions
     navigationAreaWidth: 60,
-    navigationAreaTopOffset: 60
+    navigationAreaTopOffset: 60,
+    
+    // Text popup specific settings
+    textPopup: {
+        minWidth: 400,
+        minHeight: 300,
+        maxWidth: 800,
+        maxHeight: 600,
+        padding: 40,
+        lineHeight: 1.6,
+        titleFontSize: '1.5rem',
+        bodyFontSize: '1rem'
+    }
+};
+
+// Text popup content templates
+const TEXT_POPUP_TEMPLATES = {
+    about: {
+        title: "About",
+        content: {
+            // Placeholder - you'll provide the actual text
+            text: "Your paragraph text will go here..."
+        }
+    }
 };
 
 class PopupManager {
@@ -55,6 +78,12 @@ class PopupManager {
         // Animation IDs for AnimationCoordinator integration
         this.dragAnimationId = null;
         this.resizeAnimationId = null;
+        
+        // Store bound event handlers for proper removal
+        this.boundResize = this.resize.bind(this);
+        this.boundStopResize = this.stopResize.bind(this);
+        this.boundDrag = this.drag.bind(this);
+        this.boundStopDrag = this.stopDrag.bind(this);
         
         this.init();
     }
@@ -103,13 +132,23 @@ class PopupManager {
     };
     
     init() {
-        // Wait for project content to be ready before initializing
-        document.addEventListener('projectContentReady', () => {
-                    this.findPopupElements();
-        this.findProjectImages();
-        this.setupEventListeners();
-        this.isInitialized = true;
-    });
+        // Check if we're on a project page or homepage
+        const isProjectPage = window.location.pathname.includes('-project.html');
+        
+        if (isProjectPage) {
+            // Wait for project content to be ready before initializing
+            document.addEventListener('projectContentReady', () => {
+                this.findPopupElements();
+                this.findProjectImages();
+                this.setupEventListeners();
+                this.isInitialized = true;
+            });
+        } else {
+            // Homepage: initialize immediately
+            this.findPopupElements();
+            this.setupEventListeners();
+            this.isInitialized = true;
+        }
     }
     
     findPopupElements() {
@@ -120,6 +159,9 @@ class PopupManager {
             popupClose: document.querySelector('#popup-close'),
             popupNavLeft: document.querySelector('#popup-nav-left'),
             popupNavRight: document.querySelector('#popup-nav-right'),
+            // Text popup elements
+            popupTextContainer: document.querySelector('#popup-text-container'),
+            popupTextContent: document.querySelector('#popup-text-content'),
             // Drag and resize elements
             draggableArea: document.querySelector('.draggable-area'),
             resizeHandles: {
@@ -129,6 +171,14 @@ class PopupManager {
                 se: document.querySelector('#resize-se')
             }
         };
+        
+        // Debug logging
+        console.log('PopupManager - Found elements:', {
+            popup: !!this.popupElements.popup,
+            popupTextContainer: !!this.popupElements.popupTextContainer,
+            popupTextContent: !!this.popupElements.popupTextContent,
+            popupClose: !!this.popupElements.popupClose
+        });
     }
     
     findProjectImages() {
@@ -138,12 +188,14 @@ class PopupManager {
     setupEventListeners() {
         if (!window.eventManager) return;
         
-        // Add click event listeners to all project images
-        this.projectImages.forEach((img, index) => {
-            window.eventManager.addListener(img, 'click', () => {
-                this.openPopup(index);
+        // Add click event listeners to all project images (only if they exist)
+        if (this.projectImages && this.projectImages.length > 0) {
+            this.projectImages.forEach((img, index) => {
+                window.eventManager.addListener(img, 'click', () => {
+                    this.openPopup(index);
+                });
             });
-        });
+        }
         
         // Close popup
         if (this.popupElements.popupClose) {
@@ -152,7 +204,7 @@ class PopupManager {
             });
         }
         
-        // Navigation
+        // Navigation (only if elements exist)
         if (this.popupElements.popupNavLeft) {
             window.eventManager.addListener(this.popupElements.popupNavLeft, 'click', () => {
                 this.navigateLeft();
@@ -203,6 +255,9 @@ class PopupManager {
     
     openPopup(imageIndex) {
         try {
+            // Set popup type
+            this.popupType = 'image';
+            
             this.currentImageIndex = imageIndex;
             
             // Set image source and filename
@@ -213,6 +268,9 @@ class PopupManager {
             const titleSpan = this.projectImages[imageIndex].closest('.image')?.querySelector('.title span');
             const filename = titleSpan ? titleSpan.textContent : 'image.png';
             this.popupElements.popupFilename.textContent = filename;
+            
+            // Reset popup type attribute for CSS styling
+            this.popupElements.popup.removeAttribute('data-popup-type');
             
             // Wait for image to load, then calculate and set optimal size
             this.popupElements.popupImage.onload = () => {
@@ -252,6 +310,61 @@ class PopupManager {
     
     closePopup() {
         this.popupElements.popup.classList.remove('active');
+    }
+    
+    // Open text popup (for About section, etc.)
+    openTextPopup(templateName) {
+        try {
+            console.log('PopupManager - openTextPopup called with:', templateName);
+            console.log('PopupManager - Current popup elements:', this.popupElements);
+            
+            // Set popup type
+            this.popupType = 'text';
+            
+            // Get template content
+            const template = TEXT_POPUP_TEMPLATES[templateName];
+            if (!template) {
+                console.error(`Text popup template '${templateName}' not found`);
+                return;
+            }
+            
+            // Store current content
+            this.currentContent = template;
+            
+            // Update popup title
+            if (this.popupElements.popupFilename) {
+                this.popupElements.popupFilename.textContent = template.title;
+            }
+            
+            // Populate text content
+            if (this.popupElements.popupTextContent) {
+                this.popupElements.popupTextContent.innerHTML = `
+                    <p>${template.content.text}</p>
+                `;
+            }
+            
+            // Set popup type attribute for CSS styling
+            if (this.popupElements.popup) {
+                this.popupElements.popup.setAttribute('data-popup-type', 'text');
+                
+                // Calculate text popup dimensions
+                const textDimensions = this.calculateTextPopupSize();
+                
+                // Set dimensions
+                this.popupElements.popup.style.width = textDimensions.width + 'px';
+                this.popupElements.popup.style.height = textDimensions.height + 'px';
+                
+                // Show popup
+                this.popupElements.popup.classList.add('active');
+                
+                console.log('PopupManager - Popup should now be visible with class "active"');
+            } else {
+                console.error('PopupManager - popup element not found!');
+            }
+            
+        } catch (error) {
+            console.error('Error opening text popup:', error);
+        }
     }
     
     navigateLeft() {
@@ -328,14 +441,17 @@ class PopupManager {
         // Use utility to add dragging state
         this.popupUtils.addDraggingState(this.popupElements.popup);
         
-        // Add event listeners for dragging
-        if (window.eventManager) {
-            window.eventManager.addListener(document, 'mousemove', (e) => this.drag(e));
-            window.eventManager.addListener(document, 'mouseup', (e) => this.stopDrag(e));
-        } else {
-            document.addEventListener('mousemove', (e) => this.drag(e));
-            document.addEventListener('mouseup', (e) => this.stopDrag(e));
-        }
+        // Add event listeners for dragging - use capture phase to ensure we get the events
+        document.addEventListener('mousemove', this.boundDrag, true);
+        document.addEventListener('mouseup', this.boundStopDrag, true);
+        
+        // Add safety timeout to force cleanup if mouseup doesn't fire
+        this.dragState.safetyTimeout = setTimeout(() => {
+            if (this.dragState.isDragging) {
+                console.log('PopupManager - Safety timeout triggered, forcing drag stop');
+                this.stopDrag({ preventDefault: () => {} });
+            }
+        }, 10000); // 10 second timeout
         
         this.dragState.isDragging = true;
     }
@@ -356,17 +472,22 @@ class PopupManager {
     }
     
     stopDrag(e) {
-        if (!this.dragState.isDragging) return;
+        console.log('PopupManager - stopDrag called');
+        if (!this.dragState.isDragging) {
+            console.log('PopupManager - Not dragging, returning early');
+            return;
+        }
         
         e.preventDefault();
         
-        // Remove event listeners
-        if (window.eventManager) {
-            window.eventManager.removeListener(document, 'mousemove', (e) => this.drag(e));
-            window.eventManager.removeListener(document, 'mouseup', (e) => this.stopDrag(e));
-        } else {
-            document.removeEventListener('mousemove', (e) => this.drag(e));
-            document.removeEventListener('mouseup', (e) => this.stopDrag(e));
+        // Remove event listeners - use capture phase to match the addEventListener calls
+        document.removeEventListener('mousemove', this.boundDrag, true);
+        document.removeEventListener('mouseup', this.boundStopDrag, true);
+        
+        // Clear safety timeout
+        if (this.dragState.safetyTimeout) {
+            clearTimeout(this.dragState.safetyTimeout);
+            this.dragState.safetyTimeout = null;
         }
         
         // Clean up drag animation with AnimationCoordinator
@@ -382,11 +503,13 @@ class PopupManager {
         this.popupUtils.removeDraggingState(this.popupElements.popup);
         
         this.dragState.isDragging = false;
+        console.log('PopupManager - Drag stopped, event listeners removed');
     }
     
     // Resize functionality
     startResize(e) {
         e.preventDefault();
+        console.log('PopupManager - startResize called');
         
         // Get resize handle that was clicked
         this.resizeState.resizeHandle = e.target;
@@ -415,16 +538,20 @@ class PopupManager {
         // Add resizing state
         this.popupElements.popup.classList.add('resizing');
         
-        // Add event listeners for resizing
-        if (window.eventManager) {
-            window.eventManager.addListener(document, 'mousemove', (e) => this.resize(e));
-            window.eventManager.addListener(document, 'mouseup', (e) => this.stopResize(e));
-        } else {
-            document.addEventListener('mousemove', (e) => this.resize(e));
-            document.addEventListener('mouseup', (e) => this.stopResize(e));
-        }
+        // Add event listeners for resizing - use capture phase to ensure we get the events
+        document.addEventListener('mousemove', this.boundResize, true);
+        document.addEventListener('mouseup', this.boundStopResize, true);
+        
+        // Add safety timeout to force cleanup if mouseup doesn't fire
+        this.resizeState.safetyTimeout = setTimeout(() => {
+            if (this.resizeState.isResizing) {
+                console.log('PopupManager - Safety timeout triggered, forcing resize stop');
+                this.stopResize({ preventDefault: () => {} });
+            }
+        }, 10000); // 10 second timeout
         
         this.resizeState.isResizing = true;
+        console.log('PopupManager - Resize started, event listeners added');
     }
     
     resize(e) {
@@ -506,17 +633,22 @@ class PopupManager {
     }
     
     stopResize(e) {
-        if (!this.resizeState.isResizing) return;
+        console.log('PopupManager - stopResize called');
+        if (!this.resizeState.isResizing) {
+            console.log('PopupManager - Not resizing, returning early');
+            return;
+        }
         
         e.preventDefault();
         
-        // Remove event listeners
-        if (window.eventManager) {
-            window.eventManager.removeListener(document, 'mousemove', (e) => this.resize(e));
-            window.eventManager.removeListener(document, 'mouseup', (e) => this.stopResize(e));
-        } else {
-            document.removeEventListener('mousemove', (e) => this.resize(e));
-            document.removeEventListener('mouseup', (e) => this.stopResize(e));
+        // Remove event listeners - use capture phase to match the addEventListener calls
+        document.removeEventListener('mousemove', this.boundResize, true);
+        document.removeEventListener('mouseup', this.boundStopResize, true);
+        
+        // Clear safety timeout
+        if (this.resizeState.safetyTimeout) {
+            clearTimeout(this.resizeState.safetyTimeout);
+            this.resizeState.safetyTimeout = null;
         }
         
         // Clean up resize animation with AnimationCoordinator
@@ -532,6 +664,7 @@ class PopupManager {
         this.popupElements.popup.classList.remove('resizing');
         
         this.resizeState.isResizing = false;
+        console.log('PopupManager - Resize stopped, event listeners removed');
     }
     
     // Calculate minimum popup size needed to display full image with padding
@@ -613,6 +746,38 @@ class PopupManager {
         return {
             width: Math.round(popupWidth),
             height: Math.round(popupHeight)
+        };
+    }
+    
+    // Calculate text popup size based on content and viewport
+    calculateTextPopupSize() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Get text popup config
+        const config = POPUP_CONFIG.textPopup;
+        
+        // Start with minimum dimensions
+        let width = config.minWidth;
+        let height = config.minHeight;
+        
+        // Calculate optimal width (comfortable reading width)
+        const maxReadableWidth = Math.min(viewportWidth * 0.8, config.maxWidth);
+        width = Math.max(config.minWidth, Math.min(width, maxReadableWidth));
+        
+        // Calculate height based on content (placeholder for now)
+        // In the future, this could calculate based on actual text length
+        const contentHeight = 200; // Placeholder height
+        height = Math.max(config.minHeight, contentHeight + (config.padding * 2));
+        
+        // Ensure we don't exceed viewport
+        if (height > viewportHeight * 0.8) {
+            height = viewportHeight * 0.8;
+        }
+        
+        return {
+            width: Math.round(width),
+            height: Math.round(height)
         };
     }
     

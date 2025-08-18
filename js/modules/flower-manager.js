@@ -7,21 +7,33 @@ class FlowerManager {
         this.flowerElement = null;
         this.isInitialized = false;
         
-        this.init();
+        // Don't auto-initialize - let ModuleLoader control when to start
+        // this.init();
     }
     
     init() {
+        console.log('🚀 FlowerManager initializing...');
         this.findFlowerElement();
         if (this.flowerElement) {
+            console.log('✅ Flower element found, triggering bloom...');
             this.triggerBloom();
             this.isInitialized = true;
+            console.log('✅ FlowerManager initialization complete');
+        } else {
+            console.log('❌ No flower element found during initialization');
         }
     }
     
     findFlowerElement() {
+        console.log('🔍 Searching for flower element...');
         this.flowerElement = document.querySelector('.flower');
-        if (!this.flowerElement) {
-            console.warn('Flower element not found');
+        if (this.flowerElement) {
+            console.log('✅ Flower element found:', this.flowerElement);
+            console.log('  - Tag name:', this.flowerElement.tagName);
+            console.log('  - Classes:', this.flowerElement.className);
+            console.log('  - Current attributes:', this.flowerElement.attributes);
+        } else {
+            console.warn('❌ Flower element not found');
         }
     }
     
@@ -34,27 +46,38 @@ class FlowerManager {
     
     triggerBloom() {
         if (this.flowerElement) {
-            // CSS handles the bloom animation via start-bloom class
-            // Set [intro] attribute to trigger petal blooming - CSS handles all timing
-            this.flowerElement.setAttribute('intro', '');
+            console.log('🌸 Flower bloom triggered by CSS (flower-logo class)');
             
-            // Listen for CSS animation completion to automatically set [logo] state
-            this.setupAnimationListener();
+            // The flower-logo class automatically triggers blooming
+            // We just need to ensure [intro] and [logo] attributes are set
+            
+            // Set [intro] attribute to trigger petal blooming
+            this.flowerElement.setAttribute('intro', '');
+            console.log('✅ [intro] attribute set for petal animations');
+            
+            // Set [logo] attribute immediately since blooming is automatic
+            this.flowerElement.setAttribute('logo', '');
+            console.log('✅ [logo] attribute set - hover effects enabled');
+            
+            // No need for animation listeners - CSS handles everything
+            console.log('🌱 Flower blooming automatically via CSS');
         }
     }
     
     setupAnimationListener() {
-        // Listen for the last petal animation to complete
-        const lastPetal = this.flowerElement.querySelector('.bottom:after');
-        if (lastPetal) {
-            // Use CSS animation events to detect when blooming is complete
-            this.flowerElement.addEventListener('animationend', (event) => {
-                if (event.animationName === 'bottomRight') {
-                    // Last petal animation completed - set logo state for hover effects
-                    this.flowerElement.setAttribute('logo', '');
-                    console.log('🌸 Flower bloom complete - CSS animation finished, hover effects enabled');
-                }
-            });
+        // Not needed with bloomtype structure - CSS handles all timing
+        console.log('🌸 CSS handles all animation timing - no JavaScript needed');
+    }
+    
+    setupHoverEffects() {
+        console.log('🌸 CSS hover effects are automatic with bloomtype structure');
+        console.log('✅ Hover effects ready');
+    }
+    
+    // Public method for ModuleLoader to call
+    initialize() {
+        if (!this.isInitialized) {
+            this.init();
         }
     }
     
@@ -73,3 +96,4 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
     window.FlowerManager = FlowerManager;
 }
+

@@ -712,6 +712,77 @@ body.project-page {
     min-height: 200px;
 }
 
+/* TEXT POPUP: Text content area - macOS Text Editor style */
+.popup-text-container {
+    position: relative;
+    overflow: auto; /* Allow scrolling for long text */
+    width: 100%;
+    /* Take remaining space after navigation bar */
+    height: calc(100% - 60px); /* popup height - navigation bar height */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    /* macOS Text Editor: Clean white background */
+    background-color: #ffffff;
+    /* Ensure minimum height for content visibility */
+    min-height: 200px;
+}
+
+/* Text content area with proper padding */
+.popup-text-content {
+    flex: 1;
+    padding: var(--space-xl); /* 32px padding using our design system */
+    box-sizing: border-box;
+    /* Typography using our design system */
+    font-family: inherit;
+    line-height: 1.6;
+    color: var(--color-text);
+    /* Smooth scrolling */
+    overflow-y: auto;
+}
+
+/* Text popup specific styling */
+.popup-text-content h1,
+.popup-text-content h2,
+.popup-text-content h3 {
+    margin: 0 0 var(--space-md) 0;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+}
+
+.popup-text-content p {
+    margin: 0 0 var(--space-md) 0;
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-text);
+}
+
+.popup-text-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Text popup state management */
+.image-center-popup[data-popup-type="text"] .popup-image-container {
+    display: none; /* Hide image container for text popups */
+}
+
+.image-center-popup[data-popup-type="text"] .popup-text-container {
+    display: flex; /* Show text container for text popups */
+}
+
+.image-center-popup[data-popup-type="text"] .popup-text-container {
+    display: none; /* Hide text container by default */
+}
+
+/* Default state: show image container, hide text container */
+.popup-image-container {
+    display: flex;
+}
+
+.popup-text-container {
+    display: none;
+}
+
 /* Ensure image scales properly within container */
 .popup-image-container picture {
     width: 100%;
@@ -903,24 +974,18 @@ body.project-page {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Bloomtype Flower Logo - Complete implementation */
+/* Flower Logo - Bloomtype implementation adapted for our system */
 .flower {
-  display: block;
-  position: relative;
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: var(--flower-height);
   height: var(--flower-height);
   cursor: pointer;
-  text-align: center;
-  z-index: 1000;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-  
-  /* Initially hidden - no animation until start-bloom class is added */
-  transform: scale(0%, 0%);
-  opacity: 0;
-  /* No base transitions - let hover handle it like bloomtype */
-  
-  /* Centered positioning */
-  margin: var(--flower-margin-top) auto var(--flower-margin-bottom) auto;
+  animation-duration: 1s;
+  transition: 2s ease-in-out transform;
+  animation-fill-mode: both;
 }
 
 .flower:after {
@@ -958,57 +1023,18 @@ body.project-page {
   border-radius: 100%;
   animation-duration: 1s;
   animation-fill-mode: both;
-  transition: background var(--transition-smooth);
 }
 
-/* Petal positioning - Set permanent variables for hover animations */
-.flower .top:before {
-  --petal-offset-x: -50%;
-  --petal-offset-y: 50%;
-}
-.flower .top:after {
-  --petal-offset-x: 50%;
-  --petal-offset-y: 50%;
-}
-.flower .bottom:before {
-  --petal-offset-x: -50%;
-  --petal-offset-y: -50%;
-}
-.flower .bottom:after {
-  --petal-offset-x: 50%;
-  --petal-offset-y: -50%;
+/* Flower logo class that triggers blooming */
+.flower-logo {
+  top: 0.25em;
+  left: calc(50% - 1.75em);
+  z-index: 20;
+  animation: scaleUp 1s;
+  animation-fill-mode: forwards;
 }
 
-/* Blooming Animation - Triggered by [intro] attribute */
-.flower[intro] .top:before,
-.flower[intro] .top:after,
-.flower[intro] .bottom:before,
-.flower[intro] .bottom:after {
-  animation-direction: normal;
-  animation-delay: 1.25s;
-}
-
-.flower[intro] .top:before { 
-  animation-name: topLeft; 
-}
-.flower[intro] .top:after { 
-  animation-name: topRight; 
-}
-.flower[intro] .bottom:before { 
-  animation-name: bottomLeft; 
-}
-.flower[intro] .bottom:after { 
-  animation-name: bottomRight; 
-}
-
-/* Pure CSS State Management - Automatically set [logo] state when petal animations complete */
-/* This replaces JavaScript timing with pure CSS-driven state management */
-/* CSS animations will automatically manage state transitions - no JavaScript needed */
-
-/* CSS Animation Events - Use animationend to automatically set logo state */
-/* This is how bloomtype manages state transitions */
-
-/* Logo State - After blooming - Use old logo colors */
+/* Logo state after blooming */
 .flower[logo]:after {
   transition: background 1s;
   background: var(--color-background-lighter);
@@ -1022,69 +1048,54 @@ body.project-page {
   background: var(--color-primary);
 }
 
-/* Ensure flower is ready for hover effects after blooming */
-.flower[logo] {
-          /* No scale needed - flower sizes itself naturally */
-        /* Hover effects will work with pure rotation */
-        /* Explicitly override any inherited transitions */
-        transition: none !important;
+/* Intro state for petal animations */
+.flower[intro] .top:before,
+.flower[intro] .top:after,
+.flower[intro] .bottom:before,
+.flower[intro] .bottom:after {
+  animation-direction: normal;
+  animation-delay: 1.25s;
 }
 
-/* Start blooming animation when class is added */
-.flower.start-bloom {
-    animation: scaleUp 1s;
-    animation-fill-mode: forwards;
-    opacity: 1;
+.flower[intro] .top:before { animation-name: topLeft; }
+.flower[intro] .top:after { animation-name: topRight; }
+.flower[intro] .bottom:before { animation-name: bottomLeft; }
+.flower[intro] .bottom:after { animation-name: bottomRight; }
+
+/* Hover effect */
+a.logo:hover {
+  border-bottom: none;
+  animation: rotate 1s;
 }
 
-/* Blooming Animation Keyframes */
+/* Keyframes */
 @keyframes scaleUp {
-  0% { transform: scale(0%, 0%); }
-  100% { transform: scale(100%, 100%); }
+  0% { transform: scale(0%, 0%) rotate(0) }
+  100% { transform: scale(100%, 100%) rotate(1turn) }
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg) }
 }
 
 @keyframes topLeft {
-  0% { transform: translate(0%, 0%); }
-  100% { transform: translate(-50%, 50%); }
+  0% { transform: translate(0%, 0%) }
+  100% { transform: translate(-50%, 50%) }
 }
 
 @keyframes bottomLeft {
-  0% { transform: translate(0%, 0%); }
-  100% { transform: translate(-50%, -50%); }
+  0% { transform: translate(0%, 0%) }
+  100% { transform: translate(-50%, -50%) }
 }
 
 @keyframes topRight {
-  0% { transform: translate(0%, 0%); }
-  100% { transform: translate(50%, 50%); }
+  0% { transform: translate(0%, 0%) }
+  100% { transform: translate(50%, 50%) }
 }
 
 @keyframes bottomRight {
-  0% { transform: translate(0%, 0%); }
-  100% { transform: translate(50%, -50%); }
+  0% { transform: translate(0%, 0%) }
+  100% { transform: translate(50%, -50%) }
 }
 
-/* Bloomtype-style hover rotation keyframe */
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Hover Effects - Pure CSS approach like bloomtype */
-/* Only enable hover effects after the flower has bloomed */
-.flower[logo]:hover {
-    /* Exact bloomtype implementation - CSS animation instead of transition */
-    animation: rotate 1s;
-}
-
-
-
-/* Ensure petals maintain their bloomed positions after [intro] animations */
-.flower[logo] .top:before,
-.flower[logo] .top:after,
-.flower[logo] .bottom:before,
-.flower[logo] .bottom:after {
-  /* Keep the final positions from the bloom animations */
-  animation-fill-mode: forwards;
-  /* Ensure transform properties are preserved */
-  transform: var(--petal-offset-x, 0) var(--petal-offset-y, 0);
-}

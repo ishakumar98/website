@@ -111,7 +111,7 @@
                 </a>
             </div>
             <div class="work-item">
-                <a class="work-link" href="#">
+                <a class="work-link" href="#" id="about-trigger">
                     <div class="wrapper-image">
                         <img src="images/text-file-icon.png" alt="about">
                     </div>
@@ -122,7 +122,33 @@
             </div>
         </section>
         
-
+        <!-- Text Popup for About Section -->
+        <div class="image-center-popup" id="image-popup">
+            <!-- DRAG ZONE: Navigation bar (draggable) -->
+            <div class="popup-nav" id="popup-nav">
+                <ul class="wrapper-actions">
+                    <li class="popup-actions popup-close" id="popup-close"></li>
+                    <li class="popup-actions popup-minimise" id="popup-minimise"></li>
+                    <li class="popup-actions popup-expand" id="popup-expand"></li>
+                </ul>
+                <span id="popup-filename"></span>
+                <!-- Draggable area - excludes corners like native macOS -->
+                <div class="draggable-area"></div>
+            </div>
+            
+            <!-- TEXT POPUP: Text content area (macOS Text Editor style) -->
+            <div class="popup-text-container" id="popup-text-container">
+                <div class="popup-text-content" id="popup-text-content">
+                    <!-- Text content will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- RESIZE HANDLES: Four corner resize areas - positioned relative to popup container -->
+            <div class="resize-handle resize-handle-nw" id="resize-nw"></div>
+            <div class="resize-handle resize-handle-ne" id="resize-ne"></div>
+            <div class="resize-handle resize-handle-sw" id="resize-sw"></div>
+            <div class="resize-handle resize-handle-se" id="resize-se"></div>
+        </div>
         
     </div>
     
@@ -194,6 +220,22 @@
                                             new window.HomepageInteractionManager();
                                         }
                                         
+                                        // Initialize popup functionality for About section
+                                        if (window.PopupManager) {
+                                            console.log('Creating PopupManager for homepage...');
+                                            const popupManager = new window.PopupManager();
+                                            
+                                            // Add click handler for About section
+                                            const aboutTrigger = document.getElementById('about-trigger');
+                                            if (aboutTrigger) {
+                                                aboutTrigger.addEventListener('click', (e) => {
+                                                    e.preventDefault();
+                                                    console.log('About clicked! Opening text popup...');
+                                                    popupManager.openTextPopup('about');
+                                                });
+                                            }
+                                        }
+                                        
                                     } catch (error) {
                                         console.error('Module instantiation error:', error);
                                     }
@@ -218,8 +260,6 @@
             </script>
     
 
-
-    
 
 </body>
 </html> 

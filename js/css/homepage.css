@@ -413,6 +413,229 @@
 }
 
 /* ==========================================================================
+   POPUP STYLES (for About section)
+   ========================================================================== */
+
+/* macOS Style Image Center Popup - Completely Self-Contained */
+.image-center-popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    /* Self-contained scrolling - never affects body */
+    overflow: hidden;
+    width: auto;
+    min-width: 400px;
+    min-height: 300px; /* Ensure minimum height for content visibility */
+    padding: 0;
+    border-radius: 12px;
+    -webkit-filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
+    filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.2));
+    background-color: #f4f4f4;
+    /* Create isolated stacking context */
+    transform-style: preserve-3d;
+    /* Prevent any layout impact on other elements */
+    contain: layout style paint;
+    /* macOS Preview structure: separate navigation and content areas */
+    flex-direction: column;
+    /* Ensure popup is visible when active */
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Show popup when active */
+.image-center-popup.active {
+    display: block;
+    animation: popupEnter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 10000;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Popup animation keyframes */
+@keyframes popupEnter {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    70% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Navigation bar styling */
+.image-center-popup .popup-nav {
+    background-color: #f4f4f4;
+    padding: 16px 32px;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.image-center-popup .popup-nav:active {
+    cursor: grabbing;
+}
+
+.image-center-popup .popup-nav .wrapper-actions {
+    position: absolute;
+    left: 15px;
+    overflow: auto;
+    width: auto;
+    padding: 0;
+    display: inline-block;
+}
+
+/* Popup action buttons */
+.image-center-popup .popup-nav .popup-actions {
+    float: left;
+    border: 1px solid #000;
+    height: 16px;
+    width: 16px;
+    font-size: 0;
+    padding: 0;
+    margin: 0 5px 0 0;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.image-center-popup .popup-nav .popup-actions.popup-close {
+    position: relative;
+    background-color: #ff5f57;
+    border-color: #ff5f57;
+}
+
+.image-center-popup .popup-nav .popup-actions.popup-close:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: #000;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+}
+
+.image-center-popup .popup-nav .popup-actions.popup-close:hover:after {
+    opacity: 1;
+}
+
+.image-center-popup .popup-nav .popup-actions.popup-minimise,
+.image-center-popup .popup-nav .popup-actions.popup-expand {
+    cursor: default;
+    background-color: #d1d1d1;
+    border-color: #d1d1d1;
+}
+
+/* Filename display */
+.image-center-popup .popup-nav #popup-filename {
+    font-family: inherit;
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+}
+
+/* Draggable area */
+.image-center-popup .popup-nav .draggable-area {
+    position: absolute;
+    left: 60px;
+    right: 60px;
+    top: 0;
+    height: 100%;
+    cursor: grab;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* TEXT POPUP: Text content area - macOS Text Editor style */
+.popup-text-container {
+    position: relative;
+    overflow: auto;
+    width: 100%;
+    height: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    min-height: 200px;
+}
+
+.popup-text-content {
+    flex: 1;
+    padding: 32px;
+    box-sizing: border-box;
+    font-family: inherit;
+    line-height: 1.6;
+    color: #000;
+    overflow-y: auto;
+}
+
+.popup-text-content h1,
+.popup-text-content h2,
+.popup-text-content h3 {
+    margin: 0 0 16px 0;
+    font-weight: 600;
+    color: #000;
+}
+
+.popup-text-content p {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #000;
+}
+
+.popup-text-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Text popup state management */
+.image-center-popup[data-popup-type="text"] .popup-image-container {
+    display: none;
+}
+
+.image-center-popup[data-popup-type="text"] .popup-text-container {
+    display: flex;
+}
+
+.popup-image-container {
+    display: flex;
+}
+
+.popup-text-container {
+    display: none;
+}
+
+/* Resize handles */
+.resize-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    cursor: pointer;
+    z-index: 10001;
+}
+
+.resize-handle-nw { top: 0; left: 0; cursor: nw-resize; }
+.resize-handle-ne { top: 0; right: 0; cursor: ne-resize; }
+.resize-handle-sw { bottom: 0; left: 0; cursor: sw-resize; }
+.resize-handle-se { bottom: 0; right: 0; cursor: se-resize; }
+
+/* ==========================================================================
    RESPONSIVE DESIGN & MEDIA QUERIES
    ========================================================================== */
 
@@ -474,3 +697,5 @@
         gap: var(--space-md);
     }
 }
+
+

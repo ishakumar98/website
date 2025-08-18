@@ -37,43 +37,19 @@
                 
                 const waitForModuleLoader = () => {
                     if (window.moduleLoader) {
-                        // Load all modules (project modules will auto-detect and only initialize on project pages)
-                        window.moduleLoader.loadAllModules().then((moduleClasses) => {
+                        // Load all modules and initialize them automatically
+                        window.moduleLoader.loadAllModules().then(async (moduleClasses) => {
                             try {
-                                // Create instances of project modules in correct order
-                                if (window.ProjectContentManager) {
-                                    window.projectContentManager = new window.ProjectContentManager();
-                                }
+                                // Initialize all modules using ModuleLoader
+                                const initializedModules = await window.moduleLoader.initializeAllModules();
                                 
-                                // Initialize flower manager for blooming animation
-                                if (window.FlowerManager) {
-                                    window.flowerManager = new window.FlowerManager();
-                                    // Trigger the blooming animation
-                                    setTimeout(() => {
-                                        if (window.flowerManager) {
-                                            window.flowerManager.triggerBloom();
-                                        }
-                                    }, 100);
-                                }
-                                
-                                // Wait a bit for content to be populated, then initialize scroll manager
-                                setTimeout(() => {
-                                    if (window.ProjectScrollManager) {
-                                        window.projectScrollManager = new window.ProjectScrollManager();
-                                    }
-                                }, 100);
-                                
-                                if (window.FontSizingManager) {
-                                    window.fontSizingManager = new window.FontSizingManager();
-                                }
-                                
-                                if (window.TextSlantManager) {
-                                    window.textSlantManager = new window.TextSlantManager();
-                                }
-                                
-                                if (window.ImagePopupManager) {
-                                    window.imagePopupManager = new window.ImagePopupManager();
-                                }
+                                // Store references to initialized modules for later use
+                                window.flowerManager = initializedModules['flower-manager'];
+                                window.projectContentManager = initializedModules['project-content-manager'];
+                                window.projectScrollManager = initializedModules['project-scroll-manager'];
+                                window.fontSizingManager = initializedModules['font-sizing-manager'];
+                                window.textSlantManager = initializedModules['text-slant-manager'];
+                                window.imagePopupManager = initializedModules['image-popup-manager'];
                                 
                                 // Setup resize handler for project modules
                                 window.addEventListener('resize', () => {
@@ -109,22 +85,8 @@
             }
         });
         
-        // Trigger Bloomtype flower blooming on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            // Wait for the initial scaleUp animation to complete (1 second)
-            setTimeout(() => {
-                const flower = document.querySelector('.flower');
-                if (flower) {
-                    // Add [intro] attribute to trigger petal blooming
-                    flower.setAttribute('intro', '');
-                    
-                    // After petal blooming completes, add [logo] attribute for final state
-                    setTimeout(() => {
-                        flower.setAttribute('logo', '');
-                    }, 2250); // 1s scaleUp + 1.25s delay + 1s petal bloom
-                }
-            }, 1000);
-        });
+        // Flower blooming is now handled entirely by FlowerManager
+        // No need for HTML to trigger bloom - the module coordinates everything
     </script>
 </head>
 <body class="project-page">
@@ -147,6 +109,13 @@
             <picture>
                 <img id="popup-image" src="" alt="">
             </picture>
+        </div>
+        
+        <!-- TEXT POPUP: Text content area (macOS Text Editor style) -->
+        <div class="popup-text-container" id="popup-text-container">
+            <div class="popup-text-content" id="popup-text-content">
+                <!-- Text content will be populated by JavaScript -->
+            </div>
         </div>
         
         <!-- RESIZE HANDLES: Four corner resize areas - positioned relative to popup container -->
@@ -179,7 +148,7 @@
         <!-- Project Images Work Container -->
         <section class="project-images-section">
             <!-- Bloomtype Flower Logo at top of container -->
-            <a href="index.html" class="flower">
+            <a href="index.html" class="flower flower-logo" logo="" intro="">
                 <div class="top"></div>
                 <div class="bottom"></div>
             </a>

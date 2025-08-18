@@ -135,7 +135,8 @@ class ModuleLoader {
                 'letter-animation-manager',
                 'fireworks-manager',
                 'homepage-scroll-manager',
-                'homepage-interaction-manager'
+                'homepage-interaction-manager',
+                'popup-manager'
             ];
         } else if (isProjectPage) {
             // Project page-specific modules
@@ -182,7 +183,8 @@ class ModuleLoader {
                 'letter-animation-manager',
                 'fireworks-manager',
                 'homepage-scroll-manager',
-                'homepage-interaction-manager'
+                'homepage-interaction-manager',
+                'popup-manager'
             ];
         } else if (isProjectPage) {
             requiredModules = [
