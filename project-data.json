@@ -259,19 +259,34 @@
       "credits": "Grateful to Omar Lee, Shilpa Ramamurthy, Stuart Lovinggood, and other cross-functional folks for their time and talent.",
       "images": [
         {
-          "src": "images/client-redesign/redesign-before-1.png",
-          "alt": "Redesign Before 1",
-          "title": "Redesign Before 1.png"
+          "src": "images/client-redesign/Team Creation Flow.png",
+          "alt": "Team Creation Flow",
+          "title": "Team Creation Flow.png"
         },
         {
-          "src": "images/client-redesign/redesign-after-1.png",
-          "alt": "Redesign After 1",
-          "title": "Redesign After 1.png"
+          "src": "images/client-redesign/Tour (1).png",
+          "alt": "Tour 1",
+          "title": "Tour (1).png"
         },
         {
-          "src": "images/client-redesign/redesign-process-1.png",
-          "alt": "Redesign Process 1",
-          "title": "Redesign Process 1.png"
+          "src": "images/client-redesign/Tour (2).png",
+          "alt": "Tour 2",
+          "title": "Tour (2).png"
+        },
+        {
+          "src": "images/client-redesign/Tour (3).png",
+          "alt": "Tour 3",
+          "title": "Tour (3).png"
+        },
+        {
+          "src": "images/client-redesign/Empty States.png",
+          "alt": "Empty States",
+          "title": "Empty States.png"
+        },
+        {
+          "src": "images/client-redesign/In Product Education.png",
+          "alt": "In Product Education",
+          "title": "In Product Education.png"
         }
       ]
     },
