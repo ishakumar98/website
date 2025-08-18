@@ -119,9 +119,9 @@
       "title": "Lists",
       "year": "2024",
       "description": [
-        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I contributed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, which became the most successful in Slack's history. And, I led design on a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, abstract system while keeping the experience intuitive and consistent across the platform."
+        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I contributed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, which became the most successful in Slack's history. And, I led design on task tracking, which later evolved into a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, abstract system while keeping the experience intuitive and consistent across the platform."
       ],
-      "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Liu, Anna Niess, Samuel Kang, Katie Stiegman, and many other cross-functional folks.",
+      "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Liu, Anna Niess, Samuel Kang, Katie Stiegman, Colleen Li, and many other cross-functional folks.",
       "images": [
         {
           "src": "images/lists/List view.png",
