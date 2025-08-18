@@ -4,9 +4,9 @@
       "title": "Calendar",
       "year": "2024 - 2025",
                           "description": [
-          "This work was completed while staffed on Slack's Zero to One product team as a product design lead. From 2024 to 2025, our team worked to design a native Calendar experience in Slack. Calendar aims to integrate all your tools & data into a single, unified layer that allows you to manage all the things competing for your time, right in Slack. I contributed several elements of the visual design, and led design strategy to create an overall vision for the project. We wanted the experience to feel powerful, and playful — true to Slack's personality and product value. This work is currently in progress, and set to GA next year."
+          "Last year, I supported the team working on a native Calendar experience in Slack as a product design lead. Calendar aims to integrate all your tools & data into a single, unified layer that allows you to manage all the things competing for your time, right in Slack. I contributed several elements of the visual design, like event details, week view, hover details, and more. I also led the vision work, mapped a year-long roadmap, and partnered across teams to define what an integrated, third party experience in Calendar could look like. We wanted the experience to feel powerful, and playful — true to Slack's personality and product value."
         ],
-      "credits": "Such a fun one to jam with Samuel Kang on. Thank you to our many cross functional partners for helping make this happen.",
+      "credits": "Such a fun one to jam with Samuel Kang on. This work is currently in progress, and set to GA next year.",
                   "images": [
                 {
                     "src": "images/calendar/Detail View.png",
@@ -114,9 +114,9 @@
       "title": "Lists",
       "year": "2024",
       "description": [
-        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management. I contributed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, and led design on a net new initiative, called To Dos."
+        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I contributed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, using the old system I designed. And, I led design on a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, abstract system while keeping the experience intuitive and consistent across the platform."
       ],
-      "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Lui, Anna Niess, Samuel Kang, Katie Stiegman, and many other cross-functional folks.",
+      "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Liu, Anna Niess, Samuel Kang, Katie Stiegman, and many other cross-functional folks.",
       "images": [
         {
           "src": "images/lists/list-interface-1.png",
@@ -139,9 +139,9 @@
       "title": "Huddles",
       "year": "2024",
       "description": [
-        "Huddles project - a collaborative workspace solution designed to enhance team communication and project coordination. This project explores innovative approaches to remote collaboration, real-time communication, and seamless team workflows."
+        "Currently, I lead design for huddles, Slack's most used, and most loved feature. We launched a bundle of huddles features — a docked bottom bar, Picture in Picture in Picture, preview, waiting rooms, pre-meeting notifications, and more. Plus, our first quality-of-life drop of the last two years! I worked on adding new reactjis, timers, improvements to hand raising, and more. Still keeping a simple, easy to use experience, but also allowing more powerful meetings for those who need it."
       ],
-      "credits": "Huddles project - showcasing collaborative workspace and team communication interfaces.",
+      "credits": "Thank you to my cross-functional team for supporting my wacky ideas: Amanda Glanz, Timothy Wittig, Elyse Vest, Stewart Taylor, and more.",
       "images": [
         {
           "src": "images/huddles/huddle-workspace-1.png",
@@ -164,9 +164,9 @@
       "title": "Client Redesign",
       "year": "2024",
       "description": [
-        "Client Redesign project - a comprehensive redesign initiative focused on improving user experience, visual design, and overall product functionality. This project demonstrates strategic design thinking and user-centered design approaches."
+        "Led the next generation of Slack's early growth strategy, testing ways to reduce friction and increase activation by focusing on onboarding, permission states, and other key levers. We ran several experiments over the course of a year that tested four, completely redesigned, onboarding experiences. There's more I would have loved to explore in this space, but I'm glad we got this out into the world and successfully landed Slack's client redesign."
       ],
-      "credits": "Client Redesign project - showcasing strategic design improvements and user experience enhancements.",
+      "credits": "Grateful to Omar Lee, Shilpa Ramamurthy, Stuart Lovinggood, and other cross-functional folks for their time and talent.",
       "images": [
         {
           "src": "images/client-redesign/redesign-before-1.png",
@@ -189,9 +189,9 @@
       "title": "Onboarding System",
       "year": "2024",
       "description": [
-        "Onboarding System project - a comprehensive user onboarding experience designed to guide new users through complex products and services. This project explores intuitive user guidance, progressive disclosure, and seamless first-time user experiences."
+        "A battle cry to make onboarding and education less boring and more joyful. I led design to create a net-new system for tips and feature launches. To upsell features, I designed contextual nudges that showed up naturally in the user journey. Instead of aggressive coach marks, we focused on helpful, well-timed prompts, followed by banners providing context and instruction. Last but not least, we created playful and lightweight success states to greet a user after a completed interaction. It's highly modular — you can mix and match any of these components in any form to create an educational experience that works for your team, and your feature. I'm proud of what we shipped; our designers, and our users, love it."
       ],
-      "credits": "Onboarding System project - showcasing user onboarding and guidance interfaces.",
+      "credits": "Such a fun one to jam on with Shilpa Ramamurthy, Stuart Lovinggood, James Yi, Skip Hursh, and other cross-functional folks.",
       "images": [
         {
           "src": "images/onboarding-system/onboarding-step-1.png",
