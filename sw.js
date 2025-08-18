@@ -17,7 +17,7 @@ const CACHE_STRATEGIES = {
 // Files to cache immediately
 const STATIC_FILES = [
     '/',
-    '/index.html',
+    '/',
     '/calendar-project.html',
     '/project-template.html',
             '/js/css/main.css',

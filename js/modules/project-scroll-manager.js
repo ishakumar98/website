@@ -147,7 +147,12 @@ class ProjectScrollManager {
                 scrollProgress: scrollProgress.toFixed(3),
                 currentTop: this.currentTop.toFixed(2),
                 startTop: startTop.toFixed(2),
-                endTop: endTop.toFixed(2)
+                endTop: endTop.toFixed(2),
+                // Additional dimension debugging
+                containerOffsetHeight: this.projectImagesSection.offsetHeight,
+                containerScrollHeight: this.projectImagesSection.scrollHeight,
+                containerClientHeight: this.projectImagesSection.clientHeight,
+                containerBoundingRect: this.projectImagesSection.getBoundingClientRect()
             });
             
             // Apply LERP for smooth movement
@@ -172,7 +177,12 @@ class ProjectScrollManager {
                 startTop: startTop.toFixed(2),
                 bottomEdge: (this.currentTop + containerHeight).toFixed(2),
                 viewportBottom: window.innerHeight,
-                isOvershooting: (this.currentTop + containerHeight) > window.innerHeight
+                isOvershooting: (this.currentTop + containerHeight) > window.innerHeight,
+                // Container dimension details
+                containerHeight,
+                containerOffsetHeight: this.projectImagesSection.offsetHeight,
+                containerScrollHeight: this.projectImagesSection.scrollHeight,
+                containerClientHeight: this.projectImagesSection.clientHeight
             });
             
             // Apply the calculated position

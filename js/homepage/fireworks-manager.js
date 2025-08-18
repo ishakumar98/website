@@ -199,10 +199,10 @@ class FireworksManager {
     
     isHomepage() {
         return window.location.pathname === '/' || 
-               window.location.pathname === '/index.html' ||
+               window.location.pathname === '/' ||
                window.location.pathname.endsWith('/') ||
-               window.location.pathname.includes('/index.html') ||
-               window.location.pathname.includes('/website-project/index.html');
+               window.location.pathname.includes('/') ||
+               window.location.pathname.includes('/website-project/');
     }
     
     init() {

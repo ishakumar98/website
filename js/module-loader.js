@@ -17,9 +17,9 @@ class ModuleLoader {
     
     // Check if current page is homepage
     isHomepage() {
-        return window.location.pathname === '/' || 
-               window.location.pathname === '/index.html' || 
-               window.location.pathname.endsWith('/index.html') ||
+                return window.location.pathname === '/' || 
+                window.location.pathname === '/' || 
+                window.location.pathname.endsWith('/') ||
                window.location.pathname.endsWith('/');
     }
     

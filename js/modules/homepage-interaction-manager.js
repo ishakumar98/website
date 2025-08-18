@@ -66,10 +66,10 @@ class HomepageInteractionManager {
         // Check if we're on the homepage (including local development paths)
         const pathname = window.location.pathname;
         return pathname === '/' || 
-               pathname === '/index.html' ||
+               pathname === '/' ||
                pathname.endsWith('/') ||
-               pathname.includes('/index.html') ||
-               pathname.includes('/website-project/index.html');
+               pathname.includes('/') ||
+               pathname.includes('/website-project/');
     }
     
     setupElements() {

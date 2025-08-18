@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Check if we're on the home page
   const isHomePage = window.location.pathname === '/' || 
-                    window.location.pathname.includes('index.html') ||
+                    window.location.pathname.includes('/') ||
                     window.location.pathname.endsWith('/');
   
   if (!isHomePage) {
