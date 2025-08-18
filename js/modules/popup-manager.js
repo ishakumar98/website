@@ -29,8 +29,7 @@ const TEXT_POPUP_TEMPLATES = {
     about: {
         title: "About",
         content: {
-            // Placeholder - you'll provide the actual text
-            text: "Your paragraph text will go here..."
+            text: "I lead design for huddles, Slack's most used, and most loved feature. Before this, I worked on zero to one, where I supported the products and teams at the frontier of our business (Lists, Templates, Calendar, and more). Before that, I got my undergraduate and master's degree in Computer Science, from Stanford University.\n\nIn most parts of my life, I'm a generalist. Design is no exception! I've worked across growth, systems, and zero to one. I'm good at helping teams be ambitious, together. To imagine new solutions, to ship higher quality products, and most importantly—to have fun through it all.\n\nLinkedIn: https://www.linkedin.com/in/isha-kumar-29a479125/\nResume: assets/Resume.pdf"
         }
     }
 };
