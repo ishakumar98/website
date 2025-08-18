@@ -109,6 +109,106 @@
           "title": "Timeline Details.png"
         }
       ]
+    },
+    "lists": {
+      "title": "Lists",
+      "year": "2024",
+      "description": [
+        "A comprehensive list management system designed to help users organize tasks, ideas, and information efficiently. This project explores intuitive interfaces for creating, organizing, and managing various types of lists with smart categorization and search capabilities."
+      ],
+      "credits": "Lists project - showcasing list management and organization interfaces.",
+      "images": [
+        {
+          "src": "images/Channel timelines.png",
+          "alt": "Channel Timelines",
+          "title": "Channel Timelines.png"
+        },
+        {
+          "src": "images/Timeline details.png",
+          "alt": "Timeline Details",
+          "title": "Timeline Details.png"
+        },
+        {
+          "src": "images/Week.png",
+          "alt": "Week View",
+          "title": "Week View.png"
+        }
+      ]
+    },
+    "huddles": {
+      "title": "Huddles",
+      "year": "2024",
+      "description": [
+        "Huddles project - a collaborative workspace solution designed to enhance team communication and project coordination. This project explores innovative approaches to remote collaboration, real-time communication, and seamless team workflows."
+      ],
+      "credits": "Huddles project - showcasing collaborative workspace and team communication interfaces.",
+      "images": [
+        {
+          "src": "images/Channel timelines.png",
+          "alt": "Channel Timelines",
+          "title": "Channel Timelines.png"
+        },
+        {
+          "src": "images/Timeline details.png",
+          "alt": "Timeline Details",
+          "title": "Timeline Details.png"
+        },
+        {
+          "src": "images/Week.png",
+          "alt": "Week View",
+          "title": "Week View.png"
+        }
+      ]
+    },
+    "client-redesign": {
+      "title": "Client Redesign",
+      "year": "2024",
+      "description": [
+        "Client Redesign project - a comprehensive redesign initiative focused on improving user experience, visual design, and overall product functionality. This project demonstrates strategic design thinking and user-centered design approaches."
+      ],
+      "credits": "Client Redesign project - showcasing strategic design improvements and user experience enhancements.",
+      "images": [
+        {
+          "src": "images/Channel timelines.png",
+          "alt": "Channel Timelines",
+          "title": "Channel Timelines.png"
+        },
+        {
+          "src": "images/Timeline details.png",
+          "alt": "Timeline Details",
+          "title": "Timeline Details.png"
+        },
+        {
+          "src": "images/Week.png",
+          "alt": "Week View",
+          "title": "Week View.png"
+        }
+      ]
+    },
+    "onboarding-system": {
+      "title": "Onboarding System",
+      "year": "2024",
+      "description": [
+        "Onboarding System project - a comprehensive user onboarding experience designed to guide new users through complex products and services. This project explores intuitive user guidance, progressive disclosure, and seamless first-time user experiences."
+      ],
+      "credits": "Onboarding System project - showcasing user onboarding and guidance interfaces.",
+      "images": [
+        {
+          "src": "images/Channel timelines.png",
+          "alt": "Channel Timelines",
+          "title": "Channel Timelines.png"
+        },
+        {
+          "src": "images/Timeline details.png",
+          "alt": "Timeline Details",
+          "title": "Timeline Details.png"
+        },
+        {
+          "src": "images/Week.png",
+          "alt": "Week View",
+          "title": "Week View.png"
+        }
+      ]
     }
   }
 }

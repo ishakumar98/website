@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Redesign Project</title>
+    <link rel="stylesheet" href="js/css/main.css">
+    <link rel="stylesheet" href="project-page.css">
+    
+    <!-- Core Coordination Systems -->
+    <script src="js/event-manager.js"></script>
+    <script src="js/animation-coordinator.js"></script>
+    
+    <!-- Module Loader System -->
+    <script src="js/module-loader.js"></script>
+    
+    <!-- Performance Optimization Modules -->
+    <script src="js/image-optimizer.js"></script>
+    <script src="js/font-optimizer.js"></script>
+    <script src="js/css-optimizer.js"></script>
+    <script src="js/performance-monitor.js"></script>
+    <script src="js/performance-manager.js"></script>
+    
+    <!-- Phase 4: Advanced Optimization Modules -->
+    <script src="js/service-worker-manager.js"></script>
+    <script src="js/webp-converter.js"></script>
+    <script src="js/advanced-optimization-manager.js"></script>
+    
+    <!-- Initialize Project Modules -->
+    <script>
+        // Wait for everything to load, then initialize project modules
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Wait a bit for ModuleLoader to be available
+                let attempts = 0;
+                const maxAttempts = 20;
+                
+                const waitForModuleLoader = () => {
+                    if (window.moduleLoader) {
+                        // Load all modules and initialize them automatically
+                        window.moduleLoader.loadAllModules().then(async (moduleClasses) => {
+                            try {
+                                // Initialize all modules using ModuleLoader
+                                const initializedModules = await window.moduleLoader.initializeAllModules();
+                                
+                                // Store references to initialized modules for later use
+                
+                                window.flowerManager = initializedModules['flower-manager'];
+                window.projectContentManager = initializedModules['project-content-manager'];
+                                window.projectScrollManager = initializedModules['project-scroll-manager'];
+                                window.fontSizingManager = initializedModules['font-sizing-manager'];
+                                window.textSlantManager = initializedModules['text-slant-manager'];
+                                window.imagePopupManager = initializedModules['image-popup-manager'];
+                                
+                                // Setup resize handler for project modules
+                                window.addEventListener('resize', () => {
+                                    // Refresh modules that need resize handling
+                                    if (window.projectScrollManager) {
+                                        window.projectScrollManager.handleResize();
+                                    }
+                                    
+                                    if (window.fontSizingManager) {
+                                        window.fontSizingManager.adjustFontSize();
+                                    }
+                                });
+                                
+                            } catch (error) {
+                                // Handle module instantiation error silently
+                            }
+                            
+                        }).catch((error) => {
+                            // Handle module loading error silently
+                        });
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        setTimeout(waitForModuleLoader, 100);
+                    } else {
+                        // ModuleLoader failed to load after multiple attempts
+                    }
+                };
+                
+                waitForModuleLoader();
+                
+            } catch (error) {
+                // Handle initialization error silently
+            }
+        });
+        
+        // Flower blooming is now handled entirely by FlowerManager
+        // No need for HTML to trigger bloom - the module coordinates everything
+    </script>
+</head>
+<body class="project-page">
+    <!-- Image Center Popup -->
+    <div class="image-center-popup" id="image-popup">
+        <!-- DRAG ZONE: Navigation bar (draggable) -->
+        <div class="popup-nav" id="popup-nav">
+            <ul class="wrapper-actions">
+                <li class="popup-actions popup-close" id="popup-close"></li>
+                <li class="popup-actions popup-minimise" id="popup-minimise"></li>
+                <li class="popup-actions popup-expand" id="popup-expand"></li>
+            </ul>
+            <span id="popup-filename"></span>
+            <!-- Draggable area - excludes corners like native macOS -->
+            <div class="draggable-area"></div>
+        </div>
+        
+        <!-- RESIZE ZONE: Image container (resizable from corners) -->
+        <div class="popup-image-container" id="popup-image-container">
+            <picture>
+                <img id="popup-image" src="" alt="">
+            </picture>
+        </div>
+        
+        <!-- TEXT POPUP: Text content area (macOS Text Editor style) -->
+        <div class="popup-text-container" id="popup-text-container">
+            <div class="popup-text-content" id="popup-text-content">
+                <!-- Text content will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- RESIZE HANDLES: Four corner resize areas - positioned relative to popup container -->
+        <div class="resize-handle resize-handle-nw" id="resize-nw"></div>
+        <div class="resize-handle resize-handle-ne" id="resize-ne"></div>
+        <div class="resize-handle resize-handle-sw" id="resize-sw"></div>
+        <div class="resize-handle resize-handle-se" id="resize-se"></div>
+        
+        <!-- NAVIGATION ZONES: Left/right image navigation (isolated) -->
+        <div class="popup-nav-left" id="popup-nav-left"></div>
+        <div class="popup-nav-right" id="popup-nav-right"></div>
+    </div>
+
+    <div class="project-page-container">
+        <!-- PROJECT CONTENT AREA -->
+        <section class="project-content-area">
+            <div class="project-text-block">
+                <!-- PROJECT DESCRIPTION: Content will be populated by JavaScript from project-data.json -->
+                <!-- DO NOT MODIFY THIS DIV - it's automatically populated -->
+            </div>
+            
+            <div class="project-credits">
+                <p class="credits-text">
+                    <!-- PROJECT CREDITS: Will be populated by JavaScript from project-data.json -->
+                    <!-- DO NOT MODIFY THIS P - it's automatically populated -->
+                </p>
+            </div>
+        </section>
+        
+        <!-- Project Images Work Container -->
+        <section class="project-images-section">
+            <!-- Flower Logo at top of container -->
+            <div class="flower flower-logo" logo="" intro="" onclick="body.removeAttribute('panel-active');">
+                <a class="logo" href="index.html" ajax="">
+                    <div class="top"></div>
+                    <div class="bottom"></div>
+                </a>
+            </div>
+            
+            <ul class="image-list">
+                <!-- PROJECT IMAGES: Will be populated by JavaScript from project-data.json -->
+                <!-- DO NOT MODIFY THIS UL - it's automatically populated -->
+            </ul>
+        </section>
+    </div>
+
+    <!-- Flower Scroll-Based Resizing System -->
+    <script>
+        // Wait for page to load
+        window.addEventListener('load', () => {
+            const flower = document.querySelector('.flower-logo');
+            if (!flower) return;
+            
+            // Initial positioning - center horizontally, start at top of viewport with padding
+            const initialTop = 0; // Start at 0% of viewport height (top)
+            const topPadding = 16; // Add 16px of padding above the flower (--space-md)
+            const initialScale = 1.0; // Start at full size
+            
+            // Calculate the final top position
+            const finalTop = initialTop + topPadding;
+            
+            // Set initial position
+            flower.style.top = finalTop + 'px';
+            flower.style.left = 'calc(50% - 3vw)'; // Center horizontally
+            flower.style.scale = initialScale;
+            
+            // Scroll-based resizing function
+            function updateFlowerOnScroll() {
+                const scrollY = window.scrollY;
+                const viewportHeight = window.innerHeight;
+                
+                // Calculate new top position (flower stays at top with padding as you scroll)
+                const maxScroll = document.documentElement.scrollHeight - viewportHeight;
+                const scrollProgress = Math.min(scrollY / maxScroll, 1); // 0 to 1
+                
+                // Flower stays at top with padding as you scroll
+                const newTop = finalTop; // Always stays at top with padding
+                
+                // Scale decreases from 1.0 to 0.3 as you scroll down
+                const minScale = 0.3; // Smallest size when scrolled down
+                const newScale = initialScale - (scrollProgress * (initialScale - minScale));
+                
+                // Apply the new positioning
+                flower.style.top = newTop + 'px';
+                flower.style.scale = newScale;
+            }
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', updateFlowerOnScroll);
+            
+            // Initial call to set position
+            updateFlowerOnScroll();
+        });
+    </script>
+
+</body>
+</html>
