@@ -4,21 +4,12 @@
 
 // Popup Configuration - Centralized settings
 const POPUP_CONFIG = {
-    // Image popup dimensions
+    // Core popup settings
     minSize: 200,
-    maxSizePercent: 0.95,
-    
-    // Animation timing
-    closeAnimationDuration: 400,
     
     // Z-index values
     popupZIndex: 10000,
     resizeHandleZIndex: 10001,
-    navigationZIndex: 9999,
-    
-    // Navigation area dimensions
-    navigationAreaWidth: 60,
-    navigationAreaTopOffset: 60,
     
     // Text popup specific settings
     textPopup: {
@@ -246,6 +237,22 @@ class PopupManager {
     }
     
     openPopup(imageIndex) {
+        // Input validation
+        if (typeof imageIndex !== 'number' || imageIndex < 0) {
+            console.warn('PopupManager: Invalid image index provided');
+            return;
+        }
+        
+        if (!this.isInitialized) {
+            console.warn('PopupManager: Not initialized');
+            return;
+        }
+        
+        if (!this.projectImages || !this.projectImages[imageIndex]) {
+            console.warn('PopupManager: Image not found at index', imageIndex);
+            return;
+        }
+        
         try {
             // Set popup type
             this.popupType = 'image';
@@ -282,12 +289,17 @@ class PopupManager {
                     viewportHeight
                 );
                 
-                // Set the calculated optimal size
-                this.popupElements.popup.style.width = optimalSize.width + 'px';
-                this.popupElements.popup.style.height = optimalSize.height + 'px';
-                
-                // Show popup
-                this.popupElements.popup.classList.add('active');
+                // Validate optimal size
+                if (optimalSize && optimalSize.width && optimalSize.height) {
+                    // Set the calculated optimal size
+                    this.popupElements.popup.style.width = optimalSize.width + 'px';
+                    this.popupElements.popup.style.height = optimalSize.height + 'px';
+                    
+                    // Show popup
+                    this.popupElements.popup.classList.add('active');
+                } else {
+                    console.warn('PopupManager: Invalid optimal size calculated');
+                }
             };
             
             // If image is already loaded, size immediately
@@ -296,7 +308,7 @@ class PopupManager {
             }
             
         } catch (error) {
-            // Handle popup error silently
+            console.error('PopupManager: Error opening image popup:', error);
         }
     }
     
@@ -306,6 +318,17 @@ class PopupManager {
     
     // Open text popup (for About section, etc.)
     openTextPopup(templateName) {
+        // Input validation
+        if (!templateName || typeof templateName !== 'string') {
+            console.warn('PopupManager: Invalid template name provided');
+            return;
+        }
+        
+        if (!this.isInitialized) {
+            console.warn('PopupManager: Not initialized');
+            return;
+        }
+        
         try {
             // Set popup type
             this.popupType = 'text';
@@ -313,6 +336,13 @@ class PopupManager {
             // Get template content
             const template = TEXT_POPUP_TEMPLATES[templateName];
             if (!template) {
+                console.warn(`PopupManager: Template '${templateName}' not found`);
+                return;
+            }
+            
+            // Validate template structure
+            if (!template.title || !template.content || !template.content.text) {
+                console.warn('PopupManager: Invalid template structure');
                 return;
             }
             
@@ -338,16 +368,23 @@ class PopupManager {
                 // Calculate text popup dimensions
                 const textDimensions = this.calculateTextPopupSize();
                 
-                // Set dimensions
-                this.popupElements.popup.style.width = textDimensions.width + 'px';
-                this.popupElements.popup.style.height = textDimensions.height + 'px';
-                
-                // Show popup
-                this.popupElements.popup.classList.add('active');
+                // Validate dimensions
+                if (textDimensions && textDimensions.width && textDimensions.height) {
+                    // Set dimensions
+                    this.popupElements.popup.style.width = textDimensions.width + 'px';
+                    this.popupElements.popup.style.height = textDimensions.height + 'px';
+                    
+                    // Show popup
+                    this.popupElements.popup.classList.add('active');
+                } else {
+                    console.warn('PopupManager: Invalid dimensions calculated');
+                }
+            } else {
+                console.warn('PopupManager: Popup element not found');
             }
             
         } catch (error) {
-            // Handle error silently
+            console.error('PopupManager: Error opening text popup:', error);
         }
     }
     
@@ -389,6 +426,11 @@ class PopupManager {
     
     // Drag functionality
     startDrag(e) {
+        // Input validation
+        if (!e || !this.popupElements.popup) {
+            return;
+        }
+        
         // Don't start drag if clicking on buttons, filename, OR resize handles
         if (e.target.closest('.popup-actions') || 
             e.target.closest('#popup-filename') ||
@@ -488,6 +530,11 @@ class PopupManager {
     
     // Resize functionality
     startResize(e) {
+        // Input validation
+        if (!e || !this.popupElements.popup) {
+            return;
+        }
+        
         e.preventDefault();
         
         // Get resize handle that was clicked
@@ -663,63 +710,110 @@ class PopupManager {
     
     // Calculate optimal popup size based on image dimensions and viewport
     calculateOptimalPopupSize(imageWidth, imageHeight, imageMinSize, viewportWidth, viewportHeight) {
-        // macOS Preview approach: Simple, comfortable sizing with proper margins
+        // Input validation
+        if (!this.validateDimensions(imageWidth, imageHeight, imageMinSize, viewportWidth, viewportHeight)) {
+            return null;
+        }
+        
+        // Calculate available space with margins
+        const availableSpace = this.calculateAvailableSpace(viewportWidth, viewportHeight);
+        
+        // Calculate initial size based on image dimensions
+        let popupSize = this.calculateInitialSize(imageWidth, imageHeight, availableSpace);
+        
+        // Apply minimum size constraints
+        popupSize = this.applyMinimumSizeConstraints(popupSize, imageMinSize);
+        
+        // Scale down if needed to fit viewport
+        popupSize = this.scaleToFitViewport(popupSize, availableSpace);
+        
+        // Final bounds check
+        popupSize = this.applyFinalBoundsCheck(popupSize, availableSpace);
+        
+        return {
+            width: Math.round(popupSize.width),
+            height: Math.round(popupSize.height)
+        };
+    }
+    
+    // Validate input dimensions
+    validateDimensions(imageWidth, imageHeight, imageMinSize, viewportWidth, viewportHeight) {
+        return imageWidth > 0 && imageHeight > 0 && 
+               imageMinSize && imageMinSize.width > 0 && imageMinSize.height > 0 &&
+               viewportWidth > 0 && viewportHeight > 0;
+    }
+    
+    // Calculate available space with margins
+    calculateAvailableSpace(viewportWidth, viewportHeight) {
         const margin = 80; // 40px on each side for comfortable breathing room
-        const maxWidth = viewportWidth - margin;
-        const maxHeight = viewportHeight - margin;
-        
-        // Calculate image aspect ratio
+        return {
+            maxWidth: viewportWidth - margin,
+            maxHeight: viewportHeight - margin
+        };
+    }
+    
+    // Calculate initial size based on image dimensions
+    calculateInitialSize(imageWidth, imageHeight, availableSpace) {
         const imageAspectRatio = imageWidth / imageHeight;
-        
-        // Simple approach: fit the image within the available space while maintaining aspect ratio
-        let popupWidth, popupHeight;
         
         if (imageAspectRatio > 1) {
             // Wide image - fit to available width
-            popupWidth = Math.min(imageWidth, maxWidth);
-            popupHeight = popupWidth / imageAspectRatio;
+            let popupWidth = Math.min(imageWidth, availableSpace.maxWidth);
+            let popupHeight = popupWidth / imageAspectRatio;
             
             // If height exceeds available height, scale down proportionally
-            if (popupHeight > maxHeight) {
-                popupHeight = maxHeight;
+            if (popupHeight > availableSpace.maxHeight) {
+                popupHeight = availableSpace.maxHeight;
                 popupWidth = popupHeight * imageAspectRatio;
             }
+            
+            return { width: popupWidth, height: popupHeight };
         } else {
             // Tall image - fit to available height
-            popupHeight = Math.min(imageHeight, maxHeight);
-            popupWidth = popupHeight * imageAspectRatio;
+            let popupHeight = Math.min(imageHeight, availableSpace.maxHeight);
+            let popupWidth = popupHeight * imageAspectRatio;
             
             // If width exceeds available width, scale down proportionally
-            if (popupWidth > maxWidth) {
-                popupWidth = maxWidth;
+            if (popupWidth > availableSpace.maxWidth) {
+                popupWidth = availableSpace.maxWidth;
                 popupHeight = popupWidth / imageAspectRatio;
             }
+            
+            return { width: popupWidth, height: popupHeight };
         }
-        
-        // Ensure we meet minimum size requirements, but don't exceed viewport
-        popupWidth = Math.max(popupWidth, imageMinSize.width);
-        popupHeight = Math.max(popupHeight, imageMinSize.height);
-        
-        // Critical: If minimum size exceeds viewport, scale down proportionally
-        // This ensures the popup never goes beyond viewport bounds
-        if (popupWidth > maxWidth || popupHeight > maxHeight) {
+    }
+    
+    // Apply minimum size constraints
+    applyMinimumSizeConstraints(popupSize, imageMinSize) {
+        return {
+            width: Math.max(popupSize.width, imageMinSize.width),
+            height: Math.max(popupSize.height, imageMinSize.height)
+        };
+    }
+    
+    // Scale down if needed to fit viewport
+    scaleToFitViewport(popupSize, availableSpace) {
+        if (popupSize.width > availableSpace.maxWidth || popupSize.height > availableSpace.maxHeight) {
             // Calculate scale factor to fit within viewport
-            const scaleX = maxWidth / popupWidth;
-            const scaleY = maxHeight / popupHeight;
+            const scaleX = availableSpace.maxWidth / popupSize.width;
+            const scaleY = availableSpace.maxHeight / popupSize.height;
             const scale = Math.min(scaleX, scaleY);
             
             // Apply scale while maintaining aspect ratio
-            popupWidth = popupWidth * scale;
-            popupHeight = popupHeight * scale;
+            return {
+                width: popupSize.width * scale,
+                height: popupSize.height * scale
+            };
         }
         
-        // Final bounds check - ensure we don't exceed viewport (safety check)
-        popupWidth = Math.min(popupWidth, maxWidth);
-        popupHeight = Math.min(popupHeight, maxHeight);
-        
+        return popupSize;
+    }
+    
+    // Apply final bounds check
+    applyFinalBoundsCheck(popupSize, availableSpace) {
         return {
-            width: Math.round(popupWidth),
-            height: Math.round(popupHeight)
+            width: Math.min(popupSize.width, availableSpace.maxWidth),
+            height: Math.min(popupSize.height, availableSpace.maxHeight)
         };
     }
     

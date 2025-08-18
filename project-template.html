@@ -148,10 +148,12 @@
         <!-- Project Images Work Container -->
         <section class="project-images-section">
             <!-- Bloomtype Flower Logo at top of container -->
-            <a href="index.html" class="flower flower-logo" logo="" intro="">
-                <div class="top"></div>
-                <div class="bottom"></div>
-            </a>
+            <div class="flower flower-logo" logo="" intro="" onclick="body.removeAttribute('panel-active');">
+                <a class="logo" href="index.html" ajax="">
+                    <div class="top"></div>
+                    <div class="bottom"></div>
+                </a>
+            </div>
             
             <ul class="image-list">
                 <!-- PROJECT IMAGES: Will be populated by JavaScript from project-data.json -->
