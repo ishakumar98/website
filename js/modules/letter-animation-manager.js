@@ -23,23 +23,8 @@ class LetterAnimationManager {
             ANIMATION_TIMING: 'var(--animation-smooth)' // From design system
         };
         
-        // Flower color palette - enhanced with design system colors using descriptive names
+        // Flower color palette - exact same as exploded flowers (fireworks)
         this.flowerColors = [
-            // Brand colors with descriptive names
-            'var(--color-primary)',           // Rose pink
-            'var(--color-primary-light)',     // Light rose
-            'var(--color-primary-lighter)',   // Lavender pink
-            'var(--color-primary-dark)',      // Deep magenta
-            
-            // Accent colors with descriptive names
-            'var(--color-accent)',            // Purple
-            'var(--color-accent-light)',      // Light purple
-            
-            // Background colors with descriptive names
-            'var(--color-background-light)',  // Soft rose
-            'var(--color-background-lighter)', // Lavender
-            
-            // Fallback colors (original palette)
             '#537DBD', '#CA683E', '#D3B934', '#AF9E7D', '#D85959', 
             '#956750', '#277325', '#F3B524', '#972723', '#5B388B', 
             '#686B1C', '#142D86', '#A1A329', '#BF1E16', '#3853A5', 
@@ -273,19 +258,10 @@ class LetterAnimationManager {
         }
     }
     
-    // Get random flower color with design system integration
+    // Get random flower color - always use the same palette as exploded flowers
     getRandomFlowerColor() {
         try {
-            // First try to get a design system color
-            const designSystemColors = this.getDesignSystemColors();
-            if (designSystemColors.length > 0) {
-                // 70% chance to use design system colors
-                if (Math.random() < 0.7) {
-                    return designSystemColors[Math.floor(Math.random() * designSystemColors.length)];
-                }
-            }
-            
-            // Fallback to original palette
+            // Always use the same color palette as the exploded flowers
             return this.flowerColors[Math.floor(Math.random() * this.flowerColors.length)];
         } catch (error) {
             console.warn('LetterAnimationManager: Error getting random flower color, using fallback:', error);
@@ -293,37 +269,7 @@ class LetterAnimationManager {
         }
     }
     
-    // Get colors from design system CSS custom properties
-    getDesignSystemColors() {
-        try {
-            const computedStyle = getComputedStyle(document.documentElement);
-            const designSystemColors = [];
-            
-            // Check for available design system colors with descriptive names
-            const colorProperties = [
-                '--color-primary',           // Rose pink
-                '--color-primary-light',     // Light rose  
-                '--color-primary-lighter',   // Lavender pink
-                '--color-primary-dark',      // Deep magenta
-                '--color-accent',            // Purple
-                '--color-accent-light',      // Light purple
-                '--color-background-light',  // Soft rose
-                '--color-background-lighter' // Lavender
-            ];
-            
-            colorProperties.forEach(property => {
-                const color = computedStyle.getPropertyValue(property).trim();
-                if (color && color !== '') {
-                    designSystemColors.push(color);
-                }
-            });
-            
-            return designSystemColors;
-        } catch (error) {
-            console.warn('LetterAnimationManager: Error getting design system colors:', error);
-            return [];
-        }
-    }
+
     
     // Register CSS animations with AnimationCoordinator - exact same as current implementation
     registerCSSAnimations() {
