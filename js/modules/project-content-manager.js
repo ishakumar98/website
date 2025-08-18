@@ -21,11 +21,13 @@ class ProjectContentManager {
         const path = window.location.pathname;
         const filename = path.split('/').pop();
         this.currentProjectId = filename.replace('-project.html', '');
+        console.log('Project ID extracted:', this.currentProjectId);
     }
     
     // Load project data from JSON file
     async loadProjectData() {
         try {
+            console.log('Loading project data for:', this.currentProjectId);
             const response = await fetch('project-data.json');
             
             if (!response.ok) {
@@ -33,9 +35,12 @@ class ProjectContentManager {
             }
             
             const data = await response.json();
+            console.log('All projects data:', Object.keys(data.projects));
             this.projectData = data.projects[this.currentProjectId];
+            console.log('Project data loaded:', this.projectData);
             
             if (!this.projectData) {
+                console.warn('Project data not found, using fallback');
                 // Fallback to hardcoded content for testing
                 this.setFallbackData();
             }
@@ -44,6 +49,7 @@ class ProjectContentManager {
             this.populateProjectContent();
             
         } catch (error) {
+            console.error('Error loading project data:', error);
             // Fallback to hardcoded content for testing
             this.setFallbackData();
             this.populateProjectContent();
@@ -282,11 +288,16 @@ class ProjectContentManager {
     // Populate project images
     populateProjectImages() {
         const imageList = document.querySelector('.image-list');
-        if (!imageList) return;
+        if (!imageList) {
+            console.error('Image list element not found');
+            return;
+        }
         
+        console.log('Populating images:', this.projectData.images);
         imageList.innerHTML = '';
         
         this.projectData.images.forEach(image => {
+            console.log('Creating image element for:', image.src);
             const li = document.createElement('li');
             li.className = 'image';
             
@@ -301,6 +312,8 @@ class ProjectContentManager {
             
             imageList.appendChild(li);
         });
+        
+        console.log('Total images added:', imageList.children.length);
     }
     
     // Notify other modules that content is ready
