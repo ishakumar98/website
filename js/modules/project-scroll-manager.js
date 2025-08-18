@@ -129,6 +129,14 @@ class ProjectScrollManager {
             const maxScroll = window.innerHeight - containerHeight;
             const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
             
+            // Enhanced easing for more dramatic momentum building and deceleration
+            let easedProgress = this.calculateEasedProgress(scrollProgress);
+            
+            // Calculate new top position
+            const startTop = this.initialTop;
+            const endTop = 0;
+            const targetTop = startTop + (endTop - startTop) * easedProgress;
+            
             // Debug logging for scroll calculations
             console.log('🔍 Project Scroll Debug:', {
                 scrollY,
@@ -141,14 +149,6 @@ class ProjectScrollManager {
                 startTop: startTop.toFixed(2),
                 endTop: endTop.toFixed(2)
             });
-            
-            // Enhanced easing for more dramatic momentum building and deceleration
-            let easedProgress = this.calculateEasedProgress(scrollProgress);
-            
-            // Calculate new top position
-            const startTop = this.initialTop;
-            const endTop = 0;
-            const targetTop = startTop + (endTop - startTop) * easedProgress;
             
             // Apply LERP for smooth movement
             this.currentTop += (targetTop - this.currentTop) * this.lerpFactor;
