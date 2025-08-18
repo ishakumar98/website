@@ -566,12 +566,15 @@
     position: relative;
     overflow: auto;
     width: 100%;
-    height: calc(100% - 60px);
+    height: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     background-color: #ffffff;
     min-height: 200px;
+    /* Ensure white background extends to bottom of popup */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .popup-text-content {

@@ -974,18 +974,14 @@ body.project-page {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Flower Logo - Bloomtype implementation adapted for our system */
+/* Flower Logo - Bloomtype minimal implementation */
 .flower {
   display: inline-block;
   position: fixed;
-  top: 0;
-  left: 0;
   width: var(--flower-height);
   height: var(--flower-height);
   cursor: pointer;
-  animation-duration: 1s;
-  transition: 2s ease-in-out transform;
-  animation-fill-mode: both;
+  z-index: 20;
 }
 
 .flower:after {
@@ -1021,22 +1017,16 @@ body.project-page {
   height: 50%;
   background: var(--color-primary);
   border-radius: 100%;
-  animation-duration: 1s;
-  animation-fill-mode: both;
 }
 
-/* Flower logo class that triggers blooming */
+/* Flower logo class - triggers positioning and scaling */
 .flower-logo {
   top: 0.25em;
   left: calc(50% - 1.75em);
-  z-index: 20;
-  animation: scaleUp 1s;
-  animation-fill-mode: forwards;
 }
 
 /* Logo state after blooming */
 .flower[logo]:after {
-  transition: background 1s;
   background: var(--color-background-lighter);
 }
 
@@ -1044,7 +1034,6 @@ body.project-page {
 .flower[logo] .top:after,
 .flower[logo] .bottom:before,
 .flower[logo] .bottom:after {
-  transition: background 1s;
   background: var(--color-primary);
 }
 
@@ -1053,32 +1042,33 @@ body.project-page {
 .flower[intro] .top:after,
 .flower[intro] .bottom:before,
 .flower[intro] .bottom:after {
-  animation-direction: normal;
-  animation-delay: 1.25s;
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
 
-.flower[intro] .top:before { animation-name: topLeft; }
-.flower[intro] .top:after { animation-name: topRight; }
-.flower[intro] .bottom:before { animation-name: bottomLeft; }
-.flower[intro] .bottom:after { animation-name: bottomRight; }
+.flower[intro] .top:before { 
+  animation-name: topLeft; 
+  animation-delay: 0s;
+}
+.flower[intro] .top:after { 
+  animation-name: topRight; 
+  animation-delay: 0.1s;
+}
+.flower[intro] .bottom:before { 
+  animation-name: bottomLeft; 
+  animation-delay: 0.2s;
+}
+.flower[intro] .bottom:after { 
+  animation-name: bottomRight; 
+  animation-delay: 0.3s;
+}
 
 /* Hover effect */
 a.logo:hover {
   border-bottom: none;
-  animation: rotate 1s;
 }
 
-/* Keyframes */
-@keyframes scaleUp {
-  0% { transform: scale(0%, 0%) rotate(0) }
-  100% { transform: scale(100%, 100%) rotate(1turn) }
-}
-
-@keyframes rotate {
-  0% { transform: rotate(0deg) }
-  100% { transform: rotate(360deg) }
-}
-
+/* Keyframes for petal movement */
 @keyframes topLeft {
   0% { transform: translate(0%, 0%) }
   100% { transform: translate(-50%, 50%) }

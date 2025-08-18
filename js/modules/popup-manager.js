@@ -492,7 +492,7 @@ class PopupManager {
         
         // Clean up drag animation with AnimationCoordinator
         if (window.animationCoordinator && this.dragAnimationId) {
-            window.animationCoordinator.cleanupAnimation(
+            window.animationCoordinator.unregisterAnimation(
                 this.popupElements.popup,
                 this.dragAnimationId
             );
@@ -653,7 +653,7 @@ class PopupManager {
         
         // Clean up resize animation with AnimationCoordinator
         if (window.animationCoordinator && this.resizeAnimationId) {
-            window.animationCoordinator.cleanupAnimation(
+            window.animationCoordinator.unregisterAnimation(
                 this.popupElements.popup,
                 this.resizeAnimationId
             );
