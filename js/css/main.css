@@ -85,6 +85,20 @@
     font-weight: 600;
 }
 
+/* Homepage name link styling */
+.name-link-homepage {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all var(--transition-smooth);
+}
+
+.name-link-homepage:hover {
+    text-decoration: none;
+    color: inherit;
+    opacity: 0.8;
+}
+
 /* Bio link styling */
 .bio-link {
     text-decoration: none;
