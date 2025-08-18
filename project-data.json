@@ -259,9 +259,19 @@
       "credits": "Grateful to Omar Lee, Shilpa Ramamurthy, Stuart Lovinggood, Sarah Moser, and other cross-functional folks for their time and talent.",
       "images": [
         {
-          "src": "images/client-redesign/Team Creation Flow.png",
-          "alt": "Team Creation Flow",
-          "title": "Team Creation Flow.png"
+          "src": "images/client-redesign/Progressive Reveal.png",
+          "alt": "Progressive Reveal",
+          "title": "Progressive Reveal.png"
+        },
+        {
+          "src": "images/client-redesign/Team Creation (1).png",
+          "alt": "Team Creation 1",
+          "title": "Team Creation (1).png"
+        },
+        {
+          "src": "images/client-redesign/Team Creation (2).png",
+          "alt": "Team Creation 2",
+          "title": "Team Creation (2).png"
         },
         {
           "src": "images/client-redesign/Tour (1).png",
