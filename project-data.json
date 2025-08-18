@@ -114,9 +114,9 @@
       "title": "Lists",
       "year": "2024",
       "description": [
-        "A comprehensive list management system designed to help users organize tasks, ideas, and information efficiently. This project explores intuitive interfaces for creating, organizing, and managing various types of lists with smart categorization and search capabilities."
+        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management. I contributed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, and led design on a net new initiative, called To Dos."
       ],
-      "credits": "Lists project - showcasing list management and organization interfaces.",
+      "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Lui, Anna Niess, Samuel Kang, Katie Stiegman, and many other cross-functional folks.",
       "images": [
         {
           "src": "images/lists/list-interface-1.png",
