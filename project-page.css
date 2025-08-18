@@ -350,7 +350,7 @@ body.project-page {
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: var(--shadow-medium);
   /* Remove width: 100% since left: 0 + right: 0 handles the width */
-  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-md);
+  padding: var(--space-xl) var(--space-md) var(--space-md) var(--space-md);
   overflow-x: auto;
   overflow-y: hidden;
   /* Hide scrollbar for macOS */
@@ -990,7 +990,7 @@ body.project-page {
 
 .flower[logo]:after {
     transition: background 1s;
-    background: var(--color-primary);
+    background: var(--color-background-lighter);
 }
 
 .flower[logo] .top:before,
@@ -998,7 +998,7 @@ body.project-page {
 .flower[logo] .bottom:before,
 .flower[logo] .bottom:after {
     transition: background 1s;
-    background: var(--color-background-lighter);
+    background: var(--color-primary);
 }
 
 .flower:after {
@@ -1008,7 +1008,7 @@ body.project-page {
     height: 50%;
     top: 25%;
     left: 25%;
-    background: var(--color-primary);
+    background: var(--color-background-lighter);
     position: absolute;
     border-radius: 100%;
     pointer-events: none;
@@ -1032,7 +1032,7 @@ body.project-page {
     left: 25%;
     width: 50%;
     height: 50%;
-    background: var(--color-background-lighter);
+    background: var(--color-primary);
     border-radius: 100%;
     animation-duration: 1s;
     animation-fill-mode: both;
@@ -1079,15 +1079,19 @@ body.project-page {
 }
 
 .flower-logo {
-    top: 0.25em;
-    left: calc(50% - 1.75em);
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 20;
     animation: scaleUp 1s;
     animation-fill-mode: forwards;
+    margin-bottom: var(--space-lg);
 }
 
 /* Hover effect - bloomtype exact */
-a.logo:hover {
+a.logo:hover,
+.flower:hover {
     border-bottom: none;
     animation: rotate 1s;
 }

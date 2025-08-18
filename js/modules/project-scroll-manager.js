@@ -164,32 +164,32 @@ class ProjectScrollManager {
     calculateInitialPosition(viewportHeight) {
         // Use CSS variables to calculate flower dimensions - convert em/rem to pixels
         const flowerHeightRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-height');
-        const flowerTopMarginRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-top');
-        const flowerBottomMarginRaw = getComputedStyle(document.documentElement).getPropertyValue('--flower-margin-bottom');
         
         // Convert CSS units to pixels
         const flowerHeight = this.convertCSSUnitToPixels(flowerHeightRaw);
-        const flowerTopMargin = this.convertCSSUnitToPixels(flowerTopMarginRaw);
-        const flowerBottomMargin = this.convertCSSUnitToPixels(flowerBottomMarginRaw);
         
         // Validate that we got reasonable values
         const minFlowerDimension = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--flower-min-dimension')) || 10;
-        if (!flowerHeight || flowerHeight < minFlowerDimension || !flowerTopMargin || !flowerBottomMargin) {
+        if (!flowerHeight || flowerHeight < minFlowerDimension) {
             console.error('ProjectScrollManager: Invalid flower dimensions after conversion');
             return viewportHeight; // Fallback to full viewport height
         }
         
-        // Get container top padding (project-images-section has 16px top padding)
+        // Get container top padding (project-images-section now has 32px top padding)
         const containerStyles = getComputedStyle(this.projectImagesSection);
         const containerTopPadding = parseFloat(containerStyles.paddingTop);
         
-        // Calculate total space the flower takes up including margins
-        const flowerTotalHeight = flowerHeight + flowerTopMargin + flowerBottomMargin;
+        // Calculate total space the flower takes up including its margin-bottom
+        // Flower is now positioned relative within the container, so we need to account for:
+        // - Container top padding (32px)
+        // - Flower height (6em)
+        // - Flower margin-bottom (24px)
+        const flowerMarginBottom = 24; // var(--space-lg) = 24px
+        const flowerTotalHeight = flowerHeight + flowerMarginBottom;
         
         // Calculate where the image container should be positioned
-        // We want the bottom of the flower to be visible at the bottom of the viewport
-        // So: viewport bottom = flower bottom + flower bottom margin
-        // Include top padding to give flower breathing room above it
+        // We want the flower to be visible within the padded container
+        // So: viewport bottom = flower bottom + container padding + flower margin
         const imageContainerTop = viewportHeight - flowerTotalHeight - containerTopPadding;
         
         // Calculate content area height (from top of viewport to top of image container)

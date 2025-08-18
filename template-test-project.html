@@ -44,8 +44,9 @@
                                 const initializedModules = await window.moduleLoader.initializeAllModules();
                                 
                                 // Store references to initialized modules for later use
+                
                                 window.flowerManager = initializedModules['flower-manager'];
-                                window.projectContentManager = initializedModules['project-content-manager'];
+                window.projectContentManager = initializedModules['project-content-manager'];
                                 window.projectScrollManager = initializedModules['project-scroll-manager'];
                                 window.fontSizingManager = initializedModules['font-sizing-manager'];
                                 window.textSlantManager = initializedModules['text-slant-manager'];

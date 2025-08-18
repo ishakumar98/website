@@ -99,8 +99,9 @@ class ModuleLoader {
     // Get module class by name
     getModuleClass(moduleName) {
         const classMap = {
+    
             'flower-manager': 'FlowerManager',
-            'popup-manager': 'PopupManager',
+        'popup-manager': 'PopupManager',
             'text-slant-manager': 'TextSlantManager',
             'font-sizing-manager': 'FontSizingManager',
 

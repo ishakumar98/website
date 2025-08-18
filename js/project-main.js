@@ -77,11 +77,7 @@ class ProjectMain {
         }
     }
     
-    async initializeFlowerManager() {
-        if (window.FlowerManager) {
-            this.modules.flower = new window.FlowerManager();
-        }
-    }
+
     
     async initializeProjectScrollManager() {
         if (window.ProjectScrollManager) {
