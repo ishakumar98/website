@@ -124,17 +124,36 @@ class ProjectScrollManager {
             const scrollMultiplier = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-multiplier')) || 0.25;
             const adjustedScrollY = scrollY * scrollMultiplier;
             
-            // Calculate scroll progress based on viewport height minus container height
+            // Calculate scroll progress based on how much the container should move
             const containerHeight = this.projectImagesSection.offsetHeight;
-            const maxScroll = window.innerHeight - containerHeight;
-            const scrollProgress = Math.min(adjustedScrollY / maxScroll, 1);
+            const viewportHeight = window.innerHeight;
+            
+            // Calculate the total distance the container needs to travel
+            // startTop = initial position (container starts below viewport)
+            // endTop = 0 (container ends at top of viewport)
+            const startTop = this.initialTop;
+            const endTop = 0;
+            const totalTravelDistance = startTop - endTop;
+            
+            // Calculate scroll progress based on total travel distance
+            // This ensures consistent behavior regardless of container height
+            // Handle edge case where totalTravelDistance might be very small
+            let scrollProgress = 0;
+            if (totalTravelDistance > 0) {
+                scrollProgress = Math.min(adjustedScrollY / totalTravelDistance, 1);
+            } else {
+                // If no travel distance, container stays in place
+                scrollProgress = 0;
+            }
+            
+            // CRITICAL FIX: Ensure scroll progress never exceeds 1.0
+            // This prevents the container from going beyond its intended final position
+            scrollProgress = Math.min(scrollProgress, 1.0);
             
             // Enhanced easing for more dramatic momentum building and deceleration
             let easedProgress = this.calculateEasedProgress(scrollProgress);
             
-            // Calculate new top position
-            const startTop = this.initialTop;
-            const endTop = 0;
+            // Calculate new top position using the variables already defined above
             const targetTop = startTop + (endTop - startTop) * easedProgress;
             
             // Debug logging for scroll calculations
@@ -142,8 +161,8 @@ class ProjectScrollManager {
                 scrollY,
                 adjustedScrollY,
                 containerHeight,
-                viewportHeight: window.innerHeight,
-                maxScroll,
+                viewportHeight: viewportHeight,
+                totalTravelDistance: totalTravelDistance.toFixed(2),
                 scrollProgress: scrollProgress.toFixed(3),
                 currentTop: this.currentTop.toFixed(2),
                 startTop: startTop.toFixed(2),
@@ -167,17 +186,28 @@ class ProjectScrollManager {
             // Apply damping to velocity
             this.velocity *= parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--velocity-damping')) || 0.95;
             
-            // Clamp position to prevent overshooting
-            this.currentTop = Math.max(endTop, Math.min(startTop, this.currentTop));
+            // Clamp position to prevent overshooting and ensure container stays within viewport bounds
+            // endTop = 0 (container top at viewport top)
+            // startTop = initial position (container starts below viewport)
+            // Also ensure container bottom doesn't go below viewport bottom
+            const maxTop = startTop; // Container can't go higher than initial position
+            const minTop = Math.max(endTop, viewportHeight - containerHeight); // Container bottom can't go below viewport bottom
+            
+            // Apply the clamping
+            this.currentTop = Math.max(minTop, Math.min(maxTop, this.currentTop));
+            
+
             
             // Debug logging for position constraints
             console.log('📍 Position Debug:', {
                 clampedTop: this.currentTop.toFixed(2),
                 endTop: endTop.toFixed(2),
                 startTop: startTop.toFixed(2),
+                maxTop: maxTop.toFixed(2),
+                minTop: minTop.toFixed(2),
                 bottomEdge: (this.currentTop + containerHeight).toFixed(2),
-                viewportBottom: window.innerHeight,
-                isOvershooting: (this.currentTop + containerHeight) > window.innerHeight,
+                viewportBottom: viewportHeight,
+                isOvershooting: (this.currentTop + containerHeight) > viewportHeight,
                 // Container dimension details
                 containerHeight,
                 containerOffsetHeight: this.projectImagesSection.offsetHeight,
@@ -185,8 +215,17 @@ class ProjectScrollManager {
                 containerClientHeight: this.projectImagesSection.clientHeight
             });
             
-            // Apply the calculated position
-            this.projectImagesSection.style.top = this.currentTop + 'px';
+            // Apply the calculated position with final validation
+            // Ensure the container never goes beyond the viewport bounds
+            const finalTop = Math.max(
+                Math.min(startTop, viewportHeight - containerHeight), // Can't go below viewport bottom
+                Math.min(this.currentTop, startTop) // Can't go above initial position
+            );
+            
+            this.projectImagesSection.style.top = finalTop + 'px';
+            
+            // Update currentTop to match the final applied position
+            this.currentTop = finalTop;
             
             // Continue animation loop
             requestAnimationFrame(updateProjectImagesPosition);
