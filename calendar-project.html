@@ -163,5 +163,51 @@
         </section>
     </div>
 
+    <!-- Debug Flower Positioning -->
+    <script>
+        // Wait for page to load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const flower = document.querySelector('.flower-logo');
+                if (flower) {
+                    console.log('=== FLOWER POSITIONING DEBUG ===');
+                    console.log('Flower element:', flower);
+                    
+                    // Get computed styles
+                    const computedStyle = window.getComputedStyle(flower);
+                    console.log('Position:', computedStyle.position);
+                    console.log('Left:', computedStyle.left);
+                    console.log('Transform:', computedStyle.transform);
+                    console.log('Top:', computedStyle.top);
+                    
+                    // Get bounding rect
+                    const rect = flower.getBoundingClientRect();
+                    console.log('Bounding rect:', rect);
+                    console.log('Left edge:', rect.left);
+                    console.log('Right edge:', rect.right);
+                    console.log('Width:', rect.width);
+                    
+                    // Get viewport dimensions
+                    console.log('Viewport width:', window.innerWidth);
+                    console.log('Viewport height:', window.innerHeight);
+                    
+                    // Calculate expected center
+                    const expectedCenter = window.innerWidth / 2;
+                    const actualCenter = rect.left + (rect.width / 2);
+                    console.log('Expected center:', expectedCenter);
+                    console.log('Actual center:', actualCenter);
+                    console.log('Offset from center:', actualCenter - expectedCenter);
+                    
+                    // Check if any inline styles are overriding CSS
+                    console.log('Inline left:', flower.style.left);
+                    console.log('Inline transform:', flower.style.transform);
+                    console.log('Inline position:', flower.style.position);
+                    
+                    console.log('=== END DEBUG ===');
+                }
+            }, 1000); // Wait 1 second for animations to settle
+        });
+    </script>
+
 </body>
 </html>

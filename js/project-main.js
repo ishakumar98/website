@@ -29,7 +29,6 @@ class ProjectMain {
             await this.initializeFontSizingManager();
             await this.initializeTextSlantManager();
             await this.initializePopupManager();
-            await this.initializeFlowerManager();
             await this.initializeProjectScrollManager();
             
             // Set up coordination between modules
@@ -101,11 +100,8 @@ class ProjectMain {
     }
     
     setupModuleCoordination() {
-        // Set up coordination between flower manager and scroll manager
-        if (this.modules.flower && this.modules.scroll) {
-            // The scroll manager will call flower manager's updateFlowerSize method
-            // This is handled through the main scroll animation loop
-        }
+        // Set up coordination between modules
+        // (Flower manager removed - not needed)
     }
     
     startScrollAnimation() {
@@ -123,10 +119,7 @@ class ProjectMain {
             if (this.modules.scroll) {
                 const scrollProgress = this.modules.scroll.getScrollProgress();
                 
-                // Flower manager now only handles bloom state - no scroll integration needed
-                // if (this.modules.flower) {
-                //     this.modules.flower.updateFlowerSize(scrollProgress);
-                // }
+                // Scroll progress available for other modules if needed
             }
         } catch (error) {
             // Handle scroll animation error silently

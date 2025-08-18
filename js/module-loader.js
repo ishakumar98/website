@@ -142,7 +142,6 @@ class ModuleLoader {
         } else if (isProjectPage) {
             // Project page-specific modules
             requiredModules = [
-                'flower-manager',
                 'popup-manager',
                 'text-slant-manager',
                 'font-sizing-manager',
@@ -189,7 +188,6 @@ class ModuleLoader {
             ];
         } else if (isProjectPage) {
             requiredModules = [
-                'flower-manager',
                 'popup-manager',
                 'text-slant-manager',
                 'font-sizing-manager',

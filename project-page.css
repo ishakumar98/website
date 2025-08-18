@@ -133,12 +133,12 @@ body.project-page {
 .image-list {
     list-style: none;
     padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-    align-items: flex-start;
+    margin: 0 var(--space-md) 0 var(--space-md); /* Respect container's left/right padding */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: var(--space-lg);
+    align-items: start;
+    justify-content: center;
 }
 
 .image {
@@ -1094,9 +1094,10 @@ a.logo:hover,
 .flower:hover {
     border-bottom: none;
     animation: rotate 1s;
+    animation-fill-mode: forwards;
 }
 
-/* Keyframes - bloomtype exact */
+/* Keyframes */
 @keyframes scaleUp {
     0% {
         transform: scale(0%, 0%) rotate(0);
