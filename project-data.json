@@ -119,19 +119,19 @@
       "credits": "Lists project - showcasing list management and organization interfaces.",
       "images": [
         {
-          "src": "images/Channel timelines.png",
-          "alt": "Channel Timelines",
-          "title": "Channel Timelines.png"
+          "src": "images/lists/list-interface-1.png",
+          "alt": "List Interface 1",
+          "title": "List Interface 1.png"
         },
         {
-          "src": "images/Timeline details.png",
-          "alt": "Timeline Details",
-          "title": "Timeline Details.png"
+          "src": "images/lists/list-interface-2.png",
+          "alt": "List Interface 2",
+          "title": "List Interface 2.png"
         },
         {
-          "src": "images/Week.png",
-          "alt": "Week View",
-          "title": "Week View.png"
+          "src": "images/lists/list-interface-3.png",
+          "alt": "List Interface 3",
+          "title": "List Interface 3.png"
         }
       ]
     },
@@ -144,19 +144,19 @@
       "credits": "Huddles project - showcasing collaborative workspace and team communication interfaces.",
       "images": [
         {
-          "src": "images/Channel timelines.png",
-          "alt": "Channel Timelines",
-          "title": "Channel Timelines.png"
+          "src": "images/huddles/huddle-workspace-1.png",
+          "alt": "Huddle Workspace 1",
+          "title": "Huddle Workspace 1.png"
         },
         {
-          "src": "images/Timeline details.png",
-          "alt": "Timeline Details",
-          "title": "Timeline Details.png"
+          "src": "images/huddles/huddle-workspace-2.png",
+          "alt": "Huddle Workspace 2",
+          "title": "Huddle Workspace 2.png"
         },
         {
-          "src": "images/Week.png",
-          "alt": "Week View",
-          "title": "Week View.png"
+          "src": "images/huddles/huddle-workspace-3.png",
+          "alt": "Huddle Workspace 3",
+          "title": "Huddle Workspace 3.png"
         }
       ]
     },
@@ -169,19 +169,19 @@
       "credits": "Client Redesign project - showcasing strategic design improvements and user experience enhancements.",
       "images": [
         {
-          "src": "images/Channel timelines.png",
-          "alt": "Channel Timelines",
-          "title": "Channel Timelines.png"
+          "src": "images/client-redesign/redesign-before-1.png",
+          "alt": "Redesign Before 1",
+          "title": "Redesign Before 1.png"
         },
         {
-          "src": "images/Timeline details.png",
-          "alt": "Timeline Details",
-          "title": "Timeline Details.png"
+          "src": "images/client-redesign/redesign-after-1.png",
+          "alt": "Redesign After 1",
+          "title": "Redesign After 1.png"
         },
         {
-          "src": "images/Week.png",
-          "alt": "Week View",
-          "title": "Week View.png"
+          "src": "images/client-redesign/redesign-process-1.png",
+          "alt": "Redesign Process 1",
+          "title": "Redesign Process 1.png"
         }
       ]
     },
@@ -194,19 +194,19 @@
       "credits": "Onboarding System project - showcasing user onboarding and guidance interfaces.",
       "images": [
         {
-          "src": "images/Channel timelines.png",
-          "alt": "Channel Timelines",
-          "title": "Channel Timelines.png"
+          "src": "images/onboarding-system/onboarding-step-1.png",
+          "alt": "Onboarding Step 1",
+          "title": "Onboarding Step 1.png"
         },
         {
-          "src": "images/Timeline details.png",
-          "alt": "Timeline Details",
-          "title": "Timeline Details.png"
+          "src": "images/onboarding-system/onboarding-step-2.png",
+          "alt": "Onboarding Step 2",
+          "title": "Onboarding Step 2.png"
         },
         {
-          "src": "images/Week.png",
-          "alt": "Week View",
-          "title": "Week View.png"
+          "src": "images/onboarding-system/onboarding-step-3.png",
+          "alt": "Onboarding Step 3",
+          "title": "Onboarding Step 3.png"
         }
       ]
     }
