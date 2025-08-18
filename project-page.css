@@ -133,7 +133,7 @@ body.project-page {
 .image-list {
     list-style: none;
     padding: 0;
-    margin: 0 var(--space-md) 0 var(--space-md); /* Respect container's left/right padding */
+    margin: 0 var(--space-md) var(--space-md) var(--space-md); /* Full spacing control */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
     gap: var(--space-lg);
@@ -335,9 +335,11 @@ body.project-page {
   box-shadow: var(--shadow-subtle);
 }
 
+
+
 /* Project Images Work Container - Exact copy of home page work container */
 .project-images-section {
-  position: absolute;
+  position: relative;
   left: 0; /* Explicit left positioning like homepage work-section */
   right: 0; /* Explicit right positioning like homepage work-section */
   /* top position will be set dynamically by JavaScript based on flower dimensions */
@@ -350,8 +352,8 @@ body.project-page {
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: var(--shadow-medium);
   /* Remove width: 100% since left: 0 + right: 0 handles the width */
-  padding: var(--space-xl) var(--space-md) var(--space-md) var(--space-md);
-  overflow-x: auto;
+  padding: 0; /* No padding - children handle their own spacing */
+  overflow-x: hidden;
   overflow-y: hidden;
   /* Hide scrollbar for macOS */
   scrollbar-width: none; /* Firefox */
@@ -369,8 +371,6 @@ body.project-page {
 .project-images-section::-webkit-scrollbar {
   display: none;
 }
-
-
 
 /* Quick Look Style Lightbox */
 .lightbox {
@@ -974,7 +974,7 @@ body.project-page {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Flower Logo - Bloomtype exact implementation (adapted to our colors and sizing) */
+/* Flower Logo */
 .flower {
     display: inline-block;
     position: fixed;
@@ -1080,13 +1080,13 @@ body.project-page {
 
 .flower-logo {
     top: 0;
-    left: calc(50% - 3em);
+    left: calc(50% - var(--flower-height/2));
     z-index: 20;
     animation: scaleUp 1s;
     animation-fill-mode: forwards;
 }
 
-/* Hover effect - bloomtype exact */
+/* Hover effect */
 a.logo {
   display: block;
   position: relative;
@@ -1100,6 +1100,7 @@ a.logo:hover {
   border-bottom: none;
   animation: rotate 1s;
 }
+
 /* Keyframes */
 @keyframes fadeIn {
   0% {
