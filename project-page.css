@@ -55,11 +55,6 @@
   --title-border-radius: 4px; /* Border radius for title container */
   --image-title-gap: var(--space-md); /* 16px gap between image and title */
   
-  /* Image dimensions */
-  --image-base-width: 245px;
-  --image-base-height: 210px;
-  --image-padding: var(--space-sm);
-  
   /* Animation Timing System */
   --animation-fast: 100ms;
   --animation-medium: 200ms;
@@ -137,7 +132,7 @@ body.project-page {
 
 .image-list {
     list-style: none;
-    padding: calc(var(--flower-height) + var(--space-md)) var(--space-md) var(--space-md) var(--space-md);
+    padding: calc(var(--flower-height) + var(--space-md)) var(--space-lg) var(--space-lg) var(--space-lg);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
     gap: var(--space-lg);
@@ -154,19 +149,15 @@ body.project-page {
     cursor: pointer;
     padding: 0;
     position: relative;
-    /* Container will now properly account for the padded dimensions */
-    width: calc(var(--image-base-width) + (2 * var(--image-padding)));
-    height: calc(var(--image-base-height) + (2 * var(--image-padding)) + var(--image-title-gap) + 2rem); /* Fixed height including title space */
 }
 
 .image .wrapper-image {
     flex-shrink: 0;
-    width: var(--image-base-width);
-    height: var(--image-base-height);
-    padding: var(--image-padding);
+    width: 245px; /* Fixed dimensions */
+    height: 210px; /* Fixed dimensions */
+    padding: var(--space-sm);
     border-radius: var(--wrapper-image-border-radius); /* 6px border radius */
     transition: all var(--transition-fast);
-    box-sizing: border-box;
 }
 
 .image .wrapper-image img {
@@ -202,8 +193,7 @@ body.project-page {
     margin-right: auto;
     margin-top: 0; /* Ensure no top margin interferes with gap */
     margin-bottom: 0; /* Ensure no bottom margin interferes with gap */
-    position: relative; /* Ensure stable positioning */
-    flex-shrink: 0; /* Prevent title from shrinking */
+    position: relative;
 }
 
 .image .title span {
