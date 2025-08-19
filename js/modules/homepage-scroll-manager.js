@@ -45,10 +45,10 @@ class HomepageScrollManager {
             this.setupEventListeners();
             
             this.isInitialized = true;
-    
+            console.log('HomepageScrollManager: Initialized successfully');
             
         } catch (error) {
-    
+            console.error('HomepageScrollManager: Initialization error:', error);
         }
     }
     
@@ -56,24 +56,24 @@ class HomepageScrollManager {
         // Check if we're on the homepage (including local development paths)
         const pathname = window.location.pathname;
         return pathname === '/' || 
-               pathname === '/' ||
+               pathname === '/index.html' ||
                pathname.endsWith('/') ||
-               pathname.includes('/') ||
-               pathname.includes('/website-project/');
+               pathname.includes('/index.html') ||
+               pathname.includes('/website-project/index.html');
     }
     
     setupElements() {
         // Find work section
         this.workSection = document.querySelector(this.config.WORK_SECTION_SELECTOR);
         if (!this.workSection) {
-
+            console.error('HomepageScrollManager: Work section not found');
             return;
         }
         
         // Find fireworks container
         this.fireworksContainer = document.getElementById('fireworks-container');
         if (!this.fireworksContainer) {
-
+            console.error('HomepageScrollManager: Fireworks container not found');
             return;
         }
         
@@ -86,7 +86,7 @@ class HomepageScrollManager {
         // Set initial work section position
         this.setInitialWorkSectionPosition();
         
-
+        console.log('HomepageScrollManager: Elements setup complete');
     }
     
     setInitialWorkSectionPosition() {
@@ -109,25 +109,25 @@ class HomepageScrollManager {
         // Add smooth CSS transition for the background color
         this.fireworksContainer.style.transition = this.config.TRANSITION_DURATION;
         
-
+        console.log('HomepageScrollManager: Background transition setup complete');
     }
     
     setupEventListeners() {
         // Register with ScrollManager for coordination
         if (window.scrollManager) {
             window.scrollManager.addScrollListener('work-section-scroll', this.handleScroll.bind(this), 'normal');
-
+            console.log('HomepageScrollManager: Registered with ScrollManager');
         } else {
-
+            console.error('HomepageScrollManager: ScrollManager not available');
         }
         
         // Register with EventManager for coordination
         if (window.eventManager) {
             // Use addListener for scroll events if needed
             this.eventListenerId = window.eventManager.addListener(window, 'scroll', this.handleScroll.bind(this), { passive: true });
-
+            console.log('HomepageScrollManager: Registered with EventManager');
         } else {
-
+            console.error('HomepageScrollManager: EventManager not available');
         }
     }
     
@@ -135,50 +135,6 @@ class HomepageScrollManager {
     ultraSmoothEase(t) {
         // Use a very gradual curve that's extremely smooth
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-    
-    // Update background color based on scroll progress
-    updateBackgroundColor(easedProgress) {
-        if (!this.fireworksContainer) return;
-        
-        // Background color transition effect - using design system colors
-        // Get colors from CSS custom properties for dynamic access
-        const getComputedColor = (property) => {
-            const computedStyle = getComputedStyle(document.documentElement);
-            const colorValue = computedStyle.getPropertyValue(property).trim();
-            return colorValue;
-        };
-        
-        // Use design system colors with fallbacks
-        const initialColor = getComputedColor('--color-background-lighter') || '#FCE8FF';
-        const finalColor = getComputedColor('--color-background') || '#FFF5F8';
-        
-        // Convert hex colors to RGB arrays for interpolation
-        const hexToRgb = (hex) => {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? [
-                parseInt(result[1], 16),
-                parseInt(result[2], 16),
-                parseInt(result[3], 16)
-            ] : [252, 232, 255]; // Fallback to original lavender
-        };
-        
-        const initialRgb = hexToRgb(initialColor);
-        const finalRgb = hexToRgb(finalColor);
-        
-        const r = Math.round(initialRgb[0] + (finalRgb[0] - initialRgb[0]) * easedProgress);
-        const g = Math.round(initialRgb[1] + (finalRgb[1] - initialRgb[1]) * easedProgress);
-        const b = Math.round(initialRgb[2] + (finalRgb[2] - initialRgb[2]) * easedProgress);
-        
-        // Apply background color change through the AnimationCoordinator system
-        if (window.animationCoordinator) {
-            window.animationCoordinator.registerJSAnimation(
-                this.fireworksContainer, 'background', 'fireworks-scroll', 'HIGH'
-            );
-        }
-        
-        // Update the fireworks container background
-        this.fireworksContainer.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
     }
     
     // Main scroll handler - implements the working gradient scroll effect
@@ -206,38 +162,6 @@ class HomepageScrollManager {
             
             // Calculate scroll progress (0 = fully collapsed, 1 = fully expanded)
             const maxScroll = this.workSection.offsetHeight;
-            
-            // Handle case where work section is smaller than viewport
-            if (maxScroll <= window.innerHeight) {
-                // For small sections, use a simpler scroll behavior
-                const scrollProgress = Math.min(Math.max(scrollTop / window.innerHeight, 0), 1);
-                const easedProgress = this.ultraSmoothEase(scrollProgress);
-                
-                // For small sections, ensure the bottom edge never goes above viewport bottom
-                // Calculate the maximum allowed top position to keep bottom edge at viewport bottom
-                const maxAllowedTop = window.innerHeight - maxScroll;
-                
-                // Position the section with strict bounds
-                let newTop = window.innerHeight - (easedProgress * maxScroll);
-                
-                // Apply strict constraints: never above 0, never below maxAllowedTop
-                newTop = Math.max(0, Math.min(maxAllowedTop, newTop));
-                
-                // Apply position smoothing
-                newTop = this.lastTop + (this.smoothingFactor * (newTop - this.lastTop));
-                this.lastTop = newTop;
-                
-                // Apply the new position
-                this.workSection.style.top = Math.round(newTop) + 'px';
-                
-
-                
-                // Handle background color transition for small sections
-                this.updateBackgroundColor(easedProgress);
-                this.isScrolling = false;
-                return;
-            }
-            
             const scrollProgress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
             
             // Apply easing to the scroll progress
@@ -249,18 +173,10 @@ class HomepageScrollManager {
             let newTop = window.innerHeight - (easedProgress * maxScroll);
             
             // Add hard constraint to prevent the container from going beyond bounds
-            const minTop = Math.max(0, window.innerHeight - maxScroll); // Bottom edge at viewport bottom, never above 0
+            const minTop = window.innerHeight - maxScroll; // Bottom edge at viewport bottom
             const maxTop = window.innerHeight; // Top edge at viewport bottom (CSS initial position)
             
-            // Apply strict constraints with additional safety checks
             newTop = Math.max(minTop, Math.min(maxTop, newTop));
-            
-            // Additional safety: ensure the bottom edge never goes above viewport bottom
-            const currentBottomEdge = newTop + maxScroll;
-            if (currentBottomEdge > window.innerHeight) {
-                newTop = window.innerHeight - maxScroll;
-                newTop = Math.max(0, newTop); // Never go above 0
-            }
             
             // Apply position smoothing for ultra-smooth movement (LERP)
             if (scrollProgress === 0 || scrollProgress === 1) {
@@ -278,10 +194,44 @@ class HomepageScrollManager {
             // Apply the new position directly for smooth scrolling
             this.workSection.style.top = newTop + 'px';
             
+            // Background color transition effect - using design system colors
+            // Get colors from CSS custom properties for dynamic access
+            const getComputedColor = (property) => {
+                const computedStyle = getComputedStyle(document.documentElement);
+                const colorValue = computedStyle.getPropertyValue(property).trim();
+                return colorValue;
+            };
             
+            // Use design system colors with fallbacks
+            const initialColor = getComputedColor('--color-background-lighter') || '#FCE8FF';
+            const finalColor = getComputedColor('--color-background') || '#FFF5F8';
             
-            // Update background color
-            this.updateBackgroundColor(easedProgress);
+            // Convert hex colors to RGB arrays for interpolation
+            const hexToRgb = (hex) => {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? [
+                    parseInt(result[1], 16),
+                    parseInt(result[2], 16),
+                    parseInt(result[3], 16)
+                ] : [252, 232, 255]; // Fallback to original lavender
+            };
+            
+            const initialRgb = hexToRgb(initialColor);
+            const finalRgb = hexToRgb(finalColor);
+            
+            const r = Math.round(initialRgb[0] + (finalRgb[0] - initialRgb[0]) * easedProgress);
+            const g = Math.round(initialRgb[1] + (finalRgb[1] - initialRgb[1]) * easedProgress);
+            const b = Math.round(initialRgb[2] + (finalRgb[2] - initialRgb[2]) * easedProgress);
+            
+            // Apply background color change through the AnimationCoordinator system
+            if (window.animationCoordinator) {
+                window.animationCoordinator.registerJSAnimation(
+                    this.fireworksContainer, 'background', 'fireworks-scroll', 'HIGH'
+                );
+            }
+            
+            // Update the fireworks container background
+            this.fireworksContainer.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
             
             this.isScrolling = false;
         });
@@ -329,7 +279,7 @@ class HomepageScrollManager {
         }
         
         this.isInitialized = false;
-
+        console.log('HomepageScrollManager: Destroyed');
     }
 }
 
