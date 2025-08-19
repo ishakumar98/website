@@ -312,9 +312,10 @@ p:last-child {
 /* Individual Letter Styling for Animations */
 .name-display .letter {
     display: inline-block;
+    font-size: var(--font-size-sm);
     transition: all var(--animation-smooth);
     transform: rotate(0deg) translateY(0);
-    letter-spacing: -0.23em;
+    letter-spacing: -0.1em;
 }
 
 /* Intro Typography */
@@ -333,7 +334,7 @@ p:last-child {
 /* Bio Text Typography */
 .bio-text {
     font-family: 'Tumla', sans-serif;
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
     font-weight: 400;
     line-height: 1.6;
     color: var(--color-text);

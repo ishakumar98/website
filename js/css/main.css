@@ -68,7 +68,6 @@
     color: inherit;
     font-weight: bold;
     transition: all 0.15s cubic-bezier(0.4, 0.2, 1);
-    opacity: 0.75;
     padding: 0 var(--space-xs);
     border-radius: var(--space-xs);
 }
@@ -76,7 +75,6 @@
 .name-link:hover {
     text-decoration: none;
     color: inherit;
-    background-color: rgba(29, 28, 29, 0.06);
     padding: 0 var(--space-xs);
 }
 
