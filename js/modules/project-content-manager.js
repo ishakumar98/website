@@ -183,7 +183,7 @@ class ProjectContentManager {
         
         // Join all description items into one continuous text (in case there are multiple)
         const fullDescription = this.projectData.description.join(' ');
-        p.textContent = fullDescription;
+        p.innerHTML = fullDescription;
         
         projectTextBlock.appendChild(p);
         
@@ -191,88 +191,206 @@ class ProjectContentManager {
         this.applyISHASlantStructure();
     }
     
-    // Apply ISHA slant system structure to description text
+    // Apply ISHA slant system structure to description text while preserving HTML links
     applyISHASlantStructure() {
         const descriptions = document.querySelectorAll(".project-description");
         
         descriptions.forEach((desc, index) => {
-            // Create a document fragment to build the new content (like ISHA does)
-            const fragment = document.createDocumentFragment();
-            const characters = Array.from(desc.textContent);
+            // Check if there are any links in the description
+            const hasLinks = desc.querySelectorAll('a').length > 0;
             
-            // Group letters by words to prevent word breaking while maintaining individual letter slant
-            let currentWord = '';
-            let currentText = '';
-            
-            characters.forEach((char, charIndex) => {
-                if (char === ' ' || char === '\n' || char === '\t') {
-                    // If we have a word built up, wrap it in a word container
-                    if (currentWord.length > 0) {
-                        const wordSpan = document.createElement('span');
-                        wordSpan.classList.add('word');
-                        wordSpan.style.display = 'inline-block';
-                        wordSpan.style.whiteSpace = 'nowrap';
-                        
-                        // Add each letter of the word as a separate span
-                        Array.from(currentWord).forEach(letterChar => {
-                            const letterSpan = document.createElement('span');
-                            letterSpan.classList.add('letter');
-                            letterSpan.textContent = letterChar;
-                            wordSpan.appendChild(letterSpan);
-                        });
-                        
-                        fragment.appendChild(wordSpan);
-                        currentWord = '';
-                    }
+            if (hasLinks) {
+                // If there are links, preserve them and only apply slanting to non-link text
+                this.applyISHASlantStructureWithLinks(desc);
+            } else {
+                // If no links, apply the original slanting structure
+                this.applyISHASlantStructureToText(desc);
+            }
+        });
+    }
+    
+    // Apply slanting structure while preserving HTML links
+    applyISHASlantStructureWithLinks(desc) {
+        const fragment = document.createDocumentFragment();
+        const childNodes = Array.from(desc.childNodes);
+        
+        childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                // This is text content, apply slanting
+                const textFragment = this.createSlantedTextFragment(node.textContent);
+                fragment.appendChild(textFragment);
+            } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'A') {
+                // This is a link, preserve it but apply slanting to its text content
+                const linkClone = node.cloneNode(true);
+                const textFragment = this.createSlantedTextFragment(node.textContent);
+                linkClone.innerHTML = '';
+                linkClone.appendChild(textFragment);
+                fragment.appendChild(linkClone);
+            } else {
+                // Other elements, preserve as-is
+                fragment.appendChild(node.cloneNode(true));
+            }
+        });
+        
+        // Replace the content with the new structure
+        desc.innerHTML = '';
+        desc.appendChild(fragment);
+    }
+    
+    // Apply slanting structure to plain text
+    applyISHASlantStructureToText(desc) {
+        const fragment = document.createDocumentFragment();
+        const characters = Array.from(desc.textContent);
+        
+        // Group letters by words to prevent word breaking while maintaining individual letter slant
+        let currentWord = '';
+        let currentText = '';
+        
+        characters.forEach((char, charIndex) => {
+            if (char === ' ' || char === '\n' || char === '\t') {
+                // If we have a word built up, wrap it in a word container
+                if (currentWord.length > 0) {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.classList.add('word');
+                    wordSpan.style.display = 'inline-block';
+                    wordSpan.style.whiteSpace = 'nowrap';
                     
-                    // Handle line breaks by creating empty line divs
-                    if (char === '\n') {
-                        // Create an empty line div that won't participate in slanting
-                        const emptyLine = document.createElement('div');
-                        emptyLine.classList.add('empty-line-break');
-                        fragment.appendChild(emptyLine);
-                    } else {
-                        // Add other whitespace (spaces, tabs)
-                        currentText += char;
-                    }
-                } else {
-                    // If we have accumulated whitespace, add it first
-                    if (currentText.length > 0) {
-                        fragment.appendChild(document.createTextNode(currentText));
-                        currentText = '';
-                    }
+                    // Add each letter of the word as a separate span
+                    Array.from(currentWord).forEach(letterChar => {
+                        const letterSpan = document.createElement('span');
+                        letterSpan.classList.add('letter');
+                        letterSpan.textContent = letterChar;
+                        wordSpan.appendChild(letterSpan);
+                    });
                     
-                    // Add character to current word
-                    currentWord += char;
+                    fragment.appendChild(wordSpan);
+                    currentWord = '';
                 }
+                
+                // Handle line breaks by creating empty line divs
+                if (char === '\n') {
+                    // Create an empty line div that won't participate in slanting
+                    const emptyLine = document.createElement('div');
+                    emptyLine.classList.add('empty-line-break');
+                    fragment.appendChild(emptyLine);
+                } else {
+                    // Add other whitespace (spaces, tabs)
+                    currentText += char;
+                }
+            } else {
+                // If we have accumulated whitespace, add it first
+                if (currentText.length > 0) {
+                    fragment.appendChild(document.createTextNode(currentText));
+                    currentText = '';
+                }
+                
+                // Add character to current word
+                currentWord += char;
+            }
+        });
+        
+        // Handle the last word if there is one
+        if (currentWord.length > 0) {
+            const wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.style.display = 'inline-block';
+            wordSpan.style.whiteSpace = 'nowrap';
+            
+            Array.from(currentWord).forEach(letterChar => {
+                const letterSpan = document.createElement('span');
+                letterSpan.classList.add('letter');
+                letterSpan.textContent = letterChar;
+                wordSpan.appendChild(letterSpan);
             });
             
-            // Handle the last word if there is one
-            if (currentWord.length > 0) {
-                const wordSpan = document.createElement('span');
-                wordSpan.classList.add('word');
-                wordSpan.style.display = 'inline-block';
-                wordSpan.style.whiteSpace = 'nowrap';
+            fragment.appendChild(wordSpan);
+        }
+        
+        // Add any remaining whitespace at the end
+        if (currentText.length > 0) {
+            fragment.appendChild(document.createTextNode(currentText));
+        }
+        
+        // Replace the content with the new structure
+        desc.innerHTML = '';
+        desc.appendChild(fragment);
+    }
+    
+    // Create slanted text fragment for a given text string
+    createSlantedTextFragment(text) {
+        const fragment = document.createDocumentFragment();
+        const characters = Array.from(text);
+        
+        // Group letters by words to prevent word breaking while maintaining individual letter slant
+        let currentWord = '';
+        let currentText = '';
+        
+        characters.forEach((char, charIndex) => {
+            if (char === ' ' || char === '\n' || char === '\t') {
+                // If we have a word built up, wrap it in a word container
+                if (currentWord.length > 0) {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.classList.add('word');
+                    wordSpan.style.display = 'inline-block';
+                    wordSpan.style.whiteSpace = 'nowrap';
+                    
+                    // Add each letter of the word as a separate span
+                    Array.from(currentWord).forEach(letterChar => {
+                        const letterSpan = document.createElement('span');
+                        letterSpan.classList.add('letter');
+                        letterSpan.textContent = letterChar;
+                        wordSpan.appendChild(letterSpan);
+                    });
+                    
+                    fragment.appendChild(wordSpan);
+                    currentWord = '';
+                }
                 
-                Array.from(currentWord).forEach(letterChar => {
-                    const letterSpan = document.createElement('span');
-                    letterSpan.classList.add('letter');
-                    letterSpan.textContent = letterChar;
-                    wordSpan.appendChild(letterSpan);
-                });
+                // Handle line breaks by creating empty line divs
+                if (char === '\n') {
+                    // Create an empty line div that won't participate in slanting
+                    const emptyLine = document.createElement('div');
+                    emptyLine.classList.add('empty-line-break');
+                    fragment.appendChild(emptyLine);
+                } else {
+                    // Add other whitespace (spaces, tabs)
+                    currentText += char;
+                }
+            } else {
+                // If we have accumulated whitespace, add it first
+                if (currentText.length > 0) {
+                    fragment.appendChild(document.createTextNode(currentText));
+                    currentText = '';
+                }
                 
-                fragment.appendChild(wordSpan);
+                // Add character to current word
+                currentWord += char;
             }
-            
-            // Add any remaining whitespace at the end
-            if (currentText.length > 0) {
-                fragment.appendChild(document.createTextNode(currentText));
-            }
-            
-            // Replace the content with the new structure
-            desc.innerHTML = '';
-            desc.appendChild(fragment);
         });
+        
+        // Handle the last word if there is one
+        if (currentWord.length > 0) {
+            const wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.style.display = 'inline-block';
+            wordSpan.style.whiteSpace = 'nowrap';
+            
+            Array.from(currentWord).forEach(letterChar => {
+                const letterSpan = document.createElement('span');
+                letterSpan.classList.add('letter');
+                letterSpan.textContent = letterChar;
+                wordSpan.appendChild(letterSpan);
+            });
+            
+            fragment.appendChild(wordSpan);
+        }
+        
+        // Add any remaining whitespace at the end
+        if (currentText.length > 0) {
+            fragment.appendChild(document.createTextNode(currentText));
+        }
+        
+        return fragment;
     }
     
     // Populate project credits

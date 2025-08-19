@@ -119,7 +119,7 @@
       "title": "Lists",
       "year": "2024",
       "description": [
-        "I spent most of 2024 executing on the details for the launch of Slack's second product — Lists. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I designed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, using the <a href=\"#onboarding-system\">old design system</a> I made. And, I led design on task tracking, which later evolved into a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, abstract system while keeping the experience intuitive and consistent across the platform."
+        "I spent most of 2024 executing on the details for the launch of Slack's second product — <a href=\"https://slack.com/blog/news/introducing-slack-lists\">Lists</a>. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I designed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, using the <a href=\"onboarding-system-project.html\">old design system</a> I made. And, I led design on task tracking, which later evolved into a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, abstract system while keeping the experience intuitive and consistent across the platform."
       ],
       "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Liu, Anna Niess, Samuel Kang, Katie Stiegman, Colleen Li, and many other cross-functional folks.",
       "images": [
@@ -194,7 +194,7 @@
       "title": "Huddles",
       "year": "2024",
       "description": [
-        "Currently, I lead design for huddles, an audio first way to chat quickly in Slack. We redesigned the end-to-end experience of a huddle, introducing a pre-meeting notifications, default picture in picture view, an updated expanded window, and a new, collapsed bottom bar for on the go chatting. Plus, our first quality-of-life drop in the last two years! I worked on adding chat updates, hand raising, improvements to screen sharing, and more. Still keeping a simple, easy to use experience, but also allowing more powerful meetings for those who need it."
+        "Currently, I lead design for <a href=\"https://slack.com/features/huddles\">huddles</a>, an audio first way to chat quickly in Slack. We redesigned the end-to-end experience of a huddle, introducing a pre-meeting notifications, default picture in picture view, an updated expanded window, and a new, collapsed bottom bar for on the go chatting. Plus, our first quality-of-life drop in the last two years! I worked on adding chat updates, hand raising, improvements to screen sharing, and more. Still keeping a simple, easy to use experience, but also allowing more powerful meetings for those who need it."
       ],
       "credits": "Thank you to my cross-functional team: Amanda Glanz, Timothy Wittig, Elyse Vest, Stewart Taylor, and more.",
       "images": [

@@ -240,6 +240,17 @@ body.project-page {
   justify-content: flex-start;
 }
 
+/* Link styling within project descriptions */
+.project-description a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color var(--transition-smooth);
+}
+
+.project-description a:hover {
+  color: var(--color-primary);
+}
+
 .project-description {
   font-family: 'Akke', sans-serif;
   font-weight: 25;
