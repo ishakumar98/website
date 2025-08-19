@@ -68,7 +68,7 @@
    ========================================================================== */
 
 .name-text {
-    font-family: 'Tumla', sans-serif;
+    font-family: 'ABC Diatype', sans-serif;
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     line-height: 1.6;
@@ -124,7 +124,7 @@
 }
 
 .header-text p {
-    font-family: 'Tumla', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'ABC Diatype', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: var(--font-weight-normal);
     font-size: var(--font-size-lg);
     line-height: 1.6;

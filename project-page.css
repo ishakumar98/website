@@ -101,7 +101,7 @@ body.project-page {
 }
 
 .project-name {
-    font-family: 'Tumla', sans-serif;
+    font-family: 'ABC Diatype', sans-serif;
     font-size: clamp(2.5rem, 12vw, 18vw);
     font-weight: 600;
     color: var(--color-text);
@@ -120,7 +120,7 @@ body.project-page {
 }
 
 .project-intro {
-    font-family: 'Tumla', sans-serif;
+    font-family: 'ABC Diatype', sans-serif;
     font-size: var(--font-size-lg);
     color: var(--color-text);
     max-width: 100%;
@@ -252,7 +252,7 @@ body.project-page {
 }
 
 .project-description {
-  font-family: 'Akke', sans-serif;
+  font-family: 'Editorial Old', sans-serif;
   font-weight: 25;
   font-variation-settings: 'wght' 25;
   line-height: 1.5; /* Increased from 0.75 to 1.5 for better readability */
@@ -326,7 +326,7 @@ body.project-page {
 }
 
 .credits-text {
-  font-family: 'Tumla', sans-serif;
+  font-family: 'ABC Diatype', sans-serif;
   font-weight: 300;
   font-size: 1rem;
   color: var(--color-text);
