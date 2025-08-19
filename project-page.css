@@ -202,7 +202,7 @@ body.project-page {
     color: var(--color-text);
     font-weight: 400;
     transition: all var(--transition-fast);
-    padding: var(--title-padding-vertical) var(--title-padding-horizontal); /* 2px vertical, 4px horizontal */
+    padding: 0 var(--title-padding-horizontal); /* 0 vertical, 4px horizontal - removed vertical padding to prevent position shift */
     border-radius: var(--title-border-radius); /* 4px border radius */
 }
 
