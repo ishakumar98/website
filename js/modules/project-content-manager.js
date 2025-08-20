@@ -150,7 +150,7 @@ class ProjectContentManager {
         if (!this.projectData) return;
         
         // Update page title
-        document.title = `${this.projectData.title} - Project`;
+        document.title = this.projectData.title;
         
 
         
