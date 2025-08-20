@@ -119,7 +119,7 @@
       "title": "Lists",
       "year": "2024",
       "description": [
-        "I spent most of 2024 executing on the details for the launch of Slack's second product — <a href=\"https://slack.com/blog/news/introducing-slack-lists\">Lists</a>. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I designed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, using the <a href=\"onboarding-system-project.html\">old design system</a> I made. And, I led design on task tracking, which later evolved into a net new initiative, called To Dos. Lists wasn't built with personal task tracking in mind, so I adapted a complex, information-dense system while keeping the experience intuitive and consistent across the platform."
+        "I spent most of 2024 executing on the details for the launch of Slack's second product — <a href=\"https://slack.com/blog/news/introducing-slack-lists\">Lists</a>. Lists is a simple data management tool designed for project management: things like task tracking, inbound requests, and project updates. I designed elements of the core experience, like the item detail view, and automations, like the ability to embed and submit forms directly in a channel. I also designed the onboarding and launch experience, using the <a href=\"onboarding-system-project.html\">old design system</a> I made. And, I led design on task tracking, including assigning tasks, subtasks, a centralized items page with all your tasks, and more. Lists wasn't built with personal task tracking in mind, so I adapted a complex, information-dense system while keeping the experience intuitive and consistent across the platform."
       ],
       "credits": "I'm grateful to have been on the team that created this product: Kyle Meyer, Natalie Liu, Anna Niess, Samuel Kang, Katie Stiegman, Colleen Li, and many other cross-functional folks.",
       "images": [
@@ -159,21 +159,6 @@
           "title": "Launch (4).png"
         },
         {
-          "src": "images/lists/To Dos (1).png",
-          "alt": "To Dos 1",
-          "title": "To Dos (1).png"
-        },
-        {
-          "src": "images/lists/To Dos (2).png",
-          "alt": "To Dos 2",
-          "title": "To Dos (2).png"
-        },
-        {
-          "src": "images/lists/To Dos (3).png",
-          "alt": "To Dos 3",
-          "title": "To Dos (3).png"
-        },
-        {
           "src": "images/lists/Item View.png",
           "alt": "Item View",
           "title": "Item View.png"
@@ -182,6 +167,26 @@
           "src": "images/lists/Detail View.png",
           "alt": "Detail View",
           "title": "Detail View.png"
+        },
+        {
+          "src": "images/lists/Task Creation.png",
+          "alt": "Task Creation",
+          "title": "Task Creation.png"
+        },
+        {
+          "src": "images/lists/Subtasks.png",
+          "alt": "Subtasks",
+          "title": "Subtasks.png"
+        },
+        {
+          "src": "images/lists/Expanded Subtask.png",
+          "alt": "Expanded Subtask",
+          "title": "Expanded Subtask.png"
+        },
+        {
+          "src": "images/lists/Your Tasks.png",
+          "alt": "Your Tasks",
+          "title": "Your Tasks.png"
         },
         {
           "src": "images/lists/Forms (1).png",
